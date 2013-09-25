@@ -29,4 +29,22 @@ describe "UsersPages" do
       end
     end
   end
+
+  describe "Display Users" do
+    subject { page }
+
+    describe "individually" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      before { visit user_path(user) }
+
+      it { should have_content(user.username) }
+      it { should have_content(user.email) }
+      it { should_not have_content(user.password) }
+      it { should_not have_content(user.password_digest) }
+    end
+
+    describe "all" do
+    end
+  end
 end
