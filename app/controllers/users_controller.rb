@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  def index
+    @users = User.all
+  end
+
   def new
     @user = User.new
   end
@@ -6,7 +10,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(acceptable_params)
     if (@user.save)
-      # success!
       redirect_to @user
     else
       render 'new'
