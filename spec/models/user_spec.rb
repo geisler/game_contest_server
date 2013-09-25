@@ -68,4 +68,19 @@ describe User do
       end
     end
   end
+
+  describe "duplicate username" do
+    let(:duplicate) { user.dup }
+    it "is not allowed" do
+      expect(duplicate).not_to be_valid
+    end
+  end
+
+  describe "duplicate email" do
+    let(:duplicate) { user.dup }
+    it "is allowed" do
+      user.username = "Duplicate User"
+      expect(duplicate).to be_valid
+    end
+  end
 end
