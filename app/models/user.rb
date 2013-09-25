@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  validates :username, presence: true, length: { maximum: 25 }
+  validates :username, presence: true,
+		       length: { maximum: 25 },
+		       uniqueness: true
   #
   # Note that the email regex is from Michael Hartl's Rails tutorial
   # and does a "good enough" job.  It misses some addresses that are
