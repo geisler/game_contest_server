@@ -32,4 +32,9 @@ describe User do
     before { user.email = ' ' }
     it { should_not be_valid }
   end
+
+  describe "long username" do
+    before { user.username = "z" * 26 }
+    it { should_not be_valid }
+  end
 end
