@@ -45,12 +45,13 @@ describe "UsersPages" do
     end
 
     describe "all" do
-      let(:num_users) { 25 }
-      before(:all) { num_users.times { FactoryGirl.create(:user) } }
+      before(:all) { 25.times { FactoryGirl.create(:user) } }
+      after(:all) { User.all.each { |user| user.destroy } }
+
       before(:each) { visit users_path }
 
       it { should have_content('List of users') }
-      it { should have_content('#{num_users} users') }
+      it { should have_content('25 users') }
 
       # fix up with pagination later...
       User.all.each do |user|
