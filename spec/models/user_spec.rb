@@ -10,6 +10,7 @@ describe User do
 
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:authenticate) }
 
   it { should be_valid }
 
@@ -81,6 +82,21 @@ describe User do
     it "is allowed" do
       user.username = "Duplicate User"
       expect(duplicate).to be_valid
+    end
+  end
+
+  describe "authentication" do
+    let(:candidate_user) { User.find_by(username: user.username) }
+
+    describe "with valid password" do
+      it { should eq candidate_user.authenticate(user.password) }
+    end
+
+    describe "with invalid password" do
+      let(:authenticated_user) { candidate_user.authenticate('invalid') }
+
+      it { should_not eq authenticated_user }
+      specify { expect(authenticated_user).to be_false }
     end
   end
 end
