@@ -45,6 +45,17 @@ describe "UsersPages" do
     end
 
     describe "all" do
+      let(:num_users) { 25 }
+      before(:all) { num_users.times { FactoryGirl.create(:user) } }
+      before(:each) { visit users_path }
+
+      it { should have_content('List of users') }
+      it { should have_content('#{num_users} users') }
+
+      # fix up with pagination later...
+      User.all.each do |user|
+	it { should have_selector('li', text: user.username) }
+      end
     end
   end
 end
