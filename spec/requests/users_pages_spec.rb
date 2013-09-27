@@ -64,26 +64,26 @@ describe "UsersPages" do
     subject { page }
 
     let (:user) { FactoryGirl.create(:user) }
+    let!(:orig_username) { user.username }
     let (:submit) { 'Update account' }
 
     before { visit edit_user_path(user) }
 
-    it { should have_content(user.username) }
-    it { should have_content(user.email) }
-    it { should_not have_content(user.password) }
-    it { should_not have_content(user.password_digest) }
+    it { should have_field('Username', with: user.username) }
+    it { should have_field('Email', with: user.email) }
+    it { should_not have_field('Password', with: user.password) }
 
     describe "with invalid information" do
       before do
-	fill_in :username, with: ''
-	fill_in :password, with: user.password
-	fill_in :password_confirmation, with: user.password
+	fill_in 'Username', with: ''
+	fill_in 'Password', with: user.password
+	fill_in 'Confirmation', with: user.password
       end
 
-      it "does not change data" do
-        click_button submit
+      describe "does not change data" do
+        before { click_button submit }
+
         specify { expect(user.reload.username).not_to eq('') }
-        orig_username = user.username
         specify { expect(user.reload.username).to eq(orig_username) }
       end
 
@@ -94,15 +94,15 @@ describe "UsersPages" do
 
     describe "with valid information" do
       before do
-	fill_in :username, with: 'Changed name'
-	fill_in :password, with: user.password
-	fill_in :password_confirmation, with: user.password
+	fill_in 'Username', with: 'Changed name'
+	fill_in 'Password', with: user.password
+	fill_in 'Confirmation', with: user.password
       end
 
-      it "changes the data" do
-        click_button submit
+      describe "changes the data" do
+        before { click_button submit }
+
         specify { expect(user.reload.username).to eq('Changed name') }
-        orig_username = user.username
         specify { expect(user.reload.username).not_to eq(orig_username) }
       end
 
