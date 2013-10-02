@@ -111,4 +111,17 @@ describe "UsersPages" do
       end
     end
   end
+
+  describe "Delete users" do
+    subject { page }
+
+    let!(:user) { FactoryGirl.create(:user) }
+
+    before { visit users_path }
+
+    it { should have_link('delete', href: user_path(user)) }
+    it "removes a user from the system" do
+      expect { click_link('delete') }.to change(User, :count).by(-1)
+    end
+  end
 end
