@@ -8,6 +8,11 @@ describe "UsersPages" do
 
     before { visit signup_path }
 
+    describe "passwords are not visible when typing" do
+      it { should have_field 'user_password', type: 'password' }
+      it { should have_field 'user_password_confirmation', type: 'password' }
+    end
+
     describe "with invalid information" do
       it "does not add the user to the system" do
 	expect { click_button submit }.not_to change(User, :count)
@@ -24,11 +29,6 @@ describe "UsersPages" do
 
       it "allows the user to fill in user fields" do
         click_button submit
-      end
-
-      describe "passwords are not visible when typing" do
-	it { should have_field 'user_password', type: 'password' }
-	it { should have_field 'user_password_confirmation', type: 'password' }
       end
 
       it "adds a new user to the system" do
