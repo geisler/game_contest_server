@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe "UsersPages" do
+  subject { page }
+
   describe "Sign Up" do
     let(:submit) { 'Create new account' }
 
@@ -24,6 +26,11 @@ describe "UsersPages" do
         click_button submit
       end
 
+      describe "passwords are not visible when typing" do
+	it { should have_field 'user_password', type: 'password' }
+	it { should have_field 'user_password_confirmation', type: 'password' }
+      end
+
       it "adds a new user to the system" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
@@ -31,8 +38,6 @@ describe "UsersPages" do
   end
 
   describe "Display Users" do
-    subject { page }
-
     describe "individually" do
       let(:user) { FactoryGirl.create(:user) }
 
@@ -61,8 +66,6 @@ describe "UsersPages" do
   end
 
   describe "Edit users" do
-    subject { page }
-
     let (:user) { FactoryGirl.create(:user) }
     let!(:orig_username) { user.username }
     let (:submit) { 'Update account' }
@@ -113,8 +116,6 @@ describe "UsersPages" do
   end
 
   describe "Delete users" do
-    subject { page }
-
     let!(:user) { FactoryGirl.create(:user) }
 
     before { visit users_path }
