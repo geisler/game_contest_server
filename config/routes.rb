@@ -1,4 +1,6 @@
 GameContestServer::Application.routes.draw do
+  root 'users#index'
+
   resources :users
   get 'signup', to: 'users#new', as: :signup
   # The priority is based upon order of creation: first created -> highest priority.
