@@ -1,0 +1,9 @@
+<h1>VisualTests#colorscheme</h1>
+<% %w[muted primary success info warning danger].each do |level| %>
+    <p class="text-<%= level %>">This is an example message for level:
+    <%= level %>.</p>
+<% end %>
+
+<% %w[default primary success info warning danger].each do |level| %>
+    <button type="button" class="btn btn-<%= level %>"><%= level %></button>
+<% end %>

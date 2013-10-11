@@ -1,4 +1,5 @@
 GameContestServer::Application.routes.draw do
+  get "visual_tests/colorscheme"
   root 'users#index'
 
   resources :users
