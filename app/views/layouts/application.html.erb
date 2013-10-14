@@ -15,11 +15,17 @@
 	<ul class="nav navbar-nav navbar-left">
 	    <%= active_link_to 'Home', root_path,
 			       wrap_tag: :li, active: :exclusive %>
-	    <%= active_link_to 'Users', users_path, wrap_tag: :li %>
+	   <%= active_link_to 'Users', users_path,
+			       wrap_tag: :li, active: :exclusive %>
 	</ul>
 	<ul class="nav navbar-nav navbar-right">
-	    <%= active_link_to 'Log In', '#', wrap_tag: :li %>
-	    <%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
+	    <% if current_user %>
+		<%= active_link_to 'Profile', current_user, wrap_tag: :li %>
+		<%= active_link_to 'Log Out', logout_path, wrap_tag: :li %>
+	    <% else %>
+		<%= active_link_to 'Log In', login_path, wrap_tag: :li %>
+		<%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
+	    <% end %>
 	</ul>
     </nav>
 
