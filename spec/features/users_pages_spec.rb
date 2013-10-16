@@ -34,6 +34,14 @@ describe "UsersPages" do
       it "adds a new user to the system" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
+
+      describe "after creating the user" do
+	before { click_button submit }
+
+	it { should have_link('Log Out') }
+	it { should_not have_link('Log In') }
+	it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+      end
     end
   end
 
@@ -70,7 +78,10 @@ describe "UsersPages" do
     let!(:orig_username) { user.username }
     let (:submit) { 'Update account' }
 
-    before { visit edit_user_path(user) }
+    before do
+      login user
+      visit edit_user_path(user)
+    end
 
     it { should have_field('Username', with: user.username) }
     it { should have_field('Email', with: user.email) }

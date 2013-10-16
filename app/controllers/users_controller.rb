@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :ensure_user_signed_in, only: [:edit, :update]
+  before_action :ensure_correct_user, only: [:edit, :update]
+
   def index
     @users = User.all
   end
@@ -11,6 +14,7 @@ class UsersController < ApplicationController
     @user = User.new(acceptable_params)
     if @user.save
       flash[:success] = "Welcome to the site: #{@user.username}"
+      login @user
       redirect_to @user
     else
       render 'new'
@@ -22,11 +26,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def update
-    @user = User.find(params[:id])
     if @user.update(acceptable_params)
       flash[:success] = "Your profile has been modified"
       redirect_to @user
@@ -44,5 +46,17 @@ class UsersController < ApplicationController
 
     def acceptable_params
       params.require(:user).permit(:username, :password, :password_confirmation, :email)
+    end
+
+    def ensure_user_signed_in
+      unless logged_in?
+	flash[:warning] = 'Unable to edit profile--not logged in.'
+	redirect_to login_path
+      end
+    end
+
+    def ensure_correct_user
+      @user = User.find(params[:id])
+      redirect_to root_path unless current_user?(@user)
     end
 end

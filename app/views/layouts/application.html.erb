@@ -21,7 +21,8 @@
 	<ul class="nav navbar-nav navbar-right">
 	    <% if current_user %>
 		<%= active_link_to 'Profile', current_user, wrap_tag: :li %>
-		<%= active_link_to 'Log Out', logout_path, wrap_tag: :li %>
+		<%= active_link_to 'Log Out', logout_path,
+				   method: :delete, wrap_tag: :li %>
 	    <% else %>
 		<%= active_link_to 'Log In', login_path, wrap_tag: :li %>
 		<%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
