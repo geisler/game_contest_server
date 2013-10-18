@@ -17,6 +17,11 @@ describe "UsersPages" do
       it "does not add the user to the system" do
 	expect { click_button submit }.not_to change(User, :count)
       end
+
+      it "produces an error message" do
+	click_button submit
+	should have_selector('div.alert.alert-danger')
+      end
     end
 
     describe "with valid information" do
@@ -116,6 +121,11 @@ describe "UsersPages" do
       it "does not add a new user to the system" do
         expect { click_button submit }.not_to change(User, :count)
       end
+
+      it "produces an error message" do
+	click_button submit
+	should have_selector('div.alert.alert-danger')
+      end
     end
 
     describe "with valid information" do
@@ -143,6 +153,11 @@ describe "UsersPages" do
         end
 
 	specify { expect(response).to redirect_to(user_path(user)) }
+      end
+
+      it "produces an update message" do
+	click_button submit
+	should have_selector('div.alert.alert-success')
       end
 
       it "does not add a new user to the system" do
@@ -190,6 +205,11 @@ describe "UsersPages" do
 	end
 
 	specify { expect(response).to redirect_to(users_path) }
+      end
+
+      it "produces a delete message" do
+	click_link('delete', match: :first)
+	should have_selector('div.alert.alert-success')
       end
 
       it "removes a user from the system" do

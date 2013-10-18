@@ -31,12 +31,19 @@ describe "AuthenticationPages" do
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Log Out', href: logout_path) }
       it { should_not have_link('Log In', href: login_path) }
+      it { should_not have_link('Sign Up', href: signup_path) }
+
+      it { should have_selector('div.alert.alert-success') }
 
       describe "followed by logout" do
 	before { click_link 'Log Out' }
 
 	it { should have_link('Log In', href: login_path) }
+	it { should have_link('Sign Up', href: signup_path) }
 	it { should_not have_link('Log Out', href: logout_path) }
+	it { should_not have_link('Profile') }
+
+	it { should have_selector('div.alert.alert-info') }
       end
     end
   end
@@ -52,7 +59,7 @@ describe "AuthorizationPages" do
       describe "edit action" do
 	before { visit edit_user_path(user) }
 
-	it { should have_selector('div.alert.alert-warning', text: 'Unable') }
+	it { should have_selector('div.alert.alert-warning') }
 	it { should have_content('Log In') }
       end
 
@@ -60,6 +67,12 @@ describe "AuthorizationPages" do
 	before { patch user_path(user) }
 
 	specify { expect(response).to redirect_to(login_path) }
+
+	describe "error message" do
+	  before { get root_path }
+
+	  specify { expect(response.body).to have_selector('div.alert.alert-warning') }
+	end
       end
     end
   end
@@ -74,12 +87,24 @@ describe "AuthorizationPages" do
 
       specify { expect(response.body).not_to match('Edit user') }
       specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-danger') }
+      end
     end
 
     describe "update action", type: :request do
       before { patch user_path(other_user) }
 
       specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-danger') }
+      end
     end
   end
 
@@ -92,6 +117,12 @@ describe "AuthorizationPages" do
       before { patch user_path(other_user) }
 
       specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-danger') }
+      end
     end
   end
 
@@ -105,6 +136,12 @@ describe "AuthorizationPages" do
       end
 
       specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-danger') }
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :ensure_user_signed_in, only: [:edit, :update]
+  before_action :ensure_user_signed_in, only: [:edit, :update, :destroy]
   before_action :ensure_correct_user, only: [:edit, :update]
   before_action :ensure_admin, only: [:destroy]
 
@@ -40,6 +40,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+    flash[:success] = "#{@user.username} removed from the site"
     redirect_to users_path
   end
 
@@ -58,11 +59,23 @@ class UsersController < ApplicationController
 
     def ensure_correct_user
       @user = User.find(params[:id])
-      redirect_to root_path unless current_user?(@user)
+      unless current_user?(@user)
+	flash[:danger] = 'Unable to edit another user\'s profile.'
+	redirect_to root_path
+      end
     end
 
     def ensure_admin
       @user = User.find(params[:id])
-      redirect_to root_path unless current_user.admin? && !current_user?(@user)
+      request_okay = true
+      unless !current_user?(@user)
+	flash[:danger] = 'Users may not delete themselves.'
+	request_okay = false
+      end
+      unless current_user.admin?
+	flash[:danger] = 'Only administrators can delete users.'
+	request_okay = false
+      end
+      redirect_to root_path unless request_okay
     end
 end
