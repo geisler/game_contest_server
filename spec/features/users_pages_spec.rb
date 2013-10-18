@@ -128,6 +128,17 @@ describe "UsersPages" do
       end
     end
 
+    describe "with forbidden attributes", type: :request do
+      before do
+	login user, avoid_capybara: true
+	patch user_path(user), user: { admin: true,
+				       password: user.password,
+				       password_confirmation: user.password }
+      end
+
+      specify { expect(user.reload).not_to be_admin }
+    end
+
     describe "with valid information" do
       before do
 	fill_in 'Username', with: 'Changed name'
