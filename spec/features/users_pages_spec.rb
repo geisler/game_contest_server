@@ -137,7 +137,7 @@ describe "UsersPages" do
 
     it { should have_link('delete', href: user_path(user)) }
     it "removes a user from the system" do
-      expect { click_link('delete') }.to change(User, :count).by(-1)
+      expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
     end
   end
 end
