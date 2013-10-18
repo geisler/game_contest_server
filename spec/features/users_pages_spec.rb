@@ -31,6 +31,17 @@ describe "UsersPages" do
         click_button submit
       end
 
+      describe "redirects properly", type: :request do
+	before do
+	  post users_path, user: { username: 'User Name',
+				   email: 'user@example.com',
+				   password: 'password',
+				   password_confirmation: 'password' }
+        end
+
+	specify { expect(response).to redirect_to(user_path(assigns(:user))) }
+      end
+
       it "adds a new user to the system" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
@@ -90,6 +101,7 @@ describe "UsersPages" do
     describe "with invalid information" do
       before do
 	fill_in 'Username', with: ''
+	fill_in 'Email', with: user.email
 	fill_in 'Password', with: user.password
 	fill_in 'Confirmation', with: user.password
       end
@@ -109,6 +121,7 @@ describe "UsersPages" do
     describe "with valid information" do
       before do
 	fill_in 'Username', with: 'Changed name'
+	fill_in 'Email', with: user.email
 	fill_in 'Password', with: user.password
 	fill_in 'Confirmation', with: user.password
       end
@@ -118,6 +131,18 @@ describe "UsersPages" do
 
         specify { expect(user.reload.username).to eq('Changed name') }
         specify { expect(user.reload.username).not_to eq(orig_username) }
+      end
+
+      describe "redirects properly", type: :request do
+	before do
+	  login user, avoid_capybara: true
+	  patch user_path(user), user: { username: 'Changed name',
+					 email: user.email,
+					 password: user.password,
+					 password_confirmation: user.password }
+        end
+
+	specify { expect(response).to redirect_to(user_path(user)) }
       end
 
       it "does not add a new user to the system" do
@@ -157,6 +182,15 @@ describe "UsersPages" do
 
       it { should have_link('delete', href: user_path(user)) }
       it { should_not have_link('delete', href: user_path(admin)) }
+
+      describe "redirects properly", type: :request do
+	before do
+	  login admin, avoid_capybara: true
+	  delete user_path(user)
+	end
+
+	specify { expect(response).to redirect_to(users_path) }
+      end
 
       it "removes a user from the system" do
         expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
