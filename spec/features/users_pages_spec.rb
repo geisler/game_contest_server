@@ -131,7 +131,7 @@ describe "UsersPages" do
     describe "with valid information" do
       before do
 	fill_in 'Username', with: 'Changed name'
-	fill_in 'Email', with: user.email
+	fill_in 'Email', with: 'new@example.com'
 	fill_in 'Password', with: user.password
 	fill_in 'Confirmation', with: user.password
       end
@@ -140,7 +140,7 @@ describe "UsersPages" do
         before { click_button submit }
 
         specify { expect(user.reload.username).to eq('Changed name') }
-        specify { expect(user.reload.username).not_to eq(orig_username) }
+        specify { expect(user.reload.email).to eq('new@example.com') }
       end
 
       describe "redirects properly", type: :request do
