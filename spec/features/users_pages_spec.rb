@@ -17,6 +17,11 @@ describe "UsersPages" do
       it "does not add the user to the system" do
 	expect { click_button submit }.not_to change(User, :count)
       end
+
+      it "produces an error message" do
+	click_button submit
+	should have_selector('div.alert.alert-danger')
+      end
     end
 
     describe "with valid information" do
@@ -29,6 +34,17 @@ describe "UsersPages" do
 
       it "allows the user to fill in user fields" do
         click_button submit
+      end
+
+      describe "redirects properly", type: :request do
+	before do
+	  post users_path, user: { username: 'User Name',
+				   email: 'user@example.com',
+				   password: 'password',
+				   password_confirmation: 'password' }
+        end
+
+	specify { expect(response).to redirect_to(user_path(assigns(:user))) }
       end
 
       it "adds a new user to the system" do
@@ -90,6 +106,7 @@ describe "UsersPages" do
     describe "with invalid information" do
       before do
 	fill_in 'Username', with: ''
+	fill_in 'Email', with: user.email
 	fill_in 'Password', with: user.password
 	fill_in 'Confirmation', with: user.password
       end
@@ -104,11 +121,28 @@ describe "UsersPages" do
       it "does not add a new user to the system" do
         expect { click_button submit }.not_to change(User, :count)
       end
+
+      it "produces an error message" do
+	click_button submit
+	should have_selector('div.alert.alert-danger')
+      end
+    end
+
+    describe "with forbidden attributes", type: :request do
+      before do
+	login user, avoid_capybara: true
+	patch user_path(user), user: { admin: true,
+				       password: user.password,
+				       password_confirmation: user.password }
+      end
+
+      specify { expect(user.reload).not_to be_admin }
     end
 
     describe "with valid information" do
       before do
 	fill_in 'Username', with: 'Changed name'
+	fill_in 'Email', with: 'new@example.com'
 	fill_in 'Password', with: user.password
 	fill_in 'Confirmation', with: user.password
       end
@@ -117,7 +151,24 @@ describe "UsersPages" do
         before { click_button submit }
 
         specify { expect(user.reload.username).to eq('Changed name') }
-        specify { expect(user.reload.username).not_to eq(orig_username) }
+        specify { expect(user.reload.email).to eq('new@example.com') }
+      end
+
+      describe "redirects properly", type: :request do
+	before do
+	  login user, avoid_capybara: true
+	  patch user_path(user), user: { username: 'Changed name',
+					 email: user.email,
+					 password: user.password,
+					 password_confirmation: user.password }
+        end
+
+	specify { expect(response).to redirect_to(user_path(user)) }
+      end
+
+      it "produces an update message" do
+	click_button submit
+	should have_selector('div.alert.alert-success')
       end
 
       it "does not add a new user to the system" do
@@ -127,13 +178,54 @@ describe "UsersPages" do
   end
 
   describe "Delete users" do
-    let!(:user) { FactoryGirl.create(:user) }
+    describe "as anonymous" do
+      let!(:user) { FactoryGirl.create(:user) }
 
-    before { visit users_path }
+      before { visit users_path }
 
-    it { should have_link('delete', href: user_path(user)) }
-    it "removes a user from the system" do
-      expect { click_link('delete') }.to change(User, :count).by(-1)
+      it { should_not have_link('delete') }
+    end
+
+    describe "as a user" do
+      let (:user) { FactoryGirl.create(:user) }
+
+      before do
+	login user
+	visit users_path
+      end
+
+      it { should_not have_link('delete') }
+    end
+
+    describe "as admin" do
+      let (:admin) { FactoryGirl.create(:admin) }
+      let!(:user) { FactoryGirl.create(:user) }
+
+      before do
+        login admin
+        visit users_path
+      end
+
+      it { should have_link('delete', href: user_path(user)) }
+      it { should_not have_link('delete', href: user_path(admin)) }
+
+      describe "redirects properly", type: :request do
+	before do
+	  login admin, avoid_capybara: true
+	  delete user_path(user)
+	end
+
+	specify { expect(response).to redirect_to(users_path) }
+      end
+
+      it "produces a delete message" do
+	click_link('delete', match: :first)
+	should have_selector('div.alert.alert-success')
+      end
+
+      it "removes a user from the system" do
+        expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
+      end
     end
   end
 end

@@ -12,7 +12,10 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:authenticate) }
 
+  it { should respond_to(:admin) }
+
   it { should be_valid }
+  it { should_not be_admin }
 
   describe "empty username" do
     before { user.username = '' }
@@ -98,5 +101,11 @@ describe User do
       it { should_not eq authenticated_user }
       specify { expect(authenticated_user).to be_false }
     end
+  end
+
+  describe "admin capabilities" do
+    let(:admin) { FactoryGirl.create(:admin) }
+
+    specify { expect(admin).to be_admin }
   end
 end
