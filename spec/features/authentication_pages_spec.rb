@@ -29,6 +29,7 @@ describe "AuthenticationPages" do
       end
 
       it { should have_link('Profile', href: user_path(user)) }
+      it { should have_link('Settings', href: edit_user_path(user)) }
       it { should have_link('Log Out', href: logout_path) }
       it { should_not have_link('Log In', href: login_path) }
       it { should_not have_link('Sign Up', href: signup_path) }

@@ -20,9 +20,15 @@
 	</ul>
 	<ul class="nav navbar-nav navbar-right">
 	    <% if current_user %>
-		<%= active_link_to 'Profile', current_user, wrap_tag: :li %>
-		<%= active_link_to 'Log Out', logout_path,
-				   method: :delete, wrap_tag: :li %>
+		<li class="dropdown">
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret" /></a>
+		    <ul class="dropdown-menu">
+			<%= active_link_to 'Profile', current_user, wrap_tag: :li, active: :exclusive %>
+			<%= active_link_to 'Settings', edit_user_path(current_user),
+					   wrap_tag: :li %>
+			<li><%= link_to 'Log Out', logout_path, method: :delete %></li>
+		    </ul>
+		</li>
 	    <% else %>
 		<%= active_link_to 'Log In', login_path, wrap_tag: :li %>
 		<%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
