@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :ensure_user_signed_in, only: [:edit, :update, :destroy]
+  before_action :ensure_user_logged_out, only: [:new, :create]
+  before_action :ensure_user_logged_in, only: [:edit, :update, :destroy]
   before_action :ensure_correct_user, only: [:edit, :update]
   before_action :ensure_admin, only: [:destroy]
 
@@ -50,7 +51,14 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :password, :password_confirmation, :email)
     end
 
-    def ensure_user_signed_in
+    def ensure_user_logged_out
+      unless !logged_in?
+	flash[:warning] = 'You are already logged in.'
+	redirect_to root_path
+      end
+    end
+
+    def ensure_user_logged_in
       unless logged_in?
 	flash[:warning] = 'Unable to edit profile--not logged in.'
 	redirect_to login_path

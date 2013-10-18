@@ -78,6 +78,34 @@ describe "AuthorizationPages" do
     end
   end
 
+  describe "authenticated users" do
+    before { login user, avoid_capybara: true }
+
+    describe "new action", type: :request do
+      before { get new_user_path }
+
+      specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-warning') }
+      end
+    end
+
+    describe "create action", type: :request do
+      before { post users_path }
+
+      specify { expect(response).to redirect_to(root_path) }
+
+      describe "error message" do
+	before { get root_path }
+
+	specify { expect(response.body).to have_selector('div.alert.alert-warning') }
+      end
+    end
+  end
+
   describe "authenticated, but wrong user" do
     let(:other_user) { FactoryGirl.create(:user) }
 
