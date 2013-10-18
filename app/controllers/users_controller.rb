@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :ensure_user_signed_in, only: [:edit, :update]
   before_action :ensure_correct_user, only: [:edit, :update]
+  before_action :ensure_admin, only: [:destroy]
 
   def index
     @users = User.all
@@ -38,7 +39,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
+    @user.destroy
     redirect_to users_path
   end
 
@@ -58,5 +59,10 @@ class UsersController < ApplicationController
     def ensure_correct_user
       @user = User.find(params[:id])
       redirect_to root_path unless current_user?(@user)
+    end
+
+    def ensure_admin
+      @user = User.find(params[:id])
+      redirect_to root_path unless current_user.admin? && !current_user?(@user)
     end
 end

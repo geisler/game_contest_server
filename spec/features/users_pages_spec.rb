@@ -128,8 +128,12 @@ describe "UsersPages" do
 
   describe "Delete users" do
     let!(:user) { FactoryGirl.create(:user) }
+    let (:admin) { FactoryGirl.create(:admin) }
 
-    before { visit users_path }
+    before do
+      login admin
+      visit users_path
+    end
 
     it { should have_link('delete', href: user_path(user)) }
     it "removes a user from the system" do

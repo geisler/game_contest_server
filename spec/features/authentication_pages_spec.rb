@@ -45,9 +45,9 @@ end
 describe "AuthorizationPages" do
   subject { page }
 
-  describe "non-authenticated users" do
-    let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
 
+  describe "non-authenticated users" do
     describe "for Users controller" do
       describe "edit action" do
 	before { visit edit_user_path(user) }
@@ -65,7 +65,6 @@ describe "AuthorizationPages" do
   end
 
   describe "authenticated, but wrong user" do
-    let(:user) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
 
     before { login user, avoid_capybara: true }
@@ -79,6 +78,31 @@ describe "AuthorizationPages" do
 
     describe "update action", type: :request do
       before { patch user_path(other_user) }
+
+      specify { expect(response).to redirect_to(root_path) }
+    end
+  end
+
+  describe "authenticated, but non-admin user" do
+    let(:other_user) { FactoryGirl.create(:user) }
+
+    before { login user, avoid_capybara: true }
+
+    describe "update action", type: :request do
+      before { patch user_path(other_user) }
+
+      specify { expect(response).to redirect_to(root_path) }
+    end
+  end
+
+  describe "authenticated admin user" do
+    describe "delete action (self)", type: :request do
+      let(:admin) { FactoryGirl.create(:admin) }
+
+      before do
+	login admin, avoid_capybara: true
+	delete user_path(admin)
+      end
 
       specify { expect(response).to redirect_to(root_path) }
     end
