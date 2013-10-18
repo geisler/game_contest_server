@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130925034621) do
+ActiveRecord::Schema.define(version: 20131018003621) do
 
   create_table "users", force: true do |t|
     t.string   "username"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20130925034621) do
     t.datetime "updated_at"
     t.string   "email"
     t.string   "password_digest"
+    t.boolean  "admin",           default: false
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true
