@@ -127,17 +127,40 @@ describe "UsersPages" do
   end
 
   describe "Delete users" do
-    let!(:user) { FactoryGirl.create(:user) }
-    let (:admin) { FactoryGirl.create(:admin) }
+    describe "as anonymous" do
+      let!(:user) { FactoryGirl.create(:user) }
 
-    before do
-      login admin
-      visit users_path
+      before { visit users_path }
+
+      it { should_not have_link('delete') }
     end
 
-    it { should have_link('delete', href: user_path(user)) }
-    it "removes a user from the system" do
-      expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
+    describe "as a user" do
+      let (:user) { FactoryGirl.create(:user) }
+
+      before do
+	login user
+	visit users_path
+      end
+
+      it { should_not have_link('delete') }
+    end
+
+    describe "as admin" do
+      let (:admin) { FactoryGirl.create(:admin) }
+      let!(:user) { FactoryGirl.create(:user) }
+
+      before do
+        login admin
+        visit users_path
+      end
+
+      it { should have_link('delete', href: user_path(user)) }
+      it { should_not have_link('delete', href: user_path(admin)) }
+
+      it "removes a user from the system" do
+        expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
+      end
     end
   end
 end
