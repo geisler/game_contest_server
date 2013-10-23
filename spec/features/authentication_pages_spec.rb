@@ -70,7 +70,7 @@ describe "AuthorizationPages" do
 	specify { expect(response).to redirect_to(login_path) }
 
 	describe "error message" do
-	  before { get root_path }
+	  before { get login_path }
 
 	  specify { expect(response.body).to have_selector('div.alert.alert-warning') }
 	end
