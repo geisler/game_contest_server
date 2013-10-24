@@ -6,4 +6,5 @@ describe ContestManager do
 
   it { should respond_to(:code_path) }
   it { should respond_to(:programming_language) }
+  it { should respond_to(:contests) }
 end

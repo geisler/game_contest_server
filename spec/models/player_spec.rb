@@ -8,4 +8,6 @@ describe Player do
   it { should respond_to(:contest) }
   it { should respond_to(:code_path) }
   it { should respond_to(:programming_language) }
+  it { should respond_to(:player_matches) }
+  it { should respond_to(:matches) }
 end

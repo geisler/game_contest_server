@@ -8,4 +8,6 @@ describe Contest do
   it { should respond_to(:contest_manager) }
   it { should respond_to(:description) }
   it { should respond_to(:documentation_path) }
+  it { should respond_to(:players) }
+  it { should respond_to(:matches) }
 end
