@@ -5,4 +5,5 @@ describe MatchType do
   subject { match_type }
 
   it { should respond_to(:kind) }
+  it { should respond_to(:matches) }
 end

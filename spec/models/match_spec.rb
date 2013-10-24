@@ -8,4 +8,6 @@ describe Match do
   it { should respond_to(:occurance) }
   it { should respond_to(:match_type) }
   it { should respond_to(:duration) }
+  it { should respond_to(:player_matches) }
+  it { should respond_to(:players) }
 end

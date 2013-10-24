@@ -5,4 +5,6 @@ describe ProgrammingLanguage do
   subject { programming_language }
 
   it { should respond_to(:name) }
+  it { should respond_to(:contest_managers) }
+  it { should respond_to(:players) }
 end
