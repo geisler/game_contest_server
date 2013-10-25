@@ -10,4 +10,10 @@ describe Match do
   it { should respond_to(:duration) }
   it { should respond_to(:player_matches) }
   it { should respond_to(:players) }
+
+  describe "validations" do
+    it { should be_valid }
+    specify { expect_required_attribute(:contest) }
+    specify { expect_required_attribute(:match_type) }
+  end
 end

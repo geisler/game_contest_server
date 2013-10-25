@@ -6,4 +6,8 @@ describe MatchType do
 
   it { should respond_to(:kind) }
   it { should respond_to(:matches) }
+
+  describe "validations" do
+    it { should be_valid }
+  end
 end

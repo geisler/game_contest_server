@@ -8,6 +8,10 @@ FactoryGirl.define do
     factory :admin do
       admin true
     end
+
+    factory :contest_creator do
+      contest_creator true
+    end
   end
 
   factory :programming_language do
