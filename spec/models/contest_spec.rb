@@ -10,4 +10,10 @@ describe Contest do
   it { should respond_to(:documentation_path) }
   it { should respond_to(:players) }
   it { should respond_to(:matches) }
+
+  describe "validations" do
+    it { should be_valid }
+    specify { expect_required_attribute(:contest_manager) }
+    specify { expect_required_attribute(:user) }
+  end
 end
