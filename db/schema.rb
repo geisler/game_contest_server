@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131024030515) do
+ActiveRecord::Schema.define(version: 20131025015503) do
 
   create_table "contest_managers", force: true do |t|
     t.string   "code_path"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20131024030515) do
     t.string   "email"
     t.string   "password_digest"
     t.boolean  "admin",           default: false
+    t.boolean  "contest_creator", default: false
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true
