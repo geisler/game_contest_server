@@ -3,6 +3,7 @@ GameContestServer::Application.routes.draw do
   root 'users#index'
 
   resources :users
+  resources :contest_managers
   resources :sessions, only: [:new, :create, :destroy]
 
   get 'signup', to: 'users#new', as: :signup

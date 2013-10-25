@@ -1,0 +1,22 @@
+<h1>Create Contest Manager</h1>
+
+<%= form_for @contest_manager do |f| %>
+    <%= render 'shared/error_messages', object: @contest_manager %>
+
+    <div class="form-group">
+	<%= f.label :programming_language_id, 'Programming Language' %>
+	<%= f.collection_select(:programming_language_id,
+				ProgrammingLanguage.all,
+				:id,
+				:name,
+				{},
+				class: 'form-control') %>
+    </div>
+
+    <div class="form-group">
+	<%= f.label :code, 'Upload file' %>
+	<%= f.file_field :code, class: 'form-control' %>
+    </div>
+
+    <%= f.submit 'Create Contest Manager', class: 'btn btn-primary' %>
+<% end %>
