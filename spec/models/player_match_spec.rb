@@ -7,4 +7,10 @@ describe PlayerMatch do
   it { should respond_to(:player) }
   it { should respond_to(:match) }
   it { should respond_to(:score) }
+
+  describe "validations" do
+    it { should be_valid }
+    specify { expect_required_attribute(:player) }
+    specify { expect_required_attribute(:match) }
+  end
 end

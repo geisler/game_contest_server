@@ -7,4 +7,8 @@ describe ProgrammingLanguage do
   it { should respond_to(:name) }
   it { should respond_to(:contest_managers) }
   it { should respond_to(:players) }
+
+  describe "validations" do
+    it { should be_valid }
+  end
 end

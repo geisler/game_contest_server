@@ -120,15 +120,21 @@ describe "AuthorizationPages" do
   end
 
   describe "authenticated admin user" do
-    describe "delete action (self)", type: :request do
-      let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryGirl.create(:admin) }
 
+    describe "delete action (self)", type: :request do
       before do
 	login admin, avoid_capybara: true
 	delete user_path(admin)
       end
 
       it { errors_on_redirect(root_path, :danger) }
+    end
+
+    pending "edit action (other)" do
+    end
+
+    pending "update action (other)", type: :request do
     end
   end
 end
