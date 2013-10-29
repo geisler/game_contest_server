@@ -14,6 +14,9 @@ describe User do
 
   it { should respond_to(:admin) }
   it { should respond_to(:contest_creator) }
+  it { should respond_to(:banned) }
+
+  it { should respond_to(:chat_url) }
 
   it { should be_valid }
   it { should_not be_admin }

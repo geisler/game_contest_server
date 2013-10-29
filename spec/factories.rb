@@ -4,6 +4,7 @@ FactoryGirl.define do
     email    "john.doe@example.com"
     password "password"
     password_confirmation "password"
+    chat_url "http://example.com/path/to/chat"
 
     factory :admin do
       admin true
@@ -12,45 +13,56 @@ FactoryGirl.define do
     factory :contest_creator do
       contest_creator true
     end
+
+    factory :banned_user do
+      banned true
+    end
   end
 
-  factory :programming_language do
-    name "One Language to Rule Them All"
-  end
-
-  factory :contest_manager do
-    code_path "/path/to/manager/code"
-    programming_language
+  factory :referee do
+    sequence(:file_location) { |i| "/path/to/manager/code/#{i}" }
+    sequence(:name) { |i| "Referee #{i}" }
+    rules_url "http://example.com/path/to/rules"
+    players_per_game 2
   end
 
   factory :contest do
     user
-    contest_manager
+    referee
+    deadline Time.now
+    start Time.now
     description "Contest Description Here"
-    documentation_path "/path/to/contest/docs"
-  end
-
-  factory :match_type do
-    kind "One Match to Rule Them All"
+    sequence(:name) { |i| "Contest #{i}" }
+    type "Generic Contest Type"
   end
 
   factory :match do
-    contest
-    occurance Time.now
-    match_type
-    duration 1.0
+    status "Unknown Status"
+    completion Time.now
+    earliest_start Time.now
+
+    factory :contest_match do
+      association :manager, factory: :contest
+    end
+
+    factory :challenge_match do
+      association :manager, factory: :referee
+    end
   end
+
 
   factory :player do
     user
     contest
-    code_path "/path/to/player/code"
-    programming_language
+    sequence(:file_location) { |i| "/path/to/player/code/#{i}" }
+    description "Player Description Here"
+    sequence(:name) { |i| "Player #{i}" }
   end
 
   factory :player_match do
     player
-    match
+    association :match, factory: :contest_match
     score 1.0
+    result "Unknown Result"
   end
 end

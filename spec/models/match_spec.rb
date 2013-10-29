@@ -1,19 +1,17 @@
 require 'spec_helper'
 
 describe Match do
-  let (:match) { FactoryGirl.create(:match) }
+  let (:match) { FactoryGirl.create(:contest_match) }
   subject { match }
 
-  it { should respond_to(:contest) }
-  it { should respond_to(:occurance) }
-  it { should respond_to(:match_type) }
-  it { should respond_to(:duration) }
+  it { should respond_to(:completion) }
+  it { should respond_to(:earliest_start) }
   it { should respond_to(:player_matches) }
   it { should respond_to(:players) }
+  it { should respond_to(:manager) }
 
   describe "validations" do
     it { should be_valid }
-    specify { expect_required_attribute(:contest) }
-    specify { expect_required_attribute(:match_type) }
+    specify { expect_required_attribute(:manager) }
   end
 end
