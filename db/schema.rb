@@ -11,15 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131029025834) do
+ActiveRecord::Schema.define(version: 20131029035331) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
     t.integer  "referee_id"
     t.text     "description"
-    t.string   "documentation_path"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deadline"
+    t.datetime "start"
+    t.string   "name"
+    t.string   "type"
   end
 
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
@@ -32,15 +35,18 @@ ActiveRecord::Schema.define(version: 20131029025834) do
   end
 
   create_table "matches", force: true do |t|
-    t.integer  "contest_id"
-    t.datetime "occurance"
+    t.integer  "manager_id"
+    t.datetime "completion"
     t.integer  "match_type_id"
-    t.float    "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status"
+    t.datetime "earliest_start"
+    t.string   "manager_type"
   end
 
-  add_index "matches", ["contest_id"], name: "index_matches_on_contest_id"
+  add_index "matches", ["manager_id", "manager_type"], name: "index_matches_on_manager_id_and_manager_type"
+  add_index "matches", ["manager_id"], name: "index_matches_on_manager_id"
   add_index "matches", ["match_type_id"], name: "index_matches_on_match_type_id"
 
   create_table "player_matches", force: true do |t|
@@ -49,6 +55,7 @@ ActiveRecord::Schema.define(version: 20131029025834) do
     t.float    "score"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "result"
   end
 
   add_index "player_matches", ["match_id"], name: "index_player_matches_on_match_id"
@@ -57,15 +64,15 @@ ActiveRecord::Schema.define(version: 20131029025834) do
   create_table "players", force: true do |t|
     t.integer  "user_id"
     t.integer  "contest_id"
-    t.string   "code_path"
     t.integer  "programming_language_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
+    t.string   "name"
+    t.boolean  "downloadable",            default: false
+    t.boolean  "playable",                default: true
+    t.string   "file_location"
   end
-
-  add_index "players", ["contest_id"], name: "index_players_on_contest_id"
-  add_index "players", ["programming_language_id"], name: "index_players_on_programming_language_id"
-  add_index "players", ["user_id"], name: "index_players_on_user_id"
 
   create_table "programming_languages", force: true do |t|
     t.string   "name"
@@ -74,13 +81,18 @@ ActiveRecord::Schema.define(version: 20131029025834) do
   end
 
   create_table "referees", force: true do |t|
-    t.string   "code_path"
+    t.string   "file_location"
     t.integer  "programming_language_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.string   "rules_url"
+    t.integer  "players_per_game"
+    t.integer  "user_id"
   end
 
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
+  add_index "referees", ["user_id"], name: "index_referees_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "username"
@@ -90,6 +102,8 @@ ActiveRecord::Schema.define(version: 20131029025834) do
     t.string   "password_digest"
     t.boolean  "admin",           default: false
     t.boolean  "contest_creator", default: false
+    t.boolean  "banned",          default: false
+    t.string   "chat_url"
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true

@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   has_secure_password
 
+  has_many :referees
+  has_many :players
+  has_many :contests
+
   validates :username, presence: true,
 		       length: { maximum: 25 },
 		       uniqueness: true

@@ -7,6 +7,7 @@ describe PlayerMatch do
   it { should respond_to(:player) }
   it { should respond_to(:match) }
   it { should respond_to(:score) }
+  it { should respond_to(:result) }
 
   describe "validations" do
     it { should be_valid }

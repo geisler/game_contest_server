@@ -7,7 +7,10 @@ describe Contest do
   it { should respond_to(:user) }
   it { should respond_to(:referee) }
   it { should respond_to(:description) }
-  it { should respond_to(:documentation_path) }
+  it { should respond_to(:deadline) }
+  it { should respond_to(:start) }
+  it { should respond_to(:name) }
+  it { should respond_to(:type) }
   it { should respond_to(:players) }
   it { should respond_to(:matches) }
 
