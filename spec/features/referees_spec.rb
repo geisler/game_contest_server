@@ -1,22 +1,22 @@
 require 'spec_helper'
 
-describe "ContestManagerPages" do
+describe "RefereePages" do
   let (:creator) { FactoryGirl.create(:contest_creator) }
 
   subject { page }
 
   describe "create" do
     let!(:language) { FactoryGirl.create(:programming_language) }
-    let (:submit) { 'Create Contest Manager' }
+    let (:submit) { 'Create Referee' }
 
     before do
       login creator
-      visit new_contest_manager_path
+      visit new_referee_path
     end
 
     describe "missing information" do
-      it "should not create a contest manager" do
-	expect { click_button submit }.not_to change(ContestManager, :count)
+      it "should not create a referee" do
+	expect { click_button submit }.not_to change(Referee, :count)
       end
 
       describe "after submission" do
@@ -30,17 +30,17 @@ describe "ContestManagerPages" do
       before do
 	select language.name, from: 'Programming Language'
 	attach_file('Upload file',
-		    Rails.root.join('spec', 'files', 'contest_manager.test'))
+		    Rails.root.join('spec', 'files', 'referee.test'))
       end
 
-      it "should create a contest manager" do
-	expect { click_button submit }.to change(ContestManager, :count).by(1)
+      it "should create a referee" do
+	expect { click_button submit }.to change(Referee, :count).by(1)
       end
 
       describe "after submission" do
 	before { click_button submit }
 
-	it { should have_alert(:success, text: 'Contest Manager created') }
+	it { should have_alert(:success, text: 'Referee created') }
       end
     end
   end

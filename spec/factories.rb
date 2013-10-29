@@ -18,14 +18,14 @@ FactoryGirl.define do
     name "One Language to Rule Them All"
   end
 
-  factory :contest_manager do
+  factory :referee do
     code_path "/path/to/manager/code"
     programming_language
   end
 
   factory :contest do
     user
-    contest_manager
+    referee
     description "Contest Description Here"
     documentation_path "/path/to/contest/docs"
   end

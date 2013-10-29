@@ -1,4 +1,4 @@
-class ContestManager < ActiveRecord::Base
+class Referee < ActiveRecord::Base
   belongs_to :programming_language
   has_many :contests
 
@@ -12,7 +12,7 @@ class ContestManager < ActiveRecord::Base
       self.code_path = ''
     else
       self.code_path = Rails.root.join('code',
-				       'managers',
+				       'referees',
 				       Rails.env,
 				       Time.now.strftime("%Y%m%d%H%M%S%L-#{Process.pid.to_s}") ).to_s
       IO.copy_stream(uploaded_io, self.code_path)

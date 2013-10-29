@@ -1,7 +1,7 @@
-<h1>Create Contest Manager</h1>
+<h1>Create Referee</h1>
 
-<%= form_for @contest_manager do |f| %>
-    <%= render 'shared/error_messages', object: @contest_manager %>
+<%= form_for @referee do |f| %>
+    <%= render 'shared/error_messages', object: @referee %>
 
     <div class="form-group">
 	<%= f.label :programming_language_id, 'Programming Language' %>
@@ -18,5 +18,5 @@
 	<%= f.file_field :code, class: 'form-control' %>
     </div>
 
-    <%= f.submit 'Create Contest Manager', class: 'btn btn-primary' %>
+    <%= f.submit 'Create Referee', class: 'btn btn-primary' %>
 <% end %>

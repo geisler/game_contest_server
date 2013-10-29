@@ -5,7 +5,7 @@ describe Contest do
   subject { contest }
 
   it { should respond_to(:user) }
-  it { should respond_to(:contest_manager) }
+  it { should respond_to(:referee) }
   it { should respond_to(:description) }
   it { should respond_to(:documentation_path) }
   it { should respond_to(:players) }
@@ -13,7 +13,7 @@ describe Contest do
 
   describe "validations" do
     it { should be_valid }
-    specify { expect_required_attribute(:contest_manager) }
+    specify { expect_required_attribute(:referee) }
     specify { expect_required_attribute(:user) }
   end
 end
