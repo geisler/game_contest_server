@@ -1,2 +1,4 @@
-<h1>Referee#show</h1>
-<p>Find me in app/views/referees/show.html.erb</p>
+<h1>Referee</h1>
+<p>Name: <%= @referee.name %></p>
+<p><%= link_to 'Rules', @referee.rules_url %></p>
+<p>Players per game: <%= @referee.players_per_game %></p>

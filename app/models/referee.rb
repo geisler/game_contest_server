@@ -1,10 +1,12 @@
 class Referee < ActiveRecord::Base
-  belongs_to :programming_language
+#  belongs_to :programming_language
+  belongs_to :user
   has_many :contests
   has_many :matches, as: :manager
 
 #  validates :programming_language, presence: true
   validates :file_location, presence: true
+  validates :players_per_game, numericality: { only_integer: true, greater_than: 0 }
 
   def code=(uploaded_io)
     File.delete(self.file_location) unless self.file_location.nil? || !File.exists?(self.file_location)

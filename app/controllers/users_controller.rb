@@ -58,13 +58,6 @@ class UsersController < ApplicationController
       end
     end
 
-    def ensure_user_logged_in
-      unless logged_in?
-	flash[:warning] = 'Unable to edit profile--not logged in.'
-	redirect_to login_path
-      end
-    end
-
     def ensure_correct_user
       @user = User.find(params[:id])
       unless current_user?(@user)

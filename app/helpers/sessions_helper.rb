@@ -18,4 +18,20 @@ module SessionsHelper
   def logout
     session[:user_id] = nil
   end
+
+  private
+
+    def ensure_user_logged_in
+      unless logged_in?
+	flash[:warning] = 'Not logged in.'
+	redirect_to login_path
+      end
+    end
+
+    def ensure_contest_creator
+      unless current_user.contest_creator?
+	flash[:warning] = 'Not a contest creator.'
+	redirect_to root_path
+      end
+    end
 end

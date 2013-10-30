@@ -1,4 +1,7 @@
 class RefereesController < ApplicationController
+  before_action :ensure_user_logged_in, except: [:index, :show]
+  before_action :ensure_contest_creator, except: [:index, :show]
+
   def index
   end
 
@@ -7,7 +10,7 @@ class RefereesController < ApplicationController
   end
 
   def create
-    @referee = Referee.new(acceptable_params)
+    @referee = current_user.referees.build(acceptable_params)
     if @referee.save
       flash[:success] = 'Referee created.'
       redirect_to @referee
@@ -23,6 +26,7 @@ class RefereesController < ApplicationController
   end
 
   def show
+    @referee = Referee.find(params[:id])
   end
 
   def destroy
@@ -31,6 +35,9 @@ class RefereesController < ApplicationController
   private
 
     def acceptable_params
-      params.require(:referee).permit(:programming_language_id, :code)
+      params.require(:referee).permit(:name,
+				      :rules_url,
+				      :players_per_game,
+				      :code)
     end
 end

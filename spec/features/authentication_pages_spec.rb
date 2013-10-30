@@ -70,40 +70,74 @@ describe "AuthorizationPages" do
 	it { errors_on_redirect(login_path, :warning) }
       end
     end
+
+    describe "for Referees controller" do
+      pending "new action" do
+      end
+
+      pending "create action:", type: :request do
+      end
+    end
   end
 
   describe "authenticated users" do
-    before { login user, avoid_capybara: true }
+    describe "for Users controller" do
+      before { login user, avoid_capybara: true }
 
-    describe "new action", type: :request do
-      before { get new_user_path }
+      describe "new action", type: :request do
+	before { get new_user_path }
 
-      it { errors_on_redirect(root_path, :warning) }
+	it { errors_on_redirect(root_path, :warning) }
+      end
+
+      describe "create action", type: :request do
+	before { post users_path }
+
+	it { errors_on_redirect(root_path, :warning) }
+      end
     end
 
-    describe "create action", type: :request do
-      before { post users_path }
+    describe "for Referees controller" do
+      let(:creator) { FactoryGirl.create(:contest_creator) }
 
-      it { errors_on_redirect(root_path, :warning) }
+      before { login creator, avoid_capybara: true }
     end
   end
 
   describe "authenticated, but wrong user" do
-    let(:other_user) { FactoryGirl.create(:user) }
+    describe "for Users controller" do
+      let(:other_user) { FactoryGirl.create(:user) }
 
-    before { login user, avoid_capybara: true }
+      before { login user, avoid_capybara: true }
 
-    describe "edit action", type: :request do
-      before { get edit_user_path(other_user) }
+      describe "edit action", type: :request do
+	before { get edit_user_path(other_user) }
 
-      specify { expect(response.body).not_to match('Edit user') }
-      it { errors_on_redirect(root_path, :danger) }
+	specify { expect(response.body).not_to match('Edit user') }
+	it { errors_on_redirect(root_path, :danger) }
+      end
+
+      describe "update action", type: :request do
+	before { patch user_path(other_user) }
+
+	it { errors_on_redirect(root_path, :danger) }
+      end
     end
 
-    describe "update action", type: :request do
-      before { patch user_path(other_user) }
+    describe "for Referees controller" do
+      before { login user, avoid_capybara: true }
 
-      it { errors_on_redirect(root_path, :danger) }
+      pending "new action", type: :request do
+      end
+
+      pending "create action", type: :request do
+      end
+
+      pending "edit action", type: :request do
+      end
+
+      pending "update action", type: :request do
+      end
     end
   end
 
