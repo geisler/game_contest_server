@@ -10,6 +10,7 @@ describe Referee do
   it { should respond_to(:players_per_game) }
   it { should respond_to(:contests) }
   it { should respond_to(:matches) }
+  it { should respond_to(:user) }
 
   describe "validations" do
     it { should be_valid }
