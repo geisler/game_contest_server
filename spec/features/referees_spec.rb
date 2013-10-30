@@ -6,8 +6,6 @@ describe "RefereePages" do
   subject { page }
 
   describe "create" do
-   pending do
-    let!(:language) { FactoryGirl.create(:programming_language) }
     let (:submit) { 'Create Referee' }
 
     before do
@@ -29,7 +27,9 @@ describe "RefereePages" do
 
     describe "valid information" do
       before do
-	select language.name, from: 'Programming Language'
+	fill_in 'Name', with: 'Test Referee'
+	fill_in 'Rules', with: 'http://example.com/path/to/rules'
+	fill_in 'Players', with: '2'
 	attach_file('Upload file',
 		    Rails.root.join('spec', 'files', 'referee.test'))
       end
@@ -44,6 +44,5 @@ describe "RefereePages" do
 	it { should have_alert(:success, text: 'Referee created') }
       end
     end
-   end
   end
 end
