@@ -10,7 +10,7 @@ describe Contest do
   it { should respond_to(:deadline) }
   it { should respond_to(:start) }
   it { should respond_to(:name) }
-  it { should respond_to(:type) }
+  it { should respond_to(:contest_type) }
   it { should respond_to(:players) }
   it { should respond_to(:matches) }
 
