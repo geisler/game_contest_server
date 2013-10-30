@@ -6,4 +6,10 @@ class Contest < ActiveRecord::Base
 
   validates :referee, presence: true
   validates :user, presence: true
+
+  validates :deadline, presence: true
+  validates :start, presence: true
+  validates :description, presence: true
+  validates :name, presence: true
+  validates :contest_type, presence: true
 end

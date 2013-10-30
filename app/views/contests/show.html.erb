@@ -1,0 +1,6 @@
+<h1>Contest</h1>
+<p>Name: <%= @contest.name %></p>
+<p>Deadline: <%= distance_of_time_in_words_to_now(@contest.deadline) %></p>
+<p>Start: <%= distance_of_time_in_words_to_now(@contest.start) %></p>
+<p>Description: <%= @contest.description %></p>
+<p>Contest type: <%= @contest.contest_type %></p>

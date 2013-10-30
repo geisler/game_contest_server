@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131029035331) do
+ActiveRecord::Schema.define(version: 20131030045509) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20131029035331) do
     t.datetime "deadline"
     t.datetime "start"
     t.string   "name"
-    t.string   "type"
+    t.string   "contest_type"
   end
 
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
