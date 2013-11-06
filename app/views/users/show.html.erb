@@ -1,2 +1,12 @@
 <h1><%= @user.username %></h1>
 <p>Email: <%= @user.email %></p>
+
+<% if @user.contest_creator %>
+    <ul>
+	<% @user.referees.each do |ref| %>
+	    <li><%= link_to ref.name, ref %></li>
+	<% end %>
+    </ul>
+
+    <%= link_to 'New Referee', new_referee_path %>
+<% end %>

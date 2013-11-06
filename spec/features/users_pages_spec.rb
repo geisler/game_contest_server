@@ -65,12 +65,33 @@ describe "UsersPages" do
     describe "individually" do
       let(:user) { FactoryGirl.create(:user) }
 
-      before { visit user_path(user) }
+      before(:each) { visit user_path(user) }
 
       it { should have_content(user.username) }
       it { should have_content(user.email) }
       it { should_not have_content(user.password) }
       it { should_not have_content(user.password_digest) }
+      it { should_not have_link('New Referee', href: new_referee_path) }
+    end
+
+    describe "individually (contest creator)" do
+      let(:user) { FactoryGirl.create(:contest_creator) }
+
+      before do
+	5.times { FactoryGirl.create(:referee, user: user) }
+
+	visit user_path(user)
+      end
+
+      it "lists all the referees for the user" do
+	Referee.all.each do |ref|
+	  should have_selector('li', text: ref.name)
+	end
+      end
+      it { should have_link('New Referee', href: new_referee_path) }
+    end
+
+    describe "individually (admin)" do
     end
 
     describe "all" do

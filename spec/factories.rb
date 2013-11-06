@@ -24,6 +24,7 @@ FactoryGirl.define do
     sequence(:name) { |i| "Referee #{i}" }
     rules_url "http://example.com/path/to/rules"
     players_per_game 2
+    user
   end
 
   factory :contest do
