@@ -1,6 +1,16 @@
 <h1><%= @user.username %></h1>
 <p>Email: <%= @user.email %></p>
 
+<h2>Players</h2>
+<ul>
+    <% @user.players.each do |player| %>
+	<li><%= link_to player.name, player %></li>
+    <% end %>
+</ul>
+<p><%= pluralize(@user.players.count, 'player') %></p>
+
+<%= link_to 'New Player', new_player_path %>
+
 <% if @user.contest_creator %>
     <h2>Referees</h2>
     <ul>
