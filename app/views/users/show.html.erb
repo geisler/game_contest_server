@@ -2,11 +2,13 @@
 <p>Email: <%= @user.email %></p>
 
 <% if @user.contest_creator %>
+    <h2>Referees</h2>
     <ul>
 	<% @user.referees.each do |ref| %>
 	    <li><%= link_to ref.name, ref %></li>
 	<% end %>
     </ul>
+    <p><%= pluralize(@user.referees.count, 'referee') %></p>
 
     <%= link_to 'New Referee', new_referee_path %>
 <% end %>

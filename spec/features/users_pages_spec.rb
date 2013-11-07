@@ -71,6 +71,7 @@ describe "UsersPages" do
       it { should have_content(user.email) }
       it { should_not have_content(user.password) }
       it { should_not have_content(user.password_digest) }
+      it { should_not have_selector('h2', text: 'Referees') }
       it { should_not have_link('New Referee', href: new_referee_path) }
     end
 
@@ -83,12 +84,14 @@ describe "UsersPages" do
 	visit user_path(user)
       end
 
+      it { should have_selector('h2', text: 'Referees') }
       it "lists all the referees for the user" do
 	Referee.all.each do |ref|
 	  should have_selector('li', text: ref.name)
 	end
       end
       it { should have_link('New Referee', href: new_referee_path) }
+      it { should have_content('5 referees') }
     end
 
     describe "individually (admin)" do
