@@ -9,7 +9,9 @@ class Referee < ActiveRecord::Base
   validates :players_per_game, numericality: { only_integer: true, greater_than: 0 }
 
   def code=(uploaded_io)
-    File.delete(self.file_location) unless self.file_location.nil? || !File.exists?(self.file_location)
+    unless self.file_location.nil? || !File.exists?(self.file_location)
+      File.delete(self.file_location)
+    end
 
     if uploaded_io.nil?
       self.file_location = ''
