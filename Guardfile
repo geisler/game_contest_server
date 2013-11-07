@@ -24,8 +24,7 @@ guard :rspec, all_after_pass: false, cli: '--drb' do
 
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml|slim)$}) do |m|
-    (m[1][/_pages/] ? "spec/features/#{m[1]}_spec.rb" :
-		     "spec/features/#{m[1].singularize}_pages_spec.rb")
+    "spec/features/#{m[1]}_pages_spec.rb"
   end
   watch(%r{^app/controllers/sessions_controller\.rb$}) do |m|
     "spec/features/authentication_pages_spec.rb"
