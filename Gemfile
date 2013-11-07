@@ -9,10 +9,16 @@ gem 'sqlite3'
 group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'libnotify'
 end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'guard-rspec'
+
+  gem 'spork-rails'
+  gem 'guard-spork'
+  gem 'childprocess'
 end
 
 gem 'bcrypt-ruby', '~> 3.0.0'
