@@ -58,49 +58,34 @@ describe "AuthorizationPages" do
   describe "non-authenticated users" do
     describe "for Users controller" do
       describe "edit action" do
-	before { visit edit_user_path(user) }
-
-	it { should have_alert(:warning) }
-	it { should have_content('Log In') }
-      end
-
-      describe "update action", type: :request do
-	before { patch user_path(user) }
-
-	it { errors_on_redirect(login_path, :warning) }
+	it_behaves_like "redirects to a login" do
+	  let (:path) { edit_user_path(user) }
+	  let (:method) { :patch }
+	  let (:http_path) { user_path(user) }
+	end
       end
     end
 
     describe "for Referees controller" do
       describe "new action" do
-	before { visit new_referee_path }
-
-	it { should have_alert(:warning) }
-	it { should have_content('Log In') }
-      end
-
-      describe "create action:", type: :request do
-	before { post referees_path }
-
-	it { errors_on_redirect(login_path, :warning) }
+	it_behaves_like "redirects to a login" do
+	  let (:path) { new_referee_path }
+	  let (:method) { :post }
+	  let (:http_path) { referees_path }
+	end
       end
     end
   end
 
   describe "authenticated users" do
     describe "for Users controller" do
-      before { login user, avoid_capybara: true }
-
-      describe "new action", type: :request do
-	before { get new_user_path }
-
-	it { errors_on_redirect(root_path, :warning) }
-      end
-
-      describe "create action", type: :request do
-	before { post users_path }
-
-	it { errors_on_redirect(root_path, :warning) }
+      it_behaves_like "redirects to root" do
+	let (:login_user) { user }
+	let (:path) { new_user_path }
+	let (:signature) { 'Sign Up' }
+	let (:error_type) { :warning }
+	let (:method) { :post }
+	let (:http_path) { users_path }
       end
     end
 
@@ -113,38 +98,25 @@ describe "AuthorizationPages" do
 
   describe "authenticated, but wrong user" do
     describe "for Users controller" do
-      let(:other_user) { FactoryGirl.create(:user) }
-
-      before { login user, avoid_capybara: true }
-
-      describe "edit action", type: :request do
-	before { get edit_user_path(other_user) }
-
-	specify { expect(response.body).not_to match('Edit user') }
-	it { errors_on_redirect(root_path, :danger) }
-      end
-
-      describe "update action", type: :request do
-	before { patch user_path(other_user) }
-
-	it { errors_on_redirect(root_path, :danger) }
+      it_behaves_like "redirects to root" do
+        let (:other_user) { FactoryGirl.create(:user) }
+	let (:login_user) { user }
+	let (:path) { edit_user_path(other_user) }
+	let (:signature) { 'Edit user' }
+	let (:error_type) { :danger }
+	let (:method) { :patch }
+	let (:http_path) { user_path(other_user) }
       end
     end
 
     describe "for Referees controller" do
-      before { login user, avoid_capybara: true }
-
-      describe "new action", type: :request do
-	before { get new_referee_path }
-
-	specify { expect(response.body).not_to match('Create Referee') }
-	it { errors_on_redirect(root_path, :danger) }
-      end
-
-      describe "create action", type: :request do
-	before { post referees_path }
-
-	it { errors_on_redirect(root_path, :danger) }
+      it_behaves_like "redirects to root" do
+	let (:login_user) { user }
+	let (:path) { new_referee_path }
+	let (:signature) { 'Create Referee' }
+	let (:error_type) { :danger }
+	let (:method) { :post }
+	let (:http_path) { referees_path }
       end
 
       pending "edit action", type: :request do
@@ -156,14 +128,14 @@ describe "AuthorizationPages" do
   end
 
   describe "authenticated, but non-admin user" do
-    let(:other_user) { FactoryGirl.create(:user) }
-
-    before { login user, avoid_capybara: true }
-
-    describe "update action", type: :request do
-      before { patch user_path(other_user) }
-
-      it { errors_on_redirect(root_path, :danger) }
+    describe "for Users controller" do
+      it_behaves_like "redirects to root", skip_browser: true do
+	let (:other_user) { FactoryGirl.create(:user) }
+	let (:login_user) { user }
+	let (:error_type) { :danger }
+	let (:method) { :delete }
+	let (:http_path) { user_path(other_user) }
+      end
     end
   end
 
@@ -171,12 +143,12 @@ describe "AuthorizationPages" do
     let(:admin) { FactoryGirl.create(:admin) }
 
     describe "delete action (self)", type: :request do
-      before do
-	login admin, avoid_capybara: true
-	delete user_path(admin)
+      it_behaves_like "redirects to root", skip_browser: true do
+	let (:login_user) { admin }
+	let (:error_type) { :danger }
+	let (:method) { :delete }
+	let (:http_path) { user_path(admin) }
       end
-
-      it { errors_on_redirect(root_path, :danger) }
     end
 
     pending "edit action (other)" do
