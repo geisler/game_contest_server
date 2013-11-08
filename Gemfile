@@ -21,6 +21,10 @@ group :development, :test do
   gem 'childprocess'
 end
 
+group :development do
+  gem 'guard-livereload', require: false
+end
+
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'active_link_to'
 
