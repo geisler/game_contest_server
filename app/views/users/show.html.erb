@@ -7,7 +7,7 @@
 	<li>
 	    <%= link_to player.name, player %>
 	    <% if current_user?(@user) %>
-		| <%= link_to 'delete', player_path, method: :delete %>
+		| <%= link_to 'delete', player_path(player), method: :delete %>
 	    <% end %>
 	</li>
     <% end %>
@@ -23,7 +23,7 @@
 	    <li>
 		<%= link_to ref.name, ref %>
 		<% if current_user?(@user) %>
-		    | <%= link_to 'delete', referee_path, method: :delete %>
+		    | <%= link_to 'delete', referee_path(ref), method: :delete %>
 		<% end %>
 	    </li>
 	<% end %>
