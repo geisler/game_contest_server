@@ -30,7 +30,7 @@ module SessionsHelper
 
     def ensure_contest_creator
       unless current_user.contest_creator?
-	flash[:warning] = 'Not a contest creator.'
+	flash[:danger] = 'Not a contest creator.'
 	redirect_to root_path
       end
     end

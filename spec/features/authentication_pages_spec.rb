@@ -72,10 +72,17 @@ describe "AuthorizationPages" do
     end
 
     describe "for Referees controller" do
-      pending "new action" do
+      describe "new action" do
+	before { visit new_referee_path }
+
+	it { should have_alert(:warning) }
+	it { should have_content('Log In') }
       end
 
-      pending "create action:", type: :request do
+      describe "create action:", type: :request do
+	before { post referees_path }
+
+	it { errors_on_redirect(login_path, :warning) }
       end
     end
   end
@@ -127,10 +134,17 @@ describe "AuthorizationPages" do
     describe "for Referees controller" do
       before { login user, avoid_capybara: true }
 
-      pending "new action", type: :request do
+      describe "new action", type: :request do
+	before { get new_referee_path }
+
+	specify { expect(response.body).not_to match('Create Referee') }
+	it { errors_on_redirect(root_path, :danger) }
       end
 
-      pending "create action", type: :request do
+      describe "create action", type: :request do
+	before { post referees_path }
+
+	it { errors_on_redirect(root_path, :danger) }
       end
 
       pending "edit action", type: :request do
