@@ -34,4 +34,12 @@ module SessionsHelper
 	redirect_to root_path
       end
     end
+
+    def ensure_correct_user(user_id = params[:id])
+      @user = User.find(user_id)
+      unless current_user?(@user)
+	flash[:danger] = 'Unable to edit another user\'s stuff.'
+	redirect_to root_path
+      end
+    end
 end

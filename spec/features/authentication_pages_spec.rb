@@ -119,10 +119,22 @@ describe "AuthorizationPages" do
 	let (:http_path) { referees_path }
       end
 
-      pending "edit action", type: :request do
+      it_behaves_like "redirects to root" do
+	let (:referee) { FactoryGirl.create(:referee) }
+	let (:login_user) { user }
+	let (:path) { new_referee_path(referee) }
+	let (:signature) { 'Edit Referee' }
+	let (:error_type) { :danger }
+	let (:method) { :patch }
+	let (:http_path) { referee_path(referee) }
       end
 
-      pending "update action", type: :request do
+      it_behaves_like "redirects to root", skip_browser: true do
+	let (:referee) { FactoryGirl.create(:referee) }
+	let (:login_user) { user }
+	let (:error_type) { :danger }
+	let (:method) { :delete }
+	let (:http_path) { referee_path(referee) }
       end
     end
   end

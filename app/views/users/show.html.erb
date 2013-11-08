@@ -4,7 +4,12 @@
 <h2>Players</h2>
 <ul>
     <% @user.players.each do |player| %>
-	<li><%= link_to player.name, player %></li>
+	<li>
+	    <%= link_to player.name, player %>
+	    <% if current_user?(@user) %>
+		| <%= link_to 'delete', player_path, method: :delete %>
+	    <% end %>
+	</li>
     <% end %>
 </ul>
 <p><%= pluralize(@user.players.count, 'player') %></p>
@@ -15,7 +20,12 @@
     <h2>Referees</h2>
     <ul>
 	<% @user.referees.each do |ref| %>
-	    <li><%= link_to ref.name, ref %></li>
+	    <li>
+		<%= link_to ref.name, ref %>
+		<% if current_user?(@user) %>
+		    | <%= link_to 'delete', referee_path, method: :delete %>
+		<% end %>
+	    </li>
 	<% end %>
     </ul>
     <p><%= pluralize(@user.referees.count, 'referee') %></p>

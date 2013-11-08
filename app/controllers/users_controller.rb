@@ -58,14 +58,6 @@ class UsersController < ApplicationController
       end
     end
 
-    def ensure_correct_user
-      @user = User.find(params[:id])
-      unless current_user?(@user)
-	flash[:danger] = 'Unable to edit another user\'s profile.'
-	redirect_to root_path
-      end
-    end
-
     def ensure_admin
       @user = User.find(params[:id])
       request_okay = true
