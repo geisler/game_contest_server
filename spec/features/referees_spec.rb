@@ -29,26 +29,13 @@ describe "RefereePages" do
 	  it { should have_alert(:danger) }
 	end
       end
-
-      describe "words for number of players" do
-	before do
-	  fill_in 'Name', with: name
-	  fill_in 'Rules', with: rules
-	  fill_in 'Players', with: 'two'
-	  attach_file('Upload file', file_location)
-
-	  click_button submit
-	end
-
-	it { should have_alert(:danger) }
-      end
     end
 
     describe "valid information" do
       before do
 	fill_in 'Name', with: name
 	fill_in 'Rules', with: rules
-	fill_in 'Players', with: num_players
+	select '2', from: 'Players'
 	attach_file('Upload file', file_location)
       end
 

@@ -15,7 +15,7 @@
 
     <div class="form-group">
 	<%= f.label :players_per_game %>
-	<%= f.text_field :players_per_game, class: 'form-control' %>
+	<%= f.select :players_per_game, 1..10, {}, class: 'form-control' %>
     </div>
 
     <div class="form-group">
