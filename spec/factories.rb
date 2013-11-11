@@ -1,3 +1,5 @@
+require 'fileutils'
+
 FactoryGirl.define do
   factory :user do
     sequence(:username) { |i| "User #{i}" }
@@ -20,10 +22,18 @@ FactoryGirl.define do
   end
 
   factory :referee do
-    sequence(:file_location) { |i| "/path/to/manager/code/#{i}" }
+    sequence(:file_location) do |i|
+      location = Rails.root.join('code',
+				 'referees',
+				 'test',
+				 "FactoryGirl-fake-code-#{i}").to_s
+      FileUtils.touch(location)
+      location
+    end
     sequence(:name) { |i| "Referee #{i}" }
     rules_url "http://example.com/path/to/rules"
-    players_per_game 2
+    players_per_game 4
+    user
   end
 
   factory :contest do
