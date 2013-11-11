@@ -1,3 +1,5 @@
+require 'uri'
+
 class Referee < ActiveRecord::Base
 #  belongs_to :programming_language
   belongs_to :user
@@ -5,13 +7,16 @@ class Referee < ActiveRecord::Base
   has_many :matches, as: :manager
 
 #  validates :programming_language, presence: true
+  validates :name, presence: true
+  validates :rules_url, format: { with: URI.regexp }
   validates :file_location, presence: true
-  validates :players_per_game, numericality: { only_integer: true, greater_than: 0 }
+  validates :players_per_game, numericality: { only_integer: true, greater_than: 0, less_than: 11 }
 
-  def code=(uploaded_io)
-    unless self.file_location.nil? || !File.exists?(self.file_location)
-      File.delete(self.file_location)
-    end
+  before_destroy :delete_code
+
+  def upload=(uploaded_io)
+    self.file_location = '' if self.file_location.nil?
+    delete_code
 
     if uploaded_io.nil?
       self.file_location = ''
@@ -23,4 +28,10 @@ class Referee < ActiveRecord::Base
       IO.copy_stream(uploaded_io, self.file_location)
     end
   end
+
+  private
+
+    def delete_code
+      File.delete(self.file_location) if File.exists?(self.file_location)
+    end
 end

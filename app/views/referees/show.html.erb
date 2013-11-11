@@ -2,3 +2,11 @@
 <p>Name: <%= @referee.name %></p>
 <p><%= link_to 'Rules', @referee.rules_url %></p>
 <p>Players per game: <%= @referee.players_per_game %></p>
+<p>Created by: <%= @referee.user.username %></p>
+
+<h2>Contests</h2>
+<ul>
+    <% @referee.contests.each do |contest| %>
+	<li><%= link_to contest.name, contest %></li>
+    <% end %>
+</ul>

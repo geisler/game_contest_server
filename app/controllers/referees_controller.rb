@@ -4,6 +4,7 @@ class RefereesController < ApplicationController
   before_action :ensure_referee_owner, only: [:edit, :update, :destroy]
 
   def index
+    @referees = Referee.all
   end
 
   def new
@@ -38,7 +39,9 @@ class RefereesController < ApplicationController
 
   def destroy
     @referee.destroy
-    redirect_to current_user
+    flash[:success] = 'Referee deleted.'
+#    redirect_to current_user
+    redirect_to referees_path
   end
 
   private
@@ -47,7 +50,7 @@ class RefereesController < ApplicationController
       params.require(:referee).permit(:name,
 				      :rules_url,
 				      :players_per_game,
-				      :code)
+				      :upload)
     end
 
     def ensure_referee_owner
