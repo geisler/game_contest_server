@@ -52,7 +52,7 @@ describe "ContestsPages" do
 	specify { expect(Contest.find_by(name: name).user).to eq(creator) }
 
 	it { should have_alert(:success, text: 'Contest created') }
-	it { should have_content('less than a minute') }
+	it { should have_content(/less than a minute|1 minute/) }
 	it { should have_content(description) }
 	it { should have_content(name) }
 	it { should have_content(type) }
