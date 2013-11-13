@@ -55,3 +55,4 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
 end
 
 notification :libnotify, timeout: 10
+notification :terminal_title
