@@ -162,4 +162,9 @@ describe Referee do
     before { referee.players_per_game = 11 }
     it { should_not be_valid }
   end
+
+  describe "fractional players per game" do
+    before { referee.players_per_game = 2.5 }
+    it { should_not be_valid }
+  end
 end
