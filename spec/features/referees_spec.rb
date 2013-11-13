@@ -63,14 +63,20 @@ describe "RefereePages" do
       end
 
       describe "after submission" do
+	let (:referee) { Referee.find_by(name: name) }
+
 	before { click_button submit }
 
-	specify { expect(Referee.find_by(name: name).user).to eq(creator) }
+	specify { expect(referee.user).to eq(creator) }
 
 	it { should have_alert(:success, text: 'Referee created') }
 	it { should have_content(name) }
 	it { should have_link('Rules', href: rules) }
 	it { should have_content(num_players) }
+
+	it "stores the contents of the file correctly" do
+	  expect_same_contents(referee.file_location, file_location)
+	end
       end
     end
   end
@@ -115,12 +121,13 @@ describe "RefereePages" do
     end
 
     describe "with forbidden attributes", type: :request do
+      let (:bad_path) { '/path/to/file' }
       before do
 	login creator, avoid_capybara: true
-	patch referee_path(referee), referee: { file_location: '/path/to/file' }
+	patch referee_path(referee), referee: { file_location: bad_path }
       end
 
-      specify { expect(referee.reload.file_location).not_to eq('/path/to/file') }
+      specify { expect(referee.reload.file_location).not_to eq(bad_path) }
     end
 
     describe "with valid information" do
@@ -134,9 +141,14 @@ describe "RefereePages" do
       describe "changes the data" do
 	before { click_button submit }
 
+	it { should have_alert(:success) }
 	specify { expect(referee.reload.name).to eq(name) }
 	specify { expect(referee.reload.rules_url).to eq("#{rules}/updated") }
 	specify { expect(referee.reload.players_per_game).to eq(num_players.to_i) }
+
+	it "stores the contents of the file correctly" do
+	  expect_same_contents(referee.reload.file_location, file_location)
+	end
       end
 
       describe "redirects properly", type: :request do
@@ -149,11 +161,6 @@ describe "RefereePages" do
 	end
 
 	specify { expect(response).to redirect_to(referee_path(referee)) }
-      end
-
-      it "produces an update message" do
-	click_button submit
-	should have_alert(:success)
       end
 
       it "does not add a new user to the system" do
@@ -179,6 +186,8 @@ describe "RefereePages" do
       expect do
 	delete referee_path(referee)
       end.to change{ Dir.entries(server_location).size }.by(-1)
+
+      expect(File.exists?(referee.file_location)).to be_false
     end
 
     describe "redirects properly" do
