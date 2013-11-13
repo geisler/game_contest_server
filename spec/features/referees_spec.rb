@@ -163,7 +163,7 @@ describe "RefereePages" do
 	specify { expect(response).to redirect_to(referee_path(referee)) }
       end
 
-      it "does not add a new user to the system" do
+      it "does not add a new referee to the system" do
 	expect { click_button submit }.not_to change(Referee, :count)
       end
     end
@@ -182,7 +182,7 @@ describe "RefereePages" do
       login creator, avoid_capybara: true
     end
 
-    it "should remove the referee from the file system" do
+    it "removes the referee from the file system" do
       expect do
 	delete referee_path(referee)
       end.to change{ Dir.entries(server_location).size }.by(-1)
