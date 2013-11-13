@@ -4,3 +4,5 @@
 <p>Start: <%= distance_of_time_in_words_to_now(@contest.start) %></p>
 <p>Description: <%= @contest.description %></p>
 <p>Contest type: <%= @contest.contest_type %></p>
+<p>Managing referee: <%= link_to @contest.referee.name, @contest.referee %></p>
+<p>Contest creator: <%= link_to @contest.user.username, @contest.user %></p>
