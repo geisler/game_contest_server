@@ -9,12 +9,16 @@ def login(user, options = {})
   end
 end
 
-shared_examples "redirects to a login" do
-  describe "visit browser path" do
-    before { visit path }
+shared_examples "redirects to a login" do |options|
+  options ||= {}
 
-    it { should have_alert(:warning) }
-    it { should have_content('Log In') }
+  unless options[:skip_browser]
+    describe "visit browser path" do
+      before { visit path }
+
+      it { should have_alert(:warning) }
+      it { should have_content('Log In') }
+    end
   end
 
   describe "visit HTTP path", type: :request do
