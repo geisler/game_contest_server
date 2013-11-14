@@ -31,6 +31,7 @@ guard :rspec, all_after_pass: false, cli: '--drb' do
   watch('config/routes.rb')                           { "spec/routing" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
 
+  watch(%r{^spec/routing/.+\.rb$})
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml|slim)$}) do |m|
     "spec/features/#{m[1]}_pages_spec.rb"
