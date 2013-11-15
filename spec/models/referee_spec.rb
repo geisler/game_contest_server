@@ -36,6 +36,14 @@ describe Referee do
     it { should_not be_valid }
   end
 
+  describe "duplicate name" do
+    let (:other_referee) { FactoryGirl.create(:referee) }
+
+    before { referee.name = other_referee.name }
+
+    it { should_not be_valid }
+  end
+
   describe "empty rules_url" do
     before { referee.rules_url = '' }
     it { should_not be_valid }

@@ -5,7 +5,8 @@ include ActionView::Helpers::DateHelper
 describe "ContestsPages" do
   let (:creator) { FactoryGirl.create(:contest_creator) }
   let!(:referee) { FactoryGirl.create(:referee) }
-  let (:now) { Time.now.utc }
+  # give slack for time to run all the tests in this file
+  let (:now) { Time.current + 1.minute }
   let (:name) { 'Test Contest' }
   let (:description) { 'Contest description' }
   let (:type) { 'Testing' }
@@ -32,6 +33,29 @@ describe "ContestsPages" do
 	  it { should have_alert(:danger) }
 	end
       end
+
+      illegal_dates = [{month: 'February', day: '30'},
+		       {month: 'February', day: '31'},
+		       {year: '2014', month: 'February', day: '29'},
+		       {month: 'April', day: '31'},
+		       {month: 'June', day: '31'},
+		       {month: 'September', day: '31'},
+		       {month: 'November', day: '31'}]
+      illegal_dates.each do |date|
+	describe "illegal date (#{date.to_s})" do
+	  before do
+	    select_illegal_datetime('Deadline', date)
+	    select_datetime(now, 'Start')
+	    fill_in 'Description', with: description
+	    fill_in 'Name', with: name
+	    fill_in 'Contest Type', with: type
+	    select referee.name, from: 'Referee'
+	    click_button submit
+	  end
+
+	  it { should have_alert(:danger) }
+	end
+      end
     end
 
     describe "valid information" do
@@ -51,8 +75,8 @@ describe "ContestsPages" do
       describe "redirects properly", type: :request do
 	before do
 	  login creator, avoid_capybara: true
-	  post contests_path, contest: { deadline: now,
-					 start: now,
+	  post contests_path, contest: { deadline: now.strftime("%F %T"),
+					 start: now.strftime("%F %T"),
 					 description: description,
 					 name: name,
 					 contest_type: type,
@@ -148,8 +172,8 @@ describe "ContestsPages" do
       describe "redirects properly", type: :request do
 	before do
 	  login creator, avoid_capybara: true
-	  patch contest_path(contest), contest: { deadline: now,
-						  start: now,
+	  patch contest_path(contest), contest: { deadline: now.strftime("%F %T"),
+						  start: now.strftime("%F %T"),
 						  description: description,
 						  name: name,
 						  contest_type: type,
