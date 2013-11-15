@@ -25,7 +25,12 @@ end
 def select_illegal_datetime(field, bad_values)
   base_id = date_base_id(field)
 
-  select_datetime(Time.current + 1.year, field)
+  #
+  # Go ahead 1 year so that all dates will be in the future and not in
+  # the past.  This just ensures we don't make any silly time
+  # mistakes.
+  #
+  select_datetime(1.year.from_now, field)
   [:year, :month, :day, :hour, :min].each_with_index do |type, index|
     select_id = "#{base_id}_#{(index + 1).to_s}i"
 

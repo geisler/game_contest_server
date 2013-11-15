@@ -9,6 +9,7 @@ gem 'sqlite3'
 group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'timecop'
 end
 
 group :development, :test do
