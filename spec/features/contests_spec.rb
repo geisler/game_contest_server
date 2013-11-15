@@ -44,8 +44,8 @@ describe "ContestsPages" do
       illegal_dates.each do |date|
 	describe "illegal date (#{date.to_s})" do
 	  before do
-	    select_illegal_datetime('Deadline', date)
-	    select_datetime(now, 'Start')
+	    select_illegal_datetime('Start', date)
+	    select_datetime(now, 'Deadline')
 	    fill_in 'Description', with: description
 	    fill_in 'Name', with: name
 	    fill_in 'Contest Type', with: type
