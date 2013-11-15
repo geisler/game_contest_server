@@ -10,6 +10,7 @@ group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
   gem 'libnotify'
+  gem 'timecop'
 end
 
 group :development, :test do

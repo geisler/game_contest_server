@@ -5,8 +5,7 @@ include ActionView::Helpers::DateHelper
 describe "ContestsPages" do
   let (:creator) { FactoryGirl.create(:contest_creator) }
   let!(:referee) { FactoryGirl.create(:referee) }
-  # give slack for time to run all the tests in this file
-  let (:now) { Time.current + 1.minute }
+  let (:now) { Time.current }
   let (:name) { 'Test Contest' }
   let (:description) { 'Contest description' }
   let (:type) { 'Testing' }
