@@ -64,7 +64,14 @@ FactoryGirl.define do
   factory :player do
     user
     contest
-    sequence(:file_location) { |i| "/path/to/player/code/#{i}" }
+    sequence(:file_location) do |i|
+      location = Rails.root.join('code',
+				 'players',
+				 'test',
+				 "FactoryGirl-fake-code-#{i}").to_s
+      FileUtils.touch(location)
+      location
+    end
     description "Player Description Here"
     sequence(:name) { |i| "Player #{i}" }
   end

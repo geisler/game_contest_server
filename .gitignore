@@ -8,6 +8,9 @@
 /code/referees/development/*
 /code/referees/test/*
 /code/referees/production/*
+/code/players/development/*
+/code/players/test/*
+/code/players/production/*
 
 # Ignore bundler config.
 /.bundle

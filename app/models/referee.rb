@@ -9,7 +9,6 @@ class Referee < ActiveRecord::Base
 #  validates :programming_language, presence: true
   validates :name, presence: true, uniqueness: true
   validates :rules_url, format: { with: URI.regexp }
-  validates :file_location, presence: true
   validates :players_per_game, numericality: { only_integer: true, greater_than: 0, less_than: 11 }
 
   include Uploadable

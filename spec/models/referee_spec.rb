@@ -26,6 +26,12 @@ describe Referee do
     it { should_not be_valid }
   end
 
+  describe "file_location points to non-existant file" do
+    before { referee.file_location = '/path/to/non/existant/file' }
+
+    it { should_not be_valid }
+  end
+
   describe "empty name" do
     before { referee.name = '' }
     it { should_not be_valid }
