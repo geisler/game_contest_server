@@ -14,7 +14,7 @@
 </ul>
 <p><%= pluralize(@user.players.count, 'player') %></p>
 
-<%= link_to 'New Player', new_player_path %>
+<%# link_to 'New Player', new_player_path %>
 
 <% if @user.contest_creator %>
     <h2>Referees</h2>

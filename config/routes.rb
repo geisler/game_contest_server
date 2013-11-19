@@ -4,8 +4,9 @@ GameContestServer::Application.routes.draw do
 
   resources :users
   resources :referees
-  resources :contests
-  resources :players
+  resources :contests do
+    resources :players, shallow: true
+  end
   resources :sessions, only: [:new, :create, :destroy]
 
   get 'signup', to: 'users#new', as: :signup
