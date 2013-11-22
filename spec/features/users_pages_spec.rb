@@ -83,7 +83,7 @@ describe "UsersPages" do
 	  should_not have_link('delete', href: player_path(player))
 	end
       end
-      it { should have_link('New Player', href: new_player_path) }
+      #it { should have_link('New Player', href: new_player_path) }
       it { should have_content('5 players') }
 
       it { should_not have_selector('h2', text: 'Referees') }
