@@ -1,0 +1,8 @@
+<h1>New Player for <%= link_to @player.contest.name, @player.contest %></h1>
+
+<%= form_for [@player.contest, @player] do |f| %>
+    <%= render 'shared/error_messages', object: @player %>
+    <%= render 'fields', f: f %>
+
+    <%= f.submit 'Create Player', class: 'btn btn-default' %>
+<% end %>
