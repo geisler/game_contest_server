@@ -57,11 +57,21 @@ describe Player do
   end
 
   describe "duplicate name" do
-    let (:other_player) { FactoryGirl.create(:player) }
+    describe "different contests" do
+      let (:other_player) { FactoryGirl.create(:player) }
 
-    before { player.name = other_player.name }
+      before { player.name = other_player.name }
 
-    it { should_not be_valid }
+      it { should be_valid }
+    end
+
+    describe "same contest" do
+      let (:other_player) { FactoryGirl.create(:player, contest: player.contest) }
+
+      before { player.name = other_player.name }
+
+      it { should_not be_valid }
+    end
   end
 
   describe "validations" do
