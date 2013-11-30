@@ -213,9 +213,19 @@ describe "PlayersPages" do
     it { should have_link(player.contest.name, href: contest_path(player.contest)) }
     it { should have_content(player.user.username) }
     it { should have_link(player.user.username, href: user_path(player.user)) }
-    # add statistics to this player
+
     pending { should have_link('Challenge another player',
 			       href: new_contest_player_path(contest)) }
+
+    describe "statistics" do
+      let!(:player_match) { FactoryGirl.create(:player_match, player: player) }
+
+      before { visit player_path(player) }
+
+      it { should have_subheader(text: 'Match') }
+      it { should have_content(player_match.result) }
+      it { should have_link(player_match.match_id, match_path(player_match.match)) }
+    end
   end
 
   describe "show all" do
