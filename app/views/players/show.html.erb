@@ -9,3 +9,8 @@
 <% end %>
 <p>Contest: <%= link_to @player.contest.name, @player.contest %></p>
 <p>Created by: <%= link_to @player.user.username, @player.user %></p>
+
+<h2><%= pluralize(@player.matches.count, 'Match') %></h2>
+<ol>
+<%= render @player.player_matches %>
+</ol>
