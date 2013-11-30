@@ -76,7 +76,7 @@ describe "UsersPages" do
       it { should_not have_content(user.password) }
       it { should_not have_content(user.password_digest) }
 
-      it { should have_selector('h2', text: 'Players') }
+      it { should have_subheader(text: 'Players') }
       it "lists all the players for the user" do
 	Player.all.each do |player|
 	  should have_selector('li', text: player.name)
@@ -86,7 +86,7 @@ describe "UsersPages" do
       #it { should have_link('New Player', href: new_player_path) }
       it { should have_content('5 players') }
 
-      it { should_not have_selector('h2', text: 'Referees') }
+      it { should_not have_subheader(text: 'Referees') }
       it { should_not have_link('New Referee', href: new_referee_path) }
 
       describe "logged in" do
@@ -112,7 +112,7 @@ describe "UsersPages" do
 	visit user_path(user)
       end
 
-      it { should have_selector('h2', text: 'Referees') }
+      it { should have_subheader(text: 'Referees') }
       it "lists all the referees for the user" do
 	Referee.all.each do |ref|
 	  should have_selector('li', text: ref.name)
