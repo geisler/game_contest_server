@@ -1,4 +1,6 @@
 GameContestServer::Application.routes.draw do
+  get "matches/show"
+  get "matches/index"
   get "visual_tests/colorscheme", as: :colorscheme
   root 'users#index'
 
@@ -6,9 +8,9 @@ GameContestServer::Application.routes.draw do
   resources :referees
   resources :contests do
     resources :players, shallow: true
+    resources :matches, only: [:show, :index], shallow: true
   end
 
-  resources :matches, only: [:show, :index]
   resources :sessions, only: [:new, :create, :destroy]
 
   get 'signup', to: 'users#new', as: :signup

@@ -12,6 +12,8 @@
 
 <h2><%= pluralize(@player.matches.count, 'Match') %></h2>
 <ol>
-<%= render @player.player_matches %>
+    <%= render partial: 'player_matches/match_links',
+	collection: @player.player_matches,
+	as: 'player_match' %>
 </ol>
 <p>Record: <%= @player.player_matches.wins.count %>-<%= @player.player_matches.losses.count %></p>
