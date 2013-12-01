@@ -213,9 +213,58 @@ describe "PlayersPages" do
     it { should have_link(player.contest.name, href: contest_path(player.contest)) }
     it { should have_content(player.user.username) }
     it { should have_link(player.user.username, href: user_path(player.user)) }
-    # add statistics to this player
+
     pending { should have_link('Challenge another player',
 			       href: new_contest_player_path(contest)) }
+
+    describe "show match" do
+      let!(:player_match) { FactoryGirl.create(:player_match, player: player) }
+
+      before { visit player_path(player) }
+
+      it { should have_subheader(text: 'Match') }
+      it { should have_content(player_match.result) }
+      it { should have_link(player_match.match_id, match_path(player_match.match)) }
+
+    end
+
+    describe "more complete match history" do
+      before do
+	7.times { FactoryGirl.create(:winning_match, player: player) }
+	4.times { FactoryGirl.create(:losing_match, player: player) }
+
+	visit player_path(player)
+      end
+
+      it { should have_subheader(text: 'Matches') }
+      it { should have_content('Win', count: 7) }
+      it { should have_content('Loss', count: 4) }
+      it { should have_content('Record: 7-4') }
+    end
+
+    describe "undefeated history" do
+      before do
+	5.times { FactoryGirl.create(:winning_match, player: player) }
+
+	visit player_path(player)
+      end
+
+      it { should have_content('Win', count: 5) }
+      it { should_not have_content('Loss') }
+      it { should have_content('Record: 5-0') }
+    end
+
+    describe "win-less history" do
+      before do
+	8.times { FactoryGirl.create(:losing_match, player: player) }
+
+	visit player_path(player)
+      end
+
+      it { should_not have_content('Win') }
+      it { should have_content('Loss', count: 8) }
+      it { should have_content('Record: 0-8') }
+    end
   end
 
   describe "show all" do

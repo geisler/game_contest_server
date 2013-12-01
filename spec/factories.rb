@@ -60,7 +60,6 @@ FactoryGirl.define do
     end
   end
 
-
   factory :player do
     user
     contest
@@ -81,5 +80,13 @@ FactoryGirl.define do
     association :match, factory: :contest_match
     score 1.0
     result "Unknown Result"
+
+    factory :winning_match do
+      result "Win"
+    end
+
+    factory :losing_match do
+      result "Loss"
+    end
   end
 end
