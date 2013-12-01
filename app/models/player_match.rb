@@ -4,4 +4,7 @@ class PlayerMatch < ActiveRecord::Base
 
   validates :player, presence: true
   validates :match, presence: true
+
+  scope :wins, -> { where(result: 'Win') }
+  scope :losses, -> { where(result: 'Loss') }
 end
