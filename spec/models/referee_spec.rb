@@ -12,6 +12,8 @@ describe Referee do
   it { should respond_to(:matches) }
   it { should respond_to(:user) }
 
+  it { should respond_to(:referee) }
+
   describe "validations" do
     it { should be_valid }
   end
