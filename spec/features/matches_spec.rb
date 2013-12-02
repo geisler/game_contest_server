@@ -28,12 +28,12 @@ describe "MatchesPages" do
       it { should have_content(distance_of_time_in_words_to_now(match.completion)) }
     end
 
-    describe "associated players" do
+    describe "associated players (descending scores)" do
       let!(:players) { [] }
 
       before do
 	match.manager.referee.players_per_game.times do |i|
-	  pm = FactoryGirl.create(:player_match, match: match, score: i)
+	  pm = FactoryGirl.create(:player_match, match: match, score: 10 - i)
 	  players << pm.player
 	end
 
@@ -41,9 +41,33 @@ describe "MatchesPages" do
       end
 
       it "should link to all players" do
-	players.each do |p|
-	  should have_selector('li', p.name)
+	players.each_with_index do |p, i|
+	  selector = "//ol/li[position()=#{i + 1}]"
+	  should have_selector(:xpath, selector, text: p.name)
 	  should have_link(p.name, player_path(p))
+	  should have_selector(:xpath, selector, text: (10 - i).to_s)
+	end
+      end
+    end
+
+    describe "associated players (ascending scores)" do
+      let!(:players) { [] }
+
+      before do
+	match.manager.referee.players_per_game.times do |i|
+	  pm = FactoryGirl.create(:player_match, match: match, score: 10 + i)
+	  players << pm.player
+	end
+
+	visit match_path(match)
+      end
+
+      it "should link to all players" do
+	players.each_with_index do |p, i|
+	  selector = "//ol/li[position()=#{players.size - i}]"
+	  should have_selector(:xpath, selector, text: p.name)
+	  should have_link(p.name, player_path(p))
+	  should have_selector(:xpath, selector, text: (10 + i).to_s)
 	end
       end
     end

@@ -1,6 +1,6 @@
 <h1>Match <%= @match.id %> for <%= @match.manager.name %></h1>
 <p>Status: <%= @match.status %></p>
-<% if @match.status == 'Completed' %>
+<% if @match.completed? %>
     <p>
 	Completed: <%= distance_of_time_in_words_to_now(@match.completion) %>
     </p>
