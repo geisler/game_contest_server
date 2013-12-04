@@ -12,7 +12,7 @@ class Match < ActiveRecord::Base
 	    if: :completed?
 #  validates :match_type, presence: true
 
-#  validate :correct_number_of_players
+  validate :correct_number_of_players
 
   def completed?
     status == 'Completed'
@@ -27,9 +27,9 @@ class Match < ActiveRecord::Base
   end
 
   def correct_number_of_players
-    return if player_matches.nil? || manager.nil?
+    return if self.player_matches.nil? || self.manager.nil?
 
-    if player_matches.count != manager.referee.players_per_game
+    if self.player_matches.count != self.manager.referee.players_per_game
       errors.add(:players, "doesn't match referee requirements")
     end
   end
