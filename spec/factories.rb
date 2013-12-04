@@ -46,8 +46,11 @@ FactoryGirl.define do
     contest_type "Generic Contest Type"
   end
 
+  dummy_player = 0
+
   factory :match do
     to_create {|instance| instance.save(validate: false) }
+    ignore { existing_players 0 }
 
     status "Unknown Status"
     completion Time.current
@@ -56,27 +59,21 @@ FactoryGirl.define do
     factory :contest_match do
       association :manager, factory: :contest
 
-      before(:create) do |match|
-	p = create(:player, contest: match.manager)
-	match.manager.referee.players_per_game.times do
-	  match.player_matches.build(player: p,
-				     score: 1.0,
-				     result: "Unknown Result")
-	end
+      before(:create) do |match, evaluator|
+	dummy_player = create(:player, contest: match.manager)
       end
     end
 
     factory :challenge_match do
       association :manager, factory: :referee
 
-      before(:create) do |match|
-	p = create(:player)
-	match.manager.referee.players_per_game.times do
-	  match.player_matches.build(player: p,
-				     score: 1.0,
-				     result: "Unknown Result")
-	end
-      end
+      before(:create) { |match| dummy_player = create(:player) }
+    end
+
+    after(:create) do |match, evaluator|
+	num_players = match.manager.referee.players_per_game
+	num_players -= evaluator.existing_players
+	create_list(:player_match, num_players, player: dummy_player, match: match)
     end
   end
 
@@ -97,7 +94,7 @@ FactoryGirl.define do
 
   factory :player_match do
     player
-    association :match, factory: :contest_match
+    association :match, factory: :contest_match, existing_players: 1
     score 1.0
     result "Unknown Result"
 
@@ -107,14 +104,6 @@ FactoryGirl.define do
 
     factory :losing_match do
       result "Loss"
-    end
-
-    after(:create) do |player_match|
-      if !player_match.match.valid?
-	extra_pm = player_match.match.player_matches.where.not(id: player_match.id).first
-	extra_pm.player.destroy
-	extra_pm.destroy
-      end
     end
   end
 end
