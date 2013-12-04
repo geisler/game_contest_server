@@ -32,16 +32,16 @@ describe "MatchesPages" do
       let!(:players) { [] }
 
       before do
-	match.manager.referee.players_per_game.times do |i|
-	  pm = FactoryGirl.create(:player_match, match: match, score: 10 - i)
-	  players << pm.player
+	match.player_matches.each_with_index do |pm, i|
+	  pm.score = 10 - i
+	  pm.save
 	end
 
 	visit match_path(match)
       end
 
       it "should link to all players" do
-	players.each_with_index do |p, i|
+	match.players.each_with_index do |p, i|
 	  selector = "//ol/li[position()=#{i + 1}]"
 	  should have_selector(:xpath, selector, text: p.name)
 	  should have_link(p.name, player_path(p))
@@ -51,20 +51,18 @@ describe "MatchesPages" do
     end
 
     describe "associated players (ascending scores)" do
-      let!(:players) { [] }
-
       before do
-	match.manager.referee.players_per_game.times do |i|
-	  pm = FactoryGirl.create(:player_match, match: match, score: 10 + i)
-	  players << pm.player
+	match.player_matches.each_with_index do |pm, i|
+	  pm.score = 10 + i
+	  pm.save
 	end
 
 	visit match_path(match)
       end
 
       it "should link to all players" do
-	players.each_with_index do |p, i|
-	  selector = "//ol/li[position()=#{players.size - i}]"
+	match.players.each_with_index do |p, i|
+	  selector = "//ol/li[position()=#{match.players.size - i}]"
 	  should have_selector(:xpath, selector, text: p.name)
 	  should have_link(p.name, player_path(p))
 	  should have_selector(:xpath, selector, text: (10 + i).to_s)

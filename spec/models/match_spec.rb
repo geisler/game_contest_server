@@ -122,13 +122,14 @@ describe Match do
   end
 
   describe "too few players" do
-    before { match.players = [] }
+    before { match.players.clear }
 
     it { should_not be_valid }
   end
 
   describe "exactly right players" do
     before do
+      match.players.clear
       match.manager.referee.players_per_game.times do
 	match.players << FactoryGirl.create(:player, contest: match.manager)
       end
@@ -139,11 +140,10 @@ describe Match do
 
   describe "too many players" do
     before do
-      match.manager.referee.players_per_game.times do
+      match.players.clear
+      (match.manager.referee.players_per_game + 1).times do
 	match.players << FactoryGirl.create(:player, contest: match.manager)
       end
-
-      match.players << FactoryGirl.create(:player, contest: match.manager)
     end
 
     it { should_not be_valid }
