@@ -47,6 +47,8 @@ FactoryGirl.define do
   end
 
   factory :match do
+    to_create {|instance| instance.save(validate: false) }
+
     status "Unknown Status"
     completion Time.current
     earliest_start Time.current
@@ -55,15 +57,26 @@ FactoryGirl.define do
       association :manager, factory: :contest
 
       before(:create) do |match|
+	p = create(:player, contest: match.manager)
 	match.manager.referee.players_per_game.times do
-	  p = create(:player, contest: match.manager)
-	  create(:player_match, player: p, match: match)
+	  match.player_matches.build(player: p,
+				     score: 1.0,
+				     result: "Unknown Result")
 	end
       end
     end
 
     factory :challenge_match do
       association :manager, factory: :referee
+
+      before(:create) do |match|
+	p = create(:player)
+	match.manager.referee.players_per_game.times do
+	  match.player_matches.build(player: p,
+				     score: 1.0,
+				     result: "Unknown Result")
+	end
+      end
     end
   end
 
@@ -94,6 +107,14 @@ FactoryGirl.define do
 
     factory :losing_match do
       result "Loss"
+    end
+
+    after(:create) do |player_match|
+      if !player_match.match.valid?
+	extra_pm = player_match.match.player_matches.where.not(id: player_match.id).first
+	extra_pm.player.destroy
+	extra_pm.destroy
+      end
     end
   end
 end
