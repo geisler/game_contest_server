@@ -9,17 +9,30 @@ gem 'sqlite3'
 group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'libnotify'
   gem 'timecop'
 end
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'guard-rspec'
+
+  gem 'spork-rails'
+  gem 'guard-spork'
+  gem 'childprocess'
+end
+
+group :development do
+  gem 'guard-livereload', require: false
 end
 
 gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'active_link_to'
+gem 'validates_timeliness', github: 'softace/validates_timeliness', branch: 'support_for_rails4'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
+#gem 'bootstrap-sass', '~> 2.3.2.1'
 gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass'
 
 # Use Uglifier as compressor for JavaScript assets

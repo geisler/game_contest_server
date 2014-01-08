@@ -1,0 +1,48 @@
+$brand-primary: #3c7d99;  // dark blue
+$brand-success: #c7cc82;  // light green
+$brand-info:    #7da0ff;  // bright blue
+$brand-warning: lighten($brand-info, 30%);
+$brand-danger:  #cc5542;  // red-orange
+
+$body-bg:       #fff3bc;  // ivory
+$text-color:    #82a9cc;  // pale blue
+$text-muted:    darken($body-bg, 35%);
+
+$state-success-text: darken($brand-success, 25%);
+$state-success-bg: lighten($brand-success, 10%);
+
+$state-info-text: darken($brand-info, 25%);
+$state-info-bg: lighten($brand-info, 10%);
+
+$state-warning-text: darken($brand-warning, 25%);
+$state-warning-bg: lighten($brand-warning, 10%);
+
+$state-danger-text: darken($brand-danger, 25%);
+$state-danger-bg: lighten($brand-danger, 10%);
+
+$btn-default-color: $brand-primary;
+$btn-default-bg: darken($btn-default-color, 25%);
+$btn-default-border: lighten($btn-default-bg, 10%);
+
+$btn-primary-color: darken($brand-primary, 25%);
+$btn-success-color: $state-success-text;
+$btn-info-color: $state-info-text;
+$btn-warning-color: $state-warning-text;
+$btn-danger-color: $state-danger-text;
+
+$navbar-inverse-color: $btn-primary-color;
+$navbar-inverse-bg: $brand-primary;
+
+$navbar-inverse-link-color: $brand-info;
+$navbar-inverse-link-hover-color: $state-info-text;
+$navbar-inverse-link-hover-bg: $brand-info;
+
+$navbar-inverse-brand-hover-color: $state-warning-text;
+$navbar-inverse-brand-hover-bg: $brand-warning;
+
+@import "bootstrap";
+
+.field_with_errors {
+    @extend .form-group;
+    @extend .has-error;
+}

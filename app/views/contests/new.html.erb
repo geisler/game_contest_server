@@ -1,0 +1,8 @@
+<h1>Create Contest</h1>
+
+<%= form_for @contest do |f| %>
+    <%= render 'shared/error_messages', object: @contest %>
+    <%= render 'fields', f: f %>
+
+    <%= f.submit 'Create Contest', class: 'btn btn-primary' %>
+<% end %>

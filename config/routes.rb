@@ -1,4 +1,21 @@
 GameContestServer::Application.routes.draw do
+  get "matches/show"
+  get "matches/index"
+  get "visual_tests/colorscheme", as: :colorscheme
+  root 'users#index'
+
+  resources :users
+  resources :referees
+  resources :contests do
+    resources :players, shallow: true
+    resources :matches, only: [:show, :index], shallow: true
+  end
+
+  resources :sessions, only: [:new, :create, :destroy]
+
+  get 'signup', to: 'users#new', as: :signup
+  get 'login', to: 'sessions#new', as: :login
+  delete 'logout', to: 'sessions#destroy', as: :logout
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

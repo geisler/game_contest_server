@@ -7,8 +7,41 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+    <nav class="navbar navbar-inverse" role="navigation">
+	<div class="navbar-header">
+	    <%= link_to 'Game Contest Server', root_path,
+			class: 'navbar-brand' %>
+	</div>
+	<ul class="nav navbar-nav navbar-left">
+	    <%= active_link_to 'Home', root_path,
+			       wrap_tag: :li, active: :exclusive %>
+	   <%= active_link_to 'Users', users_path,
+			       wrap_tag: :li, active: :exclusive %>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+	    <% if current_user %>
+		<li class="dropdown">
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret" /></a>
+		    <ul class="dropdown-menu">
+			<%= active_link_to 'Profile', current_user, wrap_tag: :li, active: :exclusive %>
+			<%= active_link_to 'Settings', edit_user_path(current_user),
+					   wrap_tag: :li %>
+			<li><%= link_to 'Log Out', logout_path, method: :delete %></li>
+		    </ul>
+		</li>
+	    <% else %>
+		<%= active_link_to 'Log In', login_path, wrap_tag: :li %>
+		<%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
+	    <% end %>
+	</ul>
+    </nav>
 
-<%= yield %>
+    <div class="container">
+	<% flash.each do |level, message| %>
+	    <div class="alert alert-<%= level %>"><%= message %></div>
+	<% end %>
+	<%= yield %>
+    </div>
 
 </body>
 </html>
