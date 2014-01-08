@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030045509) do
+ActiveRecord::Schema.define(version: 20140108143301) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
