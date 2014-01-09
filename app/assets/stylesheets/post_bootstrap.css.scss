@@ -1,0 +1,19 @@
+/*
+This file is for changing Bootstrap default variables. 
+It is imported into js_color_scheme AFTER Bootsrap is 
+loaded, so the classes are not overridden.
+*/
+
+.alert{
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    
+    margin: 0 0 0 0;
+    
+    text-align: center;
+}
+
+.navbar-btn {
+    margin-left: 10px;
+}

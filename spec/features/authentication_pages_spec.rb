@@ -32,16 +32,19 @@ describe "AuthenticationPages" do
       it { should have_link('Settings', href: edit_user_path(user)) }
       it { should have_link('Log Out', href: logout_path) }
       it { should_not have_link('Log In', href: login_path) }
+      it { should_not have_button('Log In') }
       it { should_not have_link('Sign Up', href: signup_path) }
+      it { should_not have_button('Sign Up') }
 
       it { should have_alert(:success) }
 
       describe "followed by logout" do
 	before { click_link 'Log Out' }
 
-	it { should have_link('Log In', href: login_path) }
-	it { should have_link('Sign Up', href: signup_path) }
+	it { should have_button('Log In') }
+	it { should have_button('Sign Up') }
 	it { should_not have_link('Log Out', href: logout_path) }
+    it { should_not have_link('Settings') }
 	it { should_not have_link('Profile') }
 
 	it { should have_alert(:info) }

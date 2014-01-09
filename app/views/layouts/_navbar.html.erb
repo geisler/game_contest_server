@@ -27,8 +27,12 @@
                     </ul>
                 </li>
             <% else %>
-                <%= active_link_to 'Log In', login_path, wrap_tag: :li %>
-                <%= active_link_to 'Sign Up', signup_path, wrap_tag: :li %>
+                <% unless current_page?(login_path) %>
+                    <li><%= button_to 'Log In', login_path, method: :get, class: 'btn btn-info navbar-btn' %></li>
+                <% end %>
+                <% unless current_page?(signup_path) %>
+                    <li><%= button_to 'Sign Up', signup_path, method: :get, class: 'btn btn-warning navbar-btn' %></li>
+                <% end %>
             <% end %>
         </ul>
     </div>
