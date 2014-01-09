@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108143301) do
+ActiveRecord::Schema.define(version: 20131030045509) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20140108143301) do
   create_table "players", force: true do |t|
     t.integer  "user_id"
     t.integer  "contest_id"
+    t.string   "file_location"
     t.integer  "programming_language_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -71,8 +72,11 @@ ActiveRecord::Schema.define(version: 20140108143301) do
     t.string   "name"
     t.boolean  "downloadable",            default: false
     t.boolean  "playable",                default: true
-    t.string   "file_location"
   end
+
+  add_index "players", ["contest_id"], name: "index_players_on_contest_id"
+  add_index "players", ["programming_language_id"], name: "index_players_on_programming_language_id"
+  add_index "players", ["user_id"], name: "index_players_on_user_id"
 
   create_table "programming_languages", force: true do |t|
     t.string   "name"
