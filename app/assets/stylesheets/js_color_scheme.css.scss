@@ -1,0 +1,101 @@
+/*
+$dark-blue:   #111721;
+$blue:        #263248;
+$light-blue:  #7E8AA2;
+$grey:        #D9D9D9;
+$orange:      #FF9800;
+*/
+
+// Blues
+$b1: #C8E3F4;
+$b2: #7FC6F4;
+$b3: #186CA3;
+$b4: #305167;
+$b5: #03314F;
+
+// Greens
+$g1: #C9F8CC;
+$g2: #7AF883;
+$g3: #13C91F;
+$g4: #367F3B;
+$g5: #026109;
+
+// Reds
+$r1: #FFD0CF;
+$r2: #FF817E;
+$r3: #FF1E18;
+$r4: #A14745;
+$r5: #7C0603;
+
+//Oranges
+$o1: #FFEACF;
+$o2: #FFC67E;
+$o3: #FF9918;
+$o4: #A17845;
+$o5: #7C4603;
+
+$brand-primary: $b3;
+$brand-success: $g3;
+$brand-info:    $b2;
+$brand-warning: $o3;
+$brand-danger:  $r3;
+
+
+$body-bg:       $b5;
+$text-color:    $b1;
+$text-muted:    darken($body-bg, 35%);
+
+/*
+$state-success-text: darken($brand-success, 25%);
+$state-success-bg: lighten($brand-success, 10%);
+
+$state-info-text: darken($brand-info, 25%);
+$state-info-bg: lighten($brand-info, 10%);
+
+$state-warning-text: darken($brand-warning, 25%);
+$state-warning-bg: lighten($brand-warning, 10%);
+
+$state-danger-text: darken($brand-danger, 25%);
+$state-danger-bg: lighten($brand-danger, 10%);
+
+$btn-default-color: $brand-primary;
+$btn-default-bg: darken($btn-default-color, 25%);
+$btn-default-border: lighten($btn-default-bg, 10%);
+
+$btn-primary-color: darken($brand-primary, 25%);
+$btn-success-color: $state-success-text;
+$btn-info-color: $state-info-text;
+$btn-warning-color: $state-warning-text;
+$btn-danger-color: $state-danger-text;
+*/
+
+
+
+/*
+$navbar-default-bg:                $blue;
+$navbar-default-link-color:        $grey;
+$navbar-default-link-hover-color:  $orange;
+*/
+
+/*
+$navbar-default-color: #FFFFFF;
+//$navbar-default-link-color: #FF0000;
+$navbar-default-link-hover-color: #FF0000;
+
+/*
+$navbar-inverse-color: $btn-primary-color;
+$navbar-inverse-bg: $brand-primary;
+
+$navbar-inverse-link-color: $brand-info;
+$navbar-inverse-link-hover-color: $state-info-text;
+$navbar-inverse-link-hover-bg: $brand-info;
+
+$navbar-inverse-brand-hover-color: $state-warning-text;
+$navbar-inverse-brand-hover-bg: $brand-warning;
+*/
+@import "bootstrap";
+
+.field_with_errors {
+    @extend .form-group;
+    @extend .has-error;
+}
