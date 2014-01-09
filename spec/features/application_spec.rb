@@ -12,6 +12,9 @@ feature "HomePage" do
       within ".navbar" do
 	should have_link('Game Contest Server', href: root_path)
 	should have_link('Users', href: users_path)
+	should have_link('Contests', href: contests_path)
+	should have_link('Referees', href: referees_path)
+	should have_link('Log In', href: login_path)
 	should have_link('Sign Up', href: signup_path)
       end
     end
