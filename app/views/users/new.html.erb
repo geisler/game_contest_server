@@ -1,5 +1,7 @@
-<h1>Sign Up</h1>
-<%= form_for(@user) do |f| %>
-    <%= render 'fields', f: f %>
-    <%= f.submit 'Create new account' %>
-<% end %>
+<div class='col-md-offset-4 col-md-4'>
+    <h1>Sign Up</h1>
+    <%= form_for(@user) do |f| %>
+        <%= render 'fields', f: f %>
+        <%= f.submit 'Create new account', class: 'btn btn-primary' %>
+    <% end %>
+</div>
