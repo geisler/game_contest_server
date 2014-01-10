@@ -1,10 +1,15 @@
-#match_wrapper.rb
+#! /usr/bin/env ruby
+
+#match_wrapper.rbI
 #Alex Sjoberg
 #1/09/14
-#
+
+
+#TODO allow ref to specifiy a unique port for each player
 
 #Imports
 require 'socket'
+require 'open-uri'
 
 class MatchWrapper
     
@@ -24,7 +29,9 @@ class MatchWrapper
 
         #Start referee process, giving it the port to talk to us on
         wrapper_server_port = @wrapper_server.addr[1]
-        @child_list.push(Process.spawn("ruby #{@referee} -p #{wrapper_server_port} --num #{@number_of_players} &  > temp.txt  2>&1"))
+        @ref_output = IO.pipe
+        x = "temp.txt"
+        @child_list.push(Process.spawn("#{@referee} -p #{wrapper_server_port} --num #{@number_of_players} & ", STDERR => x , STDOUT => x))
 
         #Wait for referee to connect
         @ref_client = @wrapper_server.accept
@@ -37,20 +44,21 @@ class MatchWrapper
 
         #Start players
         @players.each do |player|
-            @child_list.push(Process.spawn("ruby #{player} -p #{client_port}  > /dev/null"))
+            @child_list.push(Process.spawn("#{player.file_location}  --name #{player.name} -p #{client_port} " , STDERR => player.output_location , STDOUT => player.output_location))
         end
         self.wait_for_result
 
     end
 
     def wait_for_result
-        result = nil
-        while result.nil?
-            puts 'result is' , result
-            result = @ref_client.gets
+        for i in 0...@number_of_players
+            result = nil
+            while result.nil?
+                result = @ref_client.gets
+                puts 'result is' , result
+            end
         end
 
-        @result = result
 
         #Reaping Children!!!!!
         @child_list.each do |pid|
@@ -59,7 +67,21 @@ class MatchWrapper
     end
 end
 
-match_wrapper = MatchWrapper.new("./test_referee.rb", 2 ,"./test_player.rb", "./test_player.rb")
+#A class meant to mock a 'player' object from the database for testing
+class MockPlayer
+    attr_accessor :name , :file_location, :output_location
+
+    def initialize(name,file_location,output_location)
+       @name = name
+       @file_location = file_location
+       @output_location = output_location
+    end
+end
+
+
+p1 = MockPlayer.new("dumb_player" , "./test_player.rb","p1_out.txt")
+p2 = MockPlayer.new("stupid_player", "./test_player.rb", "p2_out.txt")
+match_wrapper = MatchWrapper.new("./test_referee.rb", 2  ,p1, p2)
 match_wrapper.start_match
 
-puts match_wrapper.result
+#puts match_wrapper.result
