@@ -58,8 +58,9 @@ class MatchWrapper
     end
 end
 
-
+=begin
 match_wrapper = MatchWrapper.new("./test_referee.rb", "./test_player.rb", "./test_player.rb")
 match_wrapper.start_match
 
 puts match_wrapper.result
+=end
