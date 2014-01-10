@@ -1,22 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GameContestServer</title>
+  <title>Game Contest Server</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
     
-    <!-- Renders the navbar partial -->
-    <%= render "layouts/navbar" %>
+  <!-- Renders the navbar partial -->
+  <%= render "layouts/navbar" %>
+<!--
+  <div class='alert alert-success my_class'>
+    <strong>Success!</strong> This is more text.
+  </div>
+  
+  <div class='alert alert-info'>
+    <strong>Info!</strong> This is more text.
+  </div>
+  
+  <div class='alert alert-warning'>
+    <strong>Warning!</strong> This is more text.
+  </div>
+  
+  <div class='alert alert-danger'>
+    <strong>Danger!</strong> This is more text.
+  </div>
+      
+    <p>
+      <button type='button' class='btn btn-default'>Default</button>  
+      <button type='button' class='btn btn-primary'>Primary</button>  
+      <button type='button' class='btn btn-success'>Success</button>  
+      <button type='button' class='btn btn-info'>Info</button>  
+      <button type='button' class='btn btn-warning'>Warning</button>  
+      <button type='button' class='btn btn-danger'>Danger</button>  
+    </p>
     
-    <div class="container">
-        <% flash.each do |level, message| %>
-        <div class="alert alert-<%= level %>"><%= message %></div>
-        <% end %>
-        <%= yield %>
-    </div>
+    <br><br><br>
+-->
+    
+  <% flash.each do |level, message| %>
+    <div class="alert alert-<%= level %>"><%= message %></div>
+  <% end %>  
+  <div class="container">
+
+    
+    <%= yield %>
+    
+  </div>
 
 </body>
 </html>

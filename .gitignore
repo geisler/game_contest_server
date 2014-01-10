@@ -24,6 +24,10 @@
 /tmp
 *~
 *.swp
+*.swo
 
 # Be sure to keep around this file if it matched earlier
 !.gitkeep
+
+# Ignore db scheme
+/db/schema.rb

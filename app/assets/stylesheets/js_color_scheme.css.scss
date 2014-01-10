@@ -1,0 +1,151 @@
+/*
+$dark-blue:   #111721;
+$blue:        #263248;
+$light-blue:  #7E8AA2;
+$grey:        #D9D9D9;
+$orange:      #FF9800;
+*/
+
+/*
+colorschemedesigner.com
+Scheme info:
+
+  Scheme ID: 3v40Lt0v-LtXN
+
+  RGB: 186CA3
+  Hue: 223 degrees
+  Angle: -42 degrees
+  R:  9%
+  G: 42%
+  B: 64%
+
+*/
+
+// Blues
+$b1: #C8E3F4;
+$b2: #7FC6F4;
+$b3: #186CA3;
+$b4: #305167;
+$b5: #03314F;
+
+// Greens
+$g1: #C9F8CC;
+$g2: #7AF883;
+$g3: #13C91F;
+$g4: #367F3B;
+$g5: #026109;
+
+// Reds
+$r1: #FFD0CF;
+$r2: #FF817E;
+$r3: #FF1E18;
+$r4: #A14745;
+$r5: #7C0603;
+
+//Oranges
+$o1: #FFEACF;
+$o2: #FFC67E;
+$o3: #FF9918;
+$o4: #A17845;
+$o5: #7C4603;
+
+
+$brand-primary: $b3;
+$brand-success: lighten($g3, 15%);
+$brand-info:    lighten($b3, 15%);
+$brand-warning: $o3;
+$brand-danger:  $r3;
+/*
+$brand-primary: $b2;
+$brand-success: $g2;
+$brand-info:    lighten($brand-primary, 20%);
+$brand-warning: $o2;
+$brand-danger:  $r2;
+*/
+
+
+// dark on light
+$body-bg:       lighten($o3, 30%);
+$text-color:    $b5;
+$text-muted:    darken($body-bg, 35%);
+$navbar-default-bg:                $b5;
+$navbar-default-link-color:        $b1;
+$navbar-default-link-hover-color:  $o3;
+
+$navbar-height: 70;
+
+/*
+// light on dark
+$body-bg:       $b5;
+$text-color:    $b1;
+$text-muted:    darken($body-bg, 35%);
+$navbar-default-bg:                $b1;
+$navbar-default-link-color:        $b5;
+$navbar-default-link-hover-color:  $o3;
+*/
+
+/*
+// dark on darker
+$body-bg:       $b4;
+$text-color:    $b1;
+$text-muted:    darken($body-bg, 35%);
+$navbar-default-bg:                $b5;
+$navbar-default-link-color:        $b1;
+$navbar-default-link-hover-color:  $o3;
+*/
+
+// Primary (blue)
+$btn-primary-bg:       $brand-primary;
+$btn-primary-color:    #FFFFFF;
+
+// Sucess (green)
+$state-success-bg:     lighten($brand-success, 10%);
+$state-success-text:   darken($brand-success, 30%);
+$state-success-border: darken($state-success-bg, 25%);
+$btn-success-bg:       darken($brand-success, 20%);
+$btn-success-color:    #FFFFFF;//lighten($brand-success, 35%);
+//$btn-success-border:   darken($brand-success, 10%);
+
+// Info (light blue)
+$state-info-bg:        lighten($brand-info, 10%);
+$state-info-text:      darken($brand-info, 30%);
+$state-info-border:    darken($state-info-bg, 25%);
+$btn-info-bg:          $brand-info;//darken($brand-info, 20%);
+$btn-info-color:       #FFFFFF;//lighten($brand-info, 35%);
+//$btn-info-border:      darken($brand-info, 50%);
+
+// Warning (orange)
+$state-warning-bg:     lighten($brand-warning, 10%);
+$state-warning-text:   darken($brand-warning, 30%);
+$state-warning-border: darken($state-warning-bg, 25%);
+$btn-warning-bg:       darken($brand-warning, 10%);
+$btn-warning-color:    #FFFFFF;//lighten($brand-warning, 35%);
+
+// Danger (red)
+$state-danger-bg:      lighten($brand-danger, 10%);
+$state-danger-text:    darken($brand-danger, 30%);
+$state-danger-border: darken($state-danger-bg, 25%);
+$btn-danger-bg:        darken($brand-danger, 10%);
+$btn-danger-color:     #FFFFFF;//lighten($brand-danger, 35%);
+
+/*
+$btn-default-color: $brand-primary;
+$btn-default-bg: darken($btn-default-color, 25%);
+$btn-default-border: lighten($btn-default-bg, 10%);
+
+$btn-primary-color: darken($brand-primary, 25%);
+$btn-success-color: $state-success-text;
+$btn-info-color: $state-info-text;
+$btn-warning-color: $state-warning-text;
+$btn-danger-color: $state-danger-text;
+*/
+
+
+@import "bootstrap";
+
+.field_with_errors {
+    @extend .form-group;
+    @extend .has-error;
+}
+
+@import "post_bootstrap";
