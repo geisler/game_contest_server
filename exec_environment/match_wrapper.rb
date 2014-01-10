@@ -11,19 +11,20 @@ class MatchWrapper
     attr_accessor :result
 
     #Constructor, sets socket for communication to referee and starts referee and players
-    def initialize(referee,*players)  
+    def initialize(referee,number_of_players,*players)  
         #Sets port for referee to talk to wrapper_server  
         @wrapper_server = TCPServer.new(0)
         @players = players
         @referee = referee
         @child_list = []
+        @number_of_players = number_of_players
     end
 
     def start_match
 
         #Start referee process, giving it the port to talk to us on
         wrapper_server_port = @wrapper_server.addr[1]
-        @child_list.push(Process.spawn("ruby #{@referee} -p #{wrapper_server_port} &  > temp.txt  2>&1"))
+        @child_list.push(Process.spawn("ruby #{@referee} -p #{wrapper_server_port} --num #{@number_of_players} &  > temp.txt  2>&1"))
 
         #Wait for referee to connect
         @ref_client = @wrapper_server.accept
@@ -58,9 +59,7 @@ class MatchWrapper
     end
 end
 
-=begin
-match_wrapper = MatchWrapper.new("./test_referee.rb", "./test_player.rb", "./test_player.rb")
+match_wrapper = MatchWrapper.new("./test_referee.rb", 2 ,"./test_player.rb", "./test_player.rb")
 match_wrapper.start_match
 
 puts match_wrapper.result
-=end
