@@ -1,8 +1,10 @@
-<h1>Edit Player for <%= link_to @player.contest.name, @player.contest %></h1>
+<div class='col-md-offset-3 col-md-6'>
+    <h1>Edit Player for <%= link_to @player.contest.name, @player.contest %></h1>
 
-<%= form_for @player do |f| %>
-    <%= render 'shared/error_messages', object: @player %>
-    <%= render 'fields', f: f %>
+    <%= form_for @player do |f| %>
+        <%= render 'shared/error_messages', object: @player %>
+        <%= render 'fields', f: f %>
 
-    <%= f.submit 'Update Player', class: 'btn btn-default' %>
-<% end %>
+        <%= f.submit 'Update Player', class: 'btn btn-primary' %>
+    <% end %>
+</div>
