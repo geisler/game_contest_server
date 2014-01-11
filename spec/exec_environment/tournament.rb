@@ -16,11 +16,11 @@ class Tournament
 
     def run_tournament
         players = self.get_players
-
+        start_match(players[0],players[1])
     end
 
     def get_players
-        p1 = MockPlayer.new("dumb_player" , "./test_player.rb","p1_out.txt")
+        p1 = MockPlayer.new("dumb_player" , "./dumb_player.rb","p1_out.txt")
         p2 = MockPlayer.new("stupid_player", "./test_player.rb", "p2_out.txt")
         p3 = MockPlayer.new("idiot_player", "./test_player.rb", "p2_out.txt")
         p4 = MockPlayer.new("smart_player", "./test_player.rb", "p2_out.txt")
@@ -39,7 +39,7 @@ class Tournament
     end
 
     def start_match(p1,p2)
-       match = MatchWrapper.new(@referee.file_location,2,@max_match_time,p1,p2)
+       match = MatchWrapper.new(@referee,2,@max_match_time,p1,p2)
        match.start_match
        match.results
        puts match.results
@@ -81,7 +81,6 @@ end
 
 class MockReferee
     attr_accessor :name , :file_location
-
 
     def initialize(name,file_location)
         @name = name

@@ -26,7 +26,6 @@ class TestPlayer
       port = $options[:port]
       @ref_socket = TCPSocket.open(hostname,port)
       @name = $options[:name]
-      puts('my name is',@name)
       @ref_socket.puts(@name)
     end
 
@@ -45,8 +44,5 @@ class TestPlayer
 
 end
 
-puts 'this is my output'
-puts $options[:name]
 p1 = TestPlayer.new
 p1.play
-puts 'exited right'

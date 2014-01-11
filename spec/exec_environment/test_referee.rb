@@ -47,7 +47,6 @@ class TestReferee
         end
 
         loop do
-            puts @players
             @players.each do |player_name,socket|
                 socket.puts 'move'
                 input = socket.gets
@@ -67,11 +66,9 @@ class TestReferee
         #NOTE if players are taking a long time to respond here, other pending connections may time out
         new_player_name = nil
         while new_player_name.nil? do
-            puts 'ref waiting for name'
             new_player_name = new_connection.gets
         end
         @players[new_player_name] = new_connection
-        puts('name recieved is', new_player_name)
 
     end
 
@@ -92,7 +89,6 @@ class TestReferee
             end
             score = rand(1...5) #meaningless
             result_string = player_name.strip + "|" + result + "|" + score.to_s
-            puts 'ref says results are:' ,  result_string
             @wrapper_connection.puts(result_string)
         end
         return
@@ -107,6 +103,5 @@ class TestReferee
     end
 end
 
-puts 'ref starting up'
 test_referee = TestReferee.new()
 test_referee.run_game
