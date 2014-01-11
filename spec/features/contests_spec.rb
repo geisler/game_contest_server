@@ -33,13 +33,13 @@ describe "ContestsPages" do
 	end
       end
 
-      illegal_dates = [{month: 'February', day: '30'},
-		       {month: 'February', day: '31'},
-		       {year: '2014', month: 'February', day: '29'},
-		       {month: 'April', day: '31'},
-		       {month: 'June', day: '31'},
-		       {month: 'September', day: '31'},
-		       {month: 'November', day: '31'}]
+      illegal_dates = [{month: 'Feb', day: '30'},
+		       {month: 'Feb', day: '31'},
+		       {year: '2018', month: 'Feb', day: '29'},
+		       {month: 'Apr', day: '31'},
+		       {month: 'Jun', day: '31'},
+		       {month: 'Sep', day: '31'},
+		       {month: 'Nov', day: '31'}]
       illegal_dates.each do |date|
 	describe "illegal date (#{date.to_s})" do
 	  before do

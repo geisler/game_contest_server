@@ -28,6 +28,13 @@ module SessionsHelper
       end
     end
 
+    def ensure_user_logged_out
+      unless !logged_in?
+	flash[:warning] = 'You are already logged in.'
+	redirect_to root_path
+      end
+    end
+
     def ensure_contest_creator
       unless current_user.contest_creator?
 	flash[:danger] = 'Not a contest creator.'

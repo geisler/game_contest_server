@@ -9,7 +9,7 @@ def select_date(date, field)
   base_id = date_base_id(field)
 
   select date.year.to_s, from: "#{base_id}_1i"
-  select Date::MONTHNAMES[date.month], from: "#{base_id}_2i"
+  select Date::MONTHNAMES[date.month][0..2], from: "#{base_id}_2i"
   select date.day.to_s, from: "#{base_id}_3i"
 end
 
@@ -49,7 +49,7 @@ def expect_date_select(date, field)
   base_id = date_base_id(field)
 
   should have_select "#{base_id}_1i", selected: date.year.to_s
-  should have_select "#{base_id}_2i", selected: Date::MONTHNAMES[date.month]
+  should have_select "#{base_id}_2i", selected: Date::MONTHNAMES[date.month][0..2]
   should have_select "#{base_id}_3i", selected: date.day.to_s
 end
 

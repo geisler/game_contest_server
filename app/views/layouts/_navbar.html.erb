@@ -17,8 +17,10 @@
         <ul class="nav navbar-nav navbar-right">
 
             <!-- TODO: Change this navigation later -->
-            <%= active_link_to 'New Contest', new_contest_path, wrap_tag: :li, active: :exclusive %>
-            <%= active_link_to 'New Referee', new_referee_path, wrap_tag: :li, active: :exclusive %>
+            <% if current_user and current_user.contest_creator %>
+                <%= active_link_to 'New Contest', new_contest_path, wrap_tag: :li, active: :exclusive %>
+                <%= active_link_to 'New Referee', new_referee_path, wrap_tag: :li, active: :exclusive %>
+            <% end %>
 
 
             <% if current_user %>

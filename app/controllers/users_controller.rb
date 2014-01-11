@@ -51,13 +51,6 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :password, :password_confirmation, :email)
     end
 
-    def ensure_user_logged_out
-      unless !logged_in?
-	flash[:warning] = 'You are already logged in.'
-	redirect_to root_path
-      end
-    end
-
     def ensure_admin
       @user = User.find(params[:id])
       request_okay = true
