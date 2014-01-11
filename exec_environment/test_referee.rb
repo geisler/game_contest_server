@@ -41,7 +41,7 @@ class TestReferee
     end
 
     #Turn based game where first player to answer "w" wins
-    def run_method
+    def run_game
         for i in 0...@num_players do
             accept_player_connection
         end
@@ -109,4 +109,4 @@ end
 
 puts 'ref starting up'
 test_referee = TestReferee.new()
-test_referee.run_method
+test_referee.run_game
