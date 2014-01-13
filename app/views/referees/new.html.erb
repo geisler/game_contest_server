@@ -1,8 +1,10 @@
-<h1>Create Referee</h1>
+<div class='col-md-offset-4 col-md-4'>
+    <h1>Create Referee</h1>
 
-<%= form_for @referee do |f| %>
-    <%= render 'shared/error_messages', object: @referee %>
-    <%= render 'fields', f: f %>
+    <%= form_for @referee do |f| %>
+        <%= render 'shared/error_messages', object: @referee %>
+        <%= render 'fields', f: f %>
 
-    <%= f.submit 'Create Referee', class: 'btn btn-primary' %>
-<% end %>
+        <%= f.submit 'Create Referee', class: 'btn btn-primary' %>
+    <% end %>
+</div>

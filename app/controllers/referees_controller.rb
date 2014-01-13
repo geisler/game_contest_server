@@ -4,7 +4,8 @@ class RefereesController < ApplicationController
   before_action :ensure_referee_owner, only: [:edit, :update, :destroy]
 
   def index
-    @referees = Referee.all
+    #@referees = Referee.all
+    @referees = Referee.paginate(page: params[:page], :per_page => 10)
   end
 
   def new

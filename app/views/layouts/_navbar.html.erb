@@ -15,6 +15,14 @@
                        wrap_tag: :li, active: :exclusive %>            
         </ul>
         <ul class="nav navbar-nav navbar-right">
+
+            <!-- TODO: Change this navigation later -->
+            <% if current_user and current_user.contest_creator %>
+                <%= active_link_to 'New Contest', new_contest_path, wrap_tag: :li, active: :exclusive %>
+                <%= active_link_to 'New Referee', new_referee_path, wrap_tag: :li, active: :exclusive %>
+            <% end %>
+
+
             <% if current_user %>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret" /></a>

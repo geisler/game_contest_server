@@ -5,7 +5,8 @@ class UsersController < ApplicationController
   before_action :ensure_admin, only: [:destroy]
 
   def index
-    @users = User.all
+    #@users = User.all
+    @users = User.paginate(page: params[:page], :per_page => 10)
   end
 
   def new
@@ -49,13 +50,6 @@ class UsersController < ApplicationController
 
     def acceptable_params
       params.require(:user).permit(:username, :password, :password_confirmation, :email)
-    end
-
-    def ensure_user_logged_out
-      unless !logged_in?
-	flash[:warning] = 'You are already logged in.'
-	redirect_to root_path
-      end
     end
 
     def ensure_admin

@@ -1,2 +1,11 @@
+<% provide(:title, 'All referees') %>
 <h1>List of Referees</h1>
-<%= render @referees %>
+<h3><%= pluralize(@referees.length, 'referee', 'referees') %></h3>
+
+<%= will_paginate %>
+
+<div id="pagination">
+  <%= render @referees %>
+</div>
+  
+<%= will_paginate %>

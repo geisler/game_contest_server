@@ -68,9 +68,11 @@ $brand-danger:  $r2;
 $body-bg:       lighten($o3, 30%);
 $text-color:    $b5;
 $text-muted:    darken($body-bg, 35%);
-$navbar-default-bg:                $b5;
-$navbar-default-link-color:        $b1;
-$navbar-default-link-hover-color:  $o3;
+$navbar-default-bg:                 $b5;
+$navbar-default-link-color:         $b1;
+$navbar-default-link-hover-color:   $o3;
+
+$navbar-default-brand-color:        $o3;
 
 $navbar-height: 70;
 
