@@ -1,2 +1,10 @@
 <h1>List of Contests</h1>
-<%= render @contests %>
+<h3><%= @contests.length%> contests</h3>
+
+<%= will_paginate %>
+
+<div id="pagination">
+  <%= render @contests %>
+</div>
+  
+<%= will_paginate %>

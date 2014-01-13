@@ -4,7 +4,8 @@ class ContestsController < ApplicationController
   before_action :ensure_contest_owner, only: [:edit, :update, :destroy]
 
   def index
-    @contests = Contest.all
+    #@contests = Contest.all
+    @contests = Contest.paginate(page: params[:page], :per_page => 10)
   end
 
   def new

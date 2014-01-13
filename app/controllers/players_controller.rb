@@ -4,7 +4,9 @@ class PlayersController < ApplicationController
 
   def index
     @contest = Contest.find(params[:contest_id])
-    @players = @contest.players
+    #@players = @contest.players
+    #@referees = Referee.all
+    @players = Player.paginate(page: params[:page], :per_page => 10)
   end
 
   def new

@@ -266,7 +266,20 @@ describe "PlayersPages" do
       it { should have_content('Record: 0-8') }
     end
   end
+  
+  describe "pagination" do
+    before do
+      30.times { FactoryGirl.create(:player, contest: contest) }
 
+      visit contest_players_path(contest)
+    end
+    it { should have_content('10 players') }
+    it { should have_selector('div.pagination') }
+    it { should have_link('2', href: "/contests/1/players?page=2" ) }
+    it { should have_link('3', href: "/contests/1/players?page=3") }
+    it { should_not have_link('4', href: "/contests/1/players?page=4") }
+  end
+  
   describe "show all" do
     before do
       5.times { FactoryGirl.create(:player, contest: contest) }

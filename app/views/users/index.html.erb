@@ -1,4 +1,11 @@
-<h1>List of users</h1>
-<ol><%= render @users %></ol>
+<% provide(:title, 'All users') %>
+<h1>List of Users</h1>
+<h3><%= @users.length%> users</h3>
 
-<p><%= pluralize(@users.count, 'user') %></p>
+<%= will_paginate %>
+
+<div id="pagination">
+  <%= render @users %>
+</div>
+  
+<%= will_paginate %>

@@ -215,6 +215,20 @@ describe "ContestsPages" do
       expect { delete contest_path(contest) }.to change(Contest, :count).by(-1)
     end
   end
+  
+  describe "pagination" do
+    let (:contest) { FactoryGirl.create(:contest) }
+    before do
+      30.times { FactoryGirl.create(:contest) }
+
+      visit contests_path
+    end
+    it { should have_content('10 contests') }
+    it { should have_selector('div.pagination') }
+    it { should have_link('2', href: "/contests?page=2" ) }
+    it { should have_link('3', href: "/contests?page=3") }
+    it { should_not have_link('4', href: "/contests?page=4") }
+  end
 
   describe "show" do
     let (:contest) { FactoryGirl.create(:contest) }
