@@ -12,3 +12,15 @@ end
 %W(Challenge Tournament Friendly #{'King of the Hill'}).each do |type|
   MatchType.create(kind: type)
 end
+
+creator = User.create!(username: "Contest Creator" , email: "creator@test.com" , password: "password" ,password_confirmation: "password", admin: true , contest_creator: true , chat_url: "www.google.com") 
+
+student = User.create!(username: "Student" , email: "student@test.com" , password: "password" ,password_confirmation: "password", admin: false , contest_creator: false , chat_url: "www.google.com") 
+
+referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://www.google.com" , players_per_game: 2 , file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s)
+
+contest = Contest.create!(user: creator , referee: referee , deadline: DateTime.now + 5.minutes , start: DateTime.now + 6.minutes , description: "test" , name: "test_contest" , contest_type: "single_elimination")
+
+player = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+
+player = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)

@@ -3,8 +3,16 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require_relative 'match_wrapper.rb'
+require './match_wrapper.rb'
 
+#Parsing command line arguements
+$options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: tournament.rb -c [contest_id]"
+  
+  opts.on('-c' , '--contest_id [CONTEST_ID]' , 'Contest ID to start') { |v| $options[:CONTEST_ID] = v}
+
+end.parse!
 
 class Tournament 
     def initialize(contest_id)
@@ -20,15 +28,11 @@ class Tournament
     end
 
     def get_players
-        p1 = MockPlayer.new("dumb_player" , "./dumb_player.rb","p1_out.txt")
-        p2 = MockPlayer.new("stupid_player", "./test_player.rb", "p2_out.txt")
-        p3 = MockPlayer.new("idiot_player", "./test_player.rb", "p2_out.txt")
-        p4 = MockPlayer.new("smart_player", "./test_player.rb", "p2_out.txt")
-        query_results = [p1, p2 ,p3 ,p4]
+        Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@contest_id}")
     end
 
     def get_referee
-        r = MockReferee.new("guess_w_ref" , "./test_referee.rb")
+        Contest.find(@contest_id).referee
     end
 
     def connect_to_db
@@ -41,8 +45,8 @@ class Tournament
     def start_match(p1,p2)
        match = MatchWrapper.new(@referee,2,@max_match_time,p1,p2)
        match.start_match
-       match.results
        puts match.results
+       self.send_results_to_db(match.results)
     end
 
     def run_single_elimination(players)
@@ -61,8 +65,9 @@ class Tournament
             return #idontknowwhat
         end
     end 
-    def
-        run_single_elimination_match(players)
+
+    def send_results_to_db(results)
+        results.each do |player_name, player_result|
     end
 
     
