@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>GameContestServer</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-    
-    <!-- Renders the navbar partial -->
-    <%= render "layouts/navbar" %>
-    
-    <div class="container">
-        <% flash.each do |level, message| %>
-        <div class="alert alert-<%= level %>"><%= message %></div>
-        <% end %>
-        <%= yield %>
-    </div>
+    <head>
+        <title>Game Contest Server</title>
+        <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+        <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+        <%= csrf_meta_tags %>
+    </head>
+    <body>
 
-</body>
+        <!-- Renders the navbar partial -->
+        <%= render "layouts/navbar" %>
+
+<!--    Adds alerts and buttons of all
+        types to show colors
+-->     <!--
+        <%#= render "layouts/test_colors" %>
+        -->
+
+        <% flash.each do |level, message| %>
+            <div class="alert alert-<%= level %>"><%= message %></div>
+        <% end %>  
+        <div class="container">
+
+
+            <%= yield %>
+
+        </div>
+
+    </body>
 </html>

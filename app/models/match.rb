@@ -4,9 +4,9 @@ class Match < ActiveRecord::Base
   has_many :player_matches
   has_many :players, through: :player_matches
 
-  validates :manager, presence: true
-  validates :status, presence: true
-  validates :earliest_start, presence: true, unless: :started?
+  validates :manager,           presence: true
+  validates :status,            presence: true
+  validates :earliest_start,    presence: true, unless: :started?
   validates :completion,
 	    timeliness: { type: :datetime, on_or_before: :now },
 	    if: :completed?

@@ -1,21 +1,11 @@
 <div class="form-group">
-    <%= f.label :deadline %>
-    <%= f.datetime_select :deadline, {start_year: Time.now.year}, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-    <%= f.label :start %>
-    <%= f.datetime_select :start, {start_year: Time.now.year}, class: 'form-control' %>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
 </div>
 
 <div class="form-group">
     <%= f.label :description %>
     <%= f.text_area :description, class: 'form-control' %>
-</div>
-
-<div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: 'form-control' %>
 </div>
 
 <div class="form-group">
@@ -26,4 +16,22 @@
 <div class="form-group">
     <%= f.label :referee_id, 'Referee' %>
     <%= f.collection_select(:referee_id, Referee.all, :id, :name, {}, class: 'form-control') %>
+</div>
+
+<div class="form-group">
+    <%= f.label :deadline %>
+    <div class="form-group">
+        <%= f.datetime_select :deadline, { start_year: Time.now.year, use_short_month: true, 
+            minute_step: 5, order: [:month, :day, :year], with_css_classes: true,
+            datetime_separator: " at " } %>
+    </div>
+</div>
+
+<div class="form-group">
+    <%= f.label :start %>
+    <div class="form-group">
+        <%= f.datetime_select :start, { start_year: Time.now.year, use_short_month: true, 
+            minute_step: 5, order: [:month, :day, :year], with_css_classes: true,
+            datetime_separator: " at " } %>
+    </div>
 </div>
