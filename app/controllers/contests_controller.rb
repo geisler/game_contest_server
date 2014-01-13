@@ -4,7 +4,8 @@ class ContestsController < ApplicationController
     before_action :ensure_contest_owner, only: [:edit, :update, :destroy]
 
     def index
-        @contests = Contest.all
+        #@contests = Contest.all
+        @contests = Contest.paginate(page: params[:page], :per_page => 10)
     end
 
     def new
@@ -44,12 +45,12 @@ class ContestsController < ApplicationController
 
     private
 
-        def acceptable_params
-            params.require(:contest).permit(:deadline, :start, :description, :name, :contest_type, :referee_id)
-        end
+    def acceptable_params
+        params.require(:contest).permit(:deadline, :start, :description, :name, :contest_type, :referee_id)
+    end
 
-        def ensure_contest_owner
-            @contest = Contest.find(params[:id])
-            ensure_correct_user(@contest.user_id)
-        end
+    def ensure_contest_owner
+        @contest = Contest.find(params[:id])
+        ensure_correct_user(@contest.user_id)
+    end
 end
