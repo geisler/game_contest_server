@@ -1,5 +1,5 @@
 <h1>List of Players for <%= @contest.name %></h1>
-<h3><%= @players.length%> players</h3>
+<h3><%= pluralize(@players.length, 'player', 'players') %></h3>
 
 <%= will_paginate %>
 

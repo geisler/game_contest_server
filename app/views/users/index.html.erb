@@ -1,6 +1,7 @@
 <% provide(:title, 'All users') %>
 <h1>List of Users</h1>
-<h3><%= @users.length%> users</h3>
+<h3><%= pluralize(@users.length, 'user', 'users') %></h3>
+<!--<h3><%= @users.length%> users</h3>-->
 
 <%= will_paginate %>
 

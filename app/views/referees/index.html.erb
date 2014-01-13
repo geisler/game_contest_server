@@ -1,6 +1,6 @@
 <% provide(:title, 'All referees') %>
 <h1>List of Referees</h1>
-<h3><%= @referees.length%> referees</h3>
+<h3><%= pluralize(@referees.length, 'referee', 'referees') %></h3>
 
 <%= will_paginate %>
 
