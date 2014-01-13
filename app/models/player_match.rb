@@ -1,6 +1,6 @@
 class PlayerMatch < ActiveRecord::Base
   belongs_to :player
-  belongs_to :match
+  belongs_to :match ,inverse_of: :player_matches
 
   validates :player, presence: true
   validates :match, presence: true
