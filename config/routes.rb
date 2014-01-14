@@ -10,6 +10,7 @@ GameContestServer::Application.routes.draw do
     resources :players, shallow: true
     resources :matches, only: [:show, :index], shallow: true
   end
+  # TODO: WHERE DO I PUT TOURNAMENTS????
 
   resources :sessions, only: [:new, :create, :destroy]
 
