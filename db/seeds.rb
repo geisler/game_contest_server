@@ -19,8 +19,14 @@ student = User.create!(username: "Student" , email: "student@test.com" , passwor
 
 referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://www.google.com" , players_per_game: 2 , file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s)
 
-contest = Contest.create!(user: creator , referee: referee , deadline: DateTime.now + 5.minutes , start: DateTime.now + 6.minutes , description: "test" , name: "test_contest" , contest_type: "single_elimination")
+contest = Contest.create!(user: creator , referee: referee , deadline: DateTime.now + 5.minutes , description: "test" , name: "test_contest")
 
-player = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+tournament = Tournament.create!(contest: contest, name: "Test Tournament", start: Time.now + 5.minutes, tournament_type: "Round Robin")
 
-player = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+player1 = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+
+player2 = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+
+player1_tournament = PlayerTournaments.create!(player: player1, tournament: tournament)
+
+player2_tournament = PlayerTournaments.create!(player: player2, tournament: tournament)

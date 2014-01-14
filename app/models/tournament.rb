@@ -1,5 +1,7 @@
 class Tournament < ActiveRecord::Base
     belongs_to :contest
+    has_many :player_tournaments, inverse_of: :tournament
+    has_many :players, through: :player_tournaments 
     has_many :matches
 
     validates :contest, presence: true

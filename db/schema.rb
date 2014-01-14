@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20140113222936) do
   add_index "player_matches", ["match_id"], name: "index_player_matches_on_match_id"
   add_index "player_matches", ["player_id"], name: "index_player_matches_on_player_id"
 
-  create_table "player_tournaments", force: true do |t|
+  create_table "player_tournament", force: true do |t|
     t.integer  "tournament_id"
     t.integer  "player_id"
     t.datetime "created_at"
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 20140113222936) do
     t.string   "tournament_type"
     t.integer  "contest_id"
     t.datetime "start"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
