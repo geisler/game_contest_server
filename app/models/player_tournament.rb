@@ -4,6 +4,4 @@ class PlayerTournament < ActiveRecord::Base
 
     validates :player, presence: true
     validates :tournament, presence: true
-
-
 end

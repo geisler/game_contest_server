@@ -4,6 +4,8 @@ require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
 require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+#require './config/boot'
+#require './config/environment'
 require 'optparse'
 
 #Parsing command line arguements
@@ -28,8 +30,8 @@ class TournamentRunner
     end
 
     def get_players
-        #PlayerTournaments.find_by_sql("SELECT player_id FROM Player_Tournaments WHERE tournament_id = #{@tournament_id}")
-       puts @tournament.players
+       #PlayerTournaments.find_by_sql("SELECT player_id FROM Player_Tournaments WHERE tournament_id = #{@tournament_id}")
+       @tournament.players
     end
 
     def get_referee
@@ -40,17 +42,18 @@ class TournamentRunner
         Tournament.find(@tournament_id)
     end
 
+    #Runs a tournament
     def run_tournament
         round_robin
     end
 
 
-
+    #Runs a round robin tournament with each player playing every other player twice.
+    #Currently only works with 2 player games
     def round_robin
         @tournament_players.each do |player1|
             @tournament_players.each do |player2|
                 if player1 != player2 then
-                    
                     run_match(create_player_matches([player1, player2]), player1, player2)
                 end
             end
@@ -61,14 +64,13 @@ class TournamentRunner
     def run_match(match, *match_participants)
         match = Match.create!(manager: @tournament , status: "Pending" , earliest_start: Time.now , completion: Date.new, match_type: MatchType.first, manager_type: "Contest" ,player_matches_attributes: create_player_matches(match_participants))
         match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,match_participants)
-        match_wrapper.start_match
+        match_wrapper.run_match
         self.send_results_to_db(match, match_wrapper.results)
     end
 
+    #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
     def send_results_to_db(match, results)
-        puts results
         results.each do |player_name, player_result|
-            puts results
             player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
             player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{match.id} AND player_id = #{player.id}").first
             player_match.result = player_result["result"]
@@ -77,6 +79,9 @@ class TournamentRunner
         end
     end
 
+    #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
+    #The match needs to do this because of the interdependency betwene the two records. Neether can exist without the other
+    #so they need to be created at the same time
     def create_player_matches(match_participants)
         player_matches_list = []
         match_participants.each do |player|
@@ -88,27 +93,7 @@ class TournamentRunner
     end
 
 end
-#A class meant to mock a 'player' object from the database for testing
-class MockPlayer
-    attr_accessor :name , :file_location, :output_location
 
-    def initialize(name,file_location,output_location)
-        @name = name
-        @file_location = file_location
-        @output_location = output_location
-    end
-end
-
-class MockReferee
-    attr_accessor :name , :file_location
-
-    def initialize(name,file_location)
-        @name = name
-        @file_location = file_location
-    end
-end
-
-
-puts "HI!!!!!!!!!!!!"
-test_tournament = TournamentRunner.new($options[:TOURNAMENT_ID])
-test_tournament.run_tournament
+#What gets run when the daemon starts up a new tournament
+new_tournament = TournamentRunner.new($options[:TOURNAMENT_ID])
+new_tournament.run_tournament
