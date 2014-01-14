@@ -46,7 +46,7 @@ class ContestsController < ApplicationController
   private
 
     def acceptable_params
-      params.require(:contest).permit(:deadline, :start, :description, :name, :contest_type, :referee_id)
+      params.require(:contest).permit(:deadline,  :description, :name,  :referee_id)
     end
 
     def ensure_contest_owner

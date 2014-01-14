@@ -8,7 +8,6 @@ describe "ContestsPages" do
   let (:now) { Time.current }
   let (:name) { 'Test Contest' }
   let (:description) { 'Contest description' }
-  let (:type) { 'Testing' }
   
   subject { page }
   
@@ -43,16 +42,13 @@ describe "ContestsPages" do
       illegal_dates.each do |date|
         describe "illegal date (#{date.to_s})" do
           before do
-            select_illegal_datetime('Start', date)
             select_datetime(now, 'Deadline')
             fill_in 'Description', with: description
             fill_in 'Name', with: name
-            fill_in 'Contest Type', with: type
             select referee.name, from: 'Referee'
             click_button submit
           end
           
-          it { should have_alert(:danger) }
         end
       end
     end
@@ -60,10 +56,8 @@ describe "ContestsPages" do
     describe "valid information" do
       before do
         select_datetime(now, 'Deadline')
-        select_datetime(now, 'Start')
         fill_in 'Description', with: description
         fill_in 'Name', with: name
-        fill_in 'Contest Type', with: type
         select referee.name, from: 'Referee'
       end
       
@@ -75,10 +69,8 @@ describe "ContestsPages" do
         before do
           login creator, avoid_capybara: true
           post contests_path, contest: { deadline: now.strftime("%F %T"),
-            start: now.strftime("%F %T"),
             description: description,
             name: name,
-            contest_type: type,
             referee_id: referee.id }
         end
         
@@ -96,7 +88,6 @@ describe "ContestsPages" do
         it { should have_content(/less than a minute|1 minute/) }
         it { should have_content(description) }
         it { should have_content(name) }
-        it { should have_content(type) }
         it { should have_content(contest.referee.name) }
         it { should have_link('New Player',
           href: new_contest_player_path(contest)) }
@@ -115,19 +106,15 @@ describe "ContestsPages" do
     end
     
     it { expect_datetime_select(contest.deadline, 'Deadline') }
-    it { expect_datetime_select(contest.start, 'Start') }
     it { should have_field('Description', with: contest.description) }
     it { should have_field('Name', with: contest.name) }
-    it { should have_field('Contest Type', with: contest.contest_type) }
     it { should have_select('Referee', selected: contest.referee.name) }
     
     describe "with invalid information" do
       before do
         select_datetime(now, 'Deadline')
-        select_datetime(now, 'Start')
         fill_in 'Name', with: ''
         fill_in 'Description', with: description
-        fill_in 'Contest Type', with: type
         select referee.name, from: 'Referee'
       end
       
@@ -151,10 +138,8 @@ describe "ContestsPages" do
     describe "with valid information" do
       before do
         select_datetime(now, 'Deadline')
-        select_datetime(now, 'Start')
         fill_in 'Name', with: name
         fill_in 'Description', with: description
-        fill_in 'Contest Type', with: type
         select referee.name, from: 'Referee'
       end
       
@@ -163,10 +148,8 @@ describe "ContestsPages" do
         
         it { should have_alert(:success) }
         specify { expect_same_minute(contest.reload.deadline, now) }
-        specify { expect_same_minute(contest.reload.start, now) }
         specify { expect(contest.reload.name).to eq(name) }
         specify { expect(contest.reload.description).to eq(description) }
-        specify { expect(contest.reload.contest_type).to eq(type) }
         specify { expect(contest.reload.referee.name).to eq(referee.name) }
         it { should have_link('New Player',
           href: new_contest_player_path(contest)) }
@@ -176,10 +159,8 @@ describe "ContestsPages" do
         before do
           login creator, avoid_capybara: true
           patch contest_path(contest), contest: { deadline: now.strftime("%F %T"),
-            start: now.strftime("%F %T"),
             description: description,
             name: name,
-            contest_type: type,
             referee_id: referee.id }
         end
         
@@ -238,8 +219,6 @@ describe "ContestsPages" do
     it { should have_content(contest.name) }
     it { should have_content(contest.description) }
     it { should have_content(distance_of_time_in_words_to_now(contest.deadline)) }
-    it { should have_content(distance_of_time_in_words_to_now(contest.start)) }
-    it { should have_content(contest.contest_type) }
     it { should have_content(contest.user.username) }
     it { should have_link(contest.user.username, user_path(contest.user)) }
     it { should have_content(contest.referee.name) }

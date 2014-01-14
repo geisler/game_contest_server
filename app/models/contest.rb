@@ -8,9 +8,6 @@ class Contest < ActiveRecord::Base
   validates :user,          presence: true
 
   validates :deadline,      timeliness: { type: :datetime, allow_nil: false, on_or_after: :now }
-  validates :start,         timeliness: { type: :datetime, allow_nil: false, 
-                                                on_or_after: lambda { |rec| rec.deadline } }
   validates :description,   presence: true
   validates :name,          presence: true, uniqueness: true
-  validates :contest_type,  presence: true
 end

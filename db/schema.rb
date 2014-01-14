@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030045509) do
+ActiveRecord::Schema.define(version: 20140113222936) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -20,9 +20,7 @@ ActiveRecord::Schema.define(version: 20131030045509) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deadline"
-    t.datetime "start"
     t.string   "name"
-    t.string   "contest_type"
   end
 
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
@@ -61,6 +59,13 @@ ActiveRecord::Schema.define(version: 20131030045509) do
   add_index "player_matches", ["match_id"], name: "index_player_matches_on_match_id"
   add_index "player_matches", ["player_id"], name: "index_player_matches_on_player_id"
 
+  create_table "player_tournaments", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "player_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "players", force: true do |t|
     t.integer  "user_id"
     t.integer  "contest_id"
@@ -97,6 +102,14 @@ ActiveRecord::Schema.define(version: 20131030045509) do
 
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
   add_index "referees", ["user_id"], name: "index_referees_on_user_id"
+
+  create_table "tournaments", force: true do |t|
+    t.string   "tournament_type"
+    t.integer  "contest_id"
+    t.datetime "start"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "username"

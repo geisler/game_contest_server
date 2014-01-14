@@ -40,11 +40,10 @@ FactoryGirl.define do
     user
     referee
     deadline Time.current + 1.day
-    start Time.current + 2.days
     description "Contest Description Here"
     sequence(:name) { |i| "Contest #{i}" }
-    contest_type "Generic Contest Type"
   end
+
 
   dummy_player = 0
 
