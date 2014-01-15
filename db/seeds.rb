@@ -21,7 +21,7 @@ referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://
 
 contest = Contest.create!(user: creator , referee: referee , deadline: DateTime.now + 5.minutes , description: "test" , name: "test_contest")
 
-tournament = Tournament.create!(contest: contest, name: "Test Tournament", start: Time.now + 5.minutes, tournament_type: "round robin")
+tournament = Tournament.create!(contest: contest, name: "Test Tournament", start: Time.now + 1.minutes, tournament_type: "round robin", status: "waiting")
 
 player1 = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
 

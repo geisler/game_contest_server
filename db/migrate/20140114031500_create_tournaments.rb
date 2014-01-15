@@ -5,6 +5,7 @@ class CreateTournaments < ActiveRecord::Migration
       t.references :contest
       t.datetime :start
       t.string :name
+      t.string :status
 
       t.timestamps
     end

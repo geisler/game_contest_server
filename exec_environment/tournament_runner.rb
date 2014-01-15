@@ -44,6 +44,8 @@ class TournamentRunner
 
     #Runs a tournament
     def run_tournament
+        @tournament.status = "pending"
+        @tournament.save!
         round_robin
     end
 
@@ -54,14 +56,16 @@ class TournamentRunner
         @tournament_players.each do |player1|
             @tournament_players.each do |player2|
                 if player1 != player2 then
-                    run_match(create_player_matches([player1, player2]), player1, player2)
+                    run_match(player1, player2)
                 end
             end
         end
+        @tournament.status = "completed"
+        @tournament.save!
     end
 
     #Uses a MatchWrapper to run a match between the given players and send the results to the database
-    def run_match(match, *match_participants)
+    def run_match(*match_participants)
         match = Match.create!(manager: @tournament , status: "Pending" , earliest_start: Time.now , completion: Date.new, match_type: MatchType.first, manager_type: "Contest" ,player_matches_attributes: create_player_matches(match_participants))
         match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,match_participants)
         match_wrapper.run_match
