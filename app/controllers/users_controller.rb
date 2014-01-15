@@ -5,10 +5,11 @@ class UsersController < ApplicationController
   before_action :ensure_admin, only: [:destroy]
 
   def index
-    #@users = User.all
-    @users = User.paginate(page: params[:page], :per_page => 10)
+    @users = User.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+    if @users.length ==0
+      flash.now[:info] = "There were no Users that Matched your search. Please Try Again!"
   end
-
+end
   def new
     @user = User.new
   end
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    
   end
 
   def edit

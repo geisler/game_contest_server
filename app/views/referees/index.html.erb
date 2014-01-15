@@ -1,11 +1,21 @@
 <% provide(:title, 'All referees') %>
 <h1>List of Referees</h1>
-<h3><%= pluralize(@referees.length, 'referee', 'referees') %></h3>
+<%= form_tag referees_path, :method => 'get', :id => "referee_search" do %>
+  <%= hidden_field_tag :direction, params[:direction] %>
+  <%= hidden_field_tag :sort, params[:sort] %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+  <h3><%= pluralize(@referees.length, 'referee', 'referees') %></h3>
 
-<%= will_paginate %>
-
-<div id="pagination">
-  <%= render @referees %>
+  <div id= "pagination">
+    <%if @referees.blank?%>
+    <h3><%="There are no referees available!"%></h3>
+    <%else%>
+    
+      <il><%= render @referees %></il>
+      <%= will_paginate%>
+    <%end%>
 </div>
-  
-<%= will_paginate %>
+<%end%>

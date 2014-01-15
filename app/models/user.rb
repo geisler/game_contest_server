@@ -16,4 +16,14 @@ class User < ActiveRecord::Base
   #
   validates :email, presence: true,
 		    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+
+  def self.search(search)  
+    if search
+      where('username LIKE ?', "%#{search}%")
+    else
+    all
+    end
+  end
 end
+
+  

@@ -220,6 +220,98 @@ describe "RefereePages" do
     it { should_not have_link('4', href: "/referees?page=4") }
   end
   
+  describe 'search_error'do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:referee, name: "searchtest1")
+      FactoryGirl.create(:referee, name: "peter1")
+      FactoryGirl.create(:referee, name: "searchtest2")
+      
+      visit referees_path
+      fill_in 'search', with:':'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("0 referees") }
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+    it {should have_alert(:info) }
+  end
+  
+  
+  
+  
+  describe 'search_parcial' do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:referee, name: "searchtest1")
+      FactoryGirl.create(:referee, name: "peter1")
+      FactoryGirl.create(:referee, name: "searchtest2")
+      FactoryGirl.create(:referee, name: "peter2")
+      FactoryGirl.create(:referee, name: "searchtest9")
+      FactoryGirl.create(:referee, name: "peter9")
+      FactoryGirl.create(:referee, name: "searchtest4")
+      FactoryGirl.create(:referee, name: "peter4")
+      FactoryGirl.create(:referee, name: "searchtest5")
+      FactoryGirl.create(:referee, name: "peter5")
+      FactoryGirl.create(:referee, name: "searchtest6")
+      FactoryGirl.create(:referee, name: "peter6")
+      FactoryGirl.create(:referee, name: "searchtest7")
+      FactoryGirl.create(:referee, name: "peter7")
+      FactoryGirl.create(:referee, name: "searchtest8")
+      FactoryGirl.create(:referee, name: "peter8")
+      visit referees_path
+      fill_in 'search', with:'te'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("10 referees") }
+    it { should have_link('Next →') }#, href: "/?commit=Search&amp;direction=&amp;page=2&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93" ) }
+    it { should have_link('2') }
+    it { should_not have_link('3') }
+    #it { should_not have_link('3', href: "/?commit=Search&amp;direction=&amp;page=3&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93") }
+  end
+  
+  describe 'search_pagination' do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:referee, name: "searchtest1")
+      FactoryGirl.create(:referee, name: "peter1")
+      FactoryGirl.create(:referee, name: "searchtest2")
+      FactoryGirl.create(:referee, name: "peter2")
+      FactoryGirl.create(:referee, name: "searchtest3")
+      FactoryGirl.create(:referee, name: "peter3")
+      FactoryGirl.create(:referee, name: "searchtest4")
+      FactoryGirl.create(:referee, name: "peter4")
+      FactoryGirl.create(:referee, name: "searchtest5")
+      FactoryGirl.create(:referee, name: "peter5")
+      FactoryGirl.create(:referee, name: "searchtest6")
+      FactoryGirl.create(:referee, name: "peter6")
+      visit referees_path
+      fill_in 'search', with:'searchtest4'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("1 referee") }
+    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) } 
+  end
+  
+  describe 'search' do
+    let(:submit) {"Search"}
+    
+    before do
+      FactoryGirl.create(:referee, name: "searchtest")
+      visit referees_path
+      fill_in 'search', with:'searchtest'
+      click_button submit
+    end
+
+    it 'should return results' do
+      should have_content('searchtest')
+      should have_content('1 referee')
+      
+   end
+   end
+  
   describe "show" do
     let (:referee) { FactoryGirl.create(:referee) }
 

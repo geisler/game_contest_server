@@ -3,10 +3,13 @@ class ContestsController < ApplicationController
     before_action :ensure_contest_creator, except: [:index, :show]
     before_action :ensure_contest_owner, only: [:edit, :update, :destroy]
 
-    def index
-        #@contests = Contest.all
-        @contests = Contest.paginate(page: params[:page], :per_page => 10)
+
+  def index
+    @contests = Contest.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+    if @contests.length ==0
+      flash.now[:info] = "There were no Contests that Matched your search. Please Try Again!"
     end
+  end
 
     def new
         @contest = Contest.new
