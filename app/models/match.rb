@@ -13,6 +13,7 @@ class Match < ActiveRecord::Base
 #  validates :match_type, presence: true
     accepts_nested_attributes_for :player_matches
 
+    validates :status,          presence: true, inclusion: %w[waiting pending completed]
 
   validate :correct_number_of_players
 

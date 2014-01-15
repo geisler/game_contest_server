@@ -9,6 +9,7 @@ describe Player do
   it { should respond_to(:user) }
   it { should respond_to(:contest) }
   it { should respond_to(:player_tournaments) }
+  it { should respond_to(:tournaments) }
   it { should respond_to(:player_matches) }
   it { should respond_to(:matches) }
   # Attributes

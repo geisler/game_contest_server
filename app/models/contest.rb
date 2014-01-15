@@ -1,8 +1,8 @@
 class Contest < ActiveRecord::Base
   belongs_to :user
   belongs_to :referee
-  has_many :players
   has_many :tournaments
+  has_many :players
 
   validates :referee,       presence: true
   validates :user,          presence: true

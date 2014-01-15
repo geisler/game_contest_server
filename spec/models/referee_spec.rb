@@ -72,77 +72,77 @@ describe Referee do
   describe "various url formats" do
     describe "poorly formed urls" do
       urls = %w[www..dr.google
-		www.dr.google..com]
+    www.dr.google..com]
 
-      broken_urls = %w[javascript:alert('xss')
-		www:google.com
-		https://www@.google.com
-		https://www.google.com\
-		https://www.google.com'
-		http://www.google.com/path'
-		http://subdomain.web-site.com/cgi-bin/perl.cgi?key1=value1&key2=value2e'
-		http://www.google.com/?queryparam=123'
-		http://www.google.com/path?queryparam=12'3]
-      urls.each do |invalid_url|
-	it "is invalid" do
-	  referee.rules_url = invalid_url
-	  expect(referee).not_to be_valid
-	end
+    broken_urls = %w[javascript:alert('xss')
+      www:google.com
+      https://www@.google.com
+      https://www.google.com\
+      https://www.google.com'
+      http://www.google.com/path'
+      http://subdomain.web-site.com/cgi-bin/perl.cgi?key1=value1&key2=value2e'
+      http://www.google.com/?queryparam=123'
+      http://www.google.com/path?queryparam=12'3]
+    urls.each do |invalid_url|
+      it "is invalid" do
+        referee.rules_url = invalid_url
+        expect(referee).not_to be_valid
       end
+    end
 
-      broken_urls.each do |invalid_url|
-	pending "is invalid" do
-	  referee.rules_url = invalid_url
-	  expect(referee).not_to be_valid
-	end
+    broken_urls.each do |invalid_url|
+      pending "is invalid" do
+        referee.rules_url = invalid_url
+        expect(referee).not_to be_valid
       end
+    end
     end
     describe "properly formed urls" do
       urls = %w[http://www.example.com
-		http://www.regexbuddy.com
-		http://www.regexbuddy.com/
-		http://www.regexbuddy.com/index.html
-		http://www.regexbuddy.com/index.html?source=library
-		http://www.google.com
-		http://www.google.co.uk
-		https://www.google.com
-		https://www.google.co.uk
-		http://google.com
-		http://google.com/help.php
-		http://google.com/help.php?a=5
-		http://www.google.com/help.php
-		http://www.google.com?a=5
-		http://www.m.google.com/help.php?a=5
-		http://www.google.com/path
-		http://subdomain.web-site.com/cgi-bin/perl.cgi?key1=value1&key2=value2e
-		http://www.google.com/?queryparam=123
-		http://www.google.com/path?queryparam=123]
+    http://www.regexbuddy.com
+    http://www.regexbuddy.com/
+    http://www.regexbuddy.com/index.html
+    http://www.regexbuddy.com/index.html?source=library
+    http://www.google.com
+    http://www.google.co.uk
+    https://www.google.com
+    https://www.google.co.uk
+    http://google.com
+    http://google.com/help.php
+    http://google.com/help.php?a=5
+    http://www.google.com/help.php
+    http://www.google.com?a=5
+    http://www.m.google.com/help.php?a=5
+    http://www.google.com/path
+    http://subdomain.web-site.com/cgi-bin/perl.cgi?key1=value1&key2=value2e
+    http://www.google.com/?queryparam=123
+    http://www.google.com/path?queryparam=123]
 
-      broken_urls = %w[www.google.com
-		www.google.co.uk
-		google.com
-		google.co.uk
-		google.mu
-		mes.intnet.mu
-		cse.uom.ac.mu
-		google.com?a=5
-		google.com/help.php
-		google.com/help.php?a=5
-		www.m.google.com/help.php?a=5
-		m.google.com/help.php?a=5]
-      urls.each do |valid_url|
-	it "is valid" do
-	  referee.rules_url = valid_url
-	  expect(referee).to be_valid
-	end
+    broken_urls = %w[www.google.com
+    www.google.co.uk
+    google.com
+    google.co.uk
+    google.mu
+    mes.intnet.mu
+    cse.uom.ac.mu
+    google.com?a=5
+    google.com/help.php
+    google.com/help.php?a=5
+    www.m.google.com/help.php?a=5
+    m.google.com/help.php?a=5]
+    urls.each do |valid_url|
+      it "is valid" do
+        referee.rules_url = valid_url
+        expect(referee).to be_valid
       end
+    end
 
-      broken_urls.each do |valid_url|
-	pending "is valid" do
-	  referee.rules_url = valid_url
-	  expect(referee).to be_valid
-	end
+    broken_urls.each do |valid_url|
+      pending "is valid" do
+        referee.rules_url = valid_url
+        expect(referee).to be_valid
       end
+    end
     end
   end
 
