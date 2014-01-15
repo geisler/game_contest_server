@@ -49,8 +49,29 @@ describe Tournament do
     it { should_not be_valid }
   end
 
-  describe "should we" do
-    pending "restrict statuses?"
+  describe "valid status" do
+    valid_statuses = %w[waiting started completed]
+    valid_statuses.each do |status|
+      it "is valid" do
+        tournament.status = status
+        expect(tournament).to be_valid
+      end
+    end
+  end
+
+  describe "invalid status" do
+    invalid_statuses = %w[
+      Waiting Started Completed Pending
+      wait start complete pend
+      w s c p
+      before during after
+      ]
+    invalid_statuses.each do |status|
+      it "is invalid" do
+        tournament.status = status
+        expect(tournament).not_to be_valid
+      end
+    end
   end
 
   describe "empty start" do

@@ -26,7 +26,7 @@ describe Match do
     it { should_not be_valid }
   end
 
-  describe "valid statuses" do
+  describe "valid status" do
     valid_statuses = %w[waiting started completed]
     valid_statuses.each do |status|
       it "is valid" do
@@ -36,7 +36,7 @@ describe Match do
     end
   end
 
-  describe "invalid statuses" do
+  describe "invalid status" do
     invalid_statuses = %w[
       Waiting Started Completed Pending
       wait start complete pend
