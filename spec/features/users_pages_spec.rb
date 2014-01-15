@@ -156,18 +156,129 @@ describe "UsersPages" do
   end
   
   describe "pagination" do
-      before(:all) { 30.times { FactoryGirl.create(:user) } }
-      after(:all)  { User.delete_all }
-
-      before(:each) { visit users_path }
-      
-      it { should have_content('10 users') }
-      it { should have_selector('div.pagination') }
-      it { should have_link('2', href: "/?page=2" ) }
-      it { should have_link('3', href: "/?page=3") }
-      it { should_not have_link('4', href: "/?page=4") }     
+    before(:all) { 30.times { FactoryGirl.create(:user) } }
+    after(:all)  { User.delete_all }
+    
+    before(:each) { visit users_path }
+    
+    it { should have_content('10 users') }
+    it { should have_selector('div.pagination') }
+    it { should have_link('2', href: "/?page=2" ) }
+    it { should have_link('3', href: "/?page=3") }
+    it { should_not have_link('4', href: "/?page=4") }     
+  end
+ 
+  
+  describe 'searchError' do
+    let(:submit) {"Search"}
+    
+    before do
+      FactoryGirl.create(:user, username: "searchtest")
+      visit users_path
+      fill_in 'search', with:';'
+      click_button submit
     end
 
+    it 'should return results' do
+      should have_content(' ')
+      should have_alert(:info)
+      
+   end
+   end
+  
+  describe 'search_error'do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:user, username: "searchtest1")
+      FactoryGirl.create(:user, username: "peter1")
+      FactoryGirl.create(:user, username: "searchtest0")
+      
+      visit users_path
+      fill_in 'search', with:':'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("0 user") }
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+    it {should have_alert(:info) }
+  end
+  
+  
+  
+  
+  describe 'search_parcial' do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:user, username: "searchtest1")
+      FactoryGirl.create(:user, username: "peter1")
+      FactoryGirl.create(:user, username: "searchtest0")
+      FactoryGirl.create(:user, username: "peter0")
+      FactoryGirl.create(:user, username: "searchtest9")
+      FactoryGirl.create(:user, username: "peter9")
+      FactoryGirl.create(:user, username: "searchtest4")
+      FactoryGirl.create(:user, username: "peter4")
+      FactoryGirl.create(:user, username: "searchtest5")
+      FactoryGirl.create(:user, username: "peter5")
+      FactoryGirl.create(:user, username: "searchtest6")
+      FactoryGirl.create(:user, username: "peter6")
+      FactoryGirl.create(:user, username: "searchtest7")
+      FactoryGirl.create(:user, username: "peter7")
+      FactoryGirl.create(:user, username: "searchtest8")
+      FactoryGirl.create(:user, username: "peter8")
+      visit users_path
+      fill_in 'search', with:'te'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("10 users") }
+    it { should have_link('Next →') }#, href: "/?commit=Search&amp;direction=&amp;page=2&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93" ) }
+    it { should have_link('2') }
+    it { should_not have_link('3') }
+    #it { should_not have_link('3', href: "/?commit=Search&amp;direction=&amp;page=3&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93") }
+  end
+  
+  describe 'search_pagination' do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:user, username: "searchtest1")
+      FactoryGirl.create(:user, username: "peter1")
+      FactoryGirl.create(:user, username: "searchtest9")
+      FactoryGirl.create(:user, username: "peter9")
+      FactoryGirl.create(:user, username: "searchtest3")
+      FactoryGirl.create(:user, username: "peter3")
+      FactoryGirl.create(:user, username: "searchtest4")
+      FactoryGirl.create(:user, username: "peter4")
+      FactoryGirl.create(:user, username: "searchtest5")
+      FactoryGirl.create(:user, username: "peter5")
+      FactoryGirl.create(:user, username: "searchtest6")
+      FactoryGirl.create(:user, username: "peter6")
+      visit users_path
+      fill_in 'search', with:'searchtest4'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("1 user") }
+    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) } 
+  end
+  
+  describe 'search' do
+    let(:submit) {"Search"}
+    
+    before do
+      FactoryGirl.create(:user, username: "searchtest")
+      visit users_path
+      fill_in 'search', with:'searchtest'
+      click_button submit
+    end
+
+    it 'should return results' do
+      should have_content('searchtest')
+      should have_content('1 user')
+      
+   end
+   end
+      
+      
   describe "Edit users" do
     let (:user) { FactoryGirl.create(:user) }
     let!(:orig_username) { user.username }

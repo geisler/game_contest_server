@@ -12,4 +12,11 @@ class Player < ActiveRecord::Base
 #  validates :programming_language, presence: true
 
   include Uploadable
+  def self.search(search)
+    if search
+      where('name LIKE ?', "%#{search}%")
+    else
+      all
+    end
+  end
 end

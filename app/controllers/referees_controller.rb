@@ -4,8 +4,10 @@ class RefereesController < ApplicationController
   before_action :ensure_referee_owner, only: [:edit, :update, :destroy]
 
   def index
-    #@referees = Referee.all
-    @referees = Referee.paginate(page: params[:page], :per_page => 10)
+    @referees = Referee.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+    if @referees.length ==0
+      flash.now[:info] = "There were no Referees that Matched your search. Please Try Again!"
+    end
   end
 
   def new

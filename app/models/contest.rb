@@ -13,4 +13,12 @@ class Contest < ActiveRecord::Base
   validates :description,   presence: true
   validates :name,          presence: true, uniqueness: true
   validates :contest_type,  presence: true
+  
+   def self.search(search)
+    if search
+      where('name LIKE ?', "%#{search}%")
+    else
+      all
+    end
+  end
 end
