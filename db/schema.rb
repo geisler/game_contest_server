@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030045509) do
+ActiveRecord::Schema.define(version: 20140115221141) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20131030045509) do
     t.string   "contest_type"
   end
 
+  add_index "contests", ["name"], name: "index_contests_on_name", unique: true
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
   add_index "contests", ["user_id"], name: "index_contests_on_user_id"
 
@@ -75,6 +76,7 @@ ActiveRecord::Schema.define(version: 20131030045509) do
   end
 
   add_index "players", ["contest_id"], name: "index_players_on_contest_id"
+  add_index "players", ["name"], name: "index_players_on_name", unique: true
   add_index "players", ["programming_language_id"], name: "index_players_on_programming_language_id"
   add_index "players", ["user_id"], name: "index_players_on_user_id"
 
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(version: 20131030045509) do
     t.integer  "user_id"
   end
 
+  add_index "referees", ["name"], name: "index_referees_on_name", unique: true
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
   add_index "referees", ["user_id"], name: "index_referees_on_user_id"
 
