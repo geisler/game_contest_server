@@ -13,22 +13,71 @@ end
   MatchType.create(kind: type)
 end
 
-creator = User.create!(username: "Contest Creator" , email: "creator@test.com" , password: "password" ,password_confirmation: "password", admin: true , contest_creator: true , chat_url: "www.google.com") 
+creator = User.create!(
+    username: "Contest Creator", 
+    email: "creator@test.com", 
+    password: "password",
+    password_confirmation:"password",
+    admin: true,
+    contest_creator: true,
+    chat_url: "www.google.com"
+) 
 
-student = User.create!(username: "Student" , email: "student@test.com" , password: "password" ,password_confirmation: "password", admin: false , contest_creator: false , chat_url: "www.google.com") 
+student = User.create!(
+    username: "Student",
+    email: "student@test.com",
+    password: "password",
+    password_confirmation:"password",
+    admin: false,
+    contest_creator: false,
+    chat_url: "www.google.com"
+) 
 
-referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://www.google.com" , players_per_game: 2 , file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s)
+referee = Referee.create!(
+    user: creator,
+    name: "Guess W!",
+    rules_url: "http://www.google.com", 
+    players_per_game: 2,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s
+)
 
-contest = Contest.create!(user: creator , referee: referee , deadline: DateTime.now + 5.minutes , description: "test" , name: "test_contest")
+contest = Contest.create!(
+    user: creator, 
+    referee: referee,
+    deadline: DateTime.now + 1.minutes,
+    description: "test" ,
+    name: "test_contest"
+)
 
-tournament = Tournament.create!(contest: contest, name: "Test Tournament", start: Time.now + 1.minutes, tournament_type: "round robin", status: "waiting")
+tournament = Tournament.create!(
+    contest: contest,
+    name: "Test Tournament",
+    start: Time.now + 1.minutes,
+    tournament_type: "round robin",
+    status: "waiting"
+)
 
-player1 = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
-
-player2 = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
-
+player1 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test", 
+    name: "dumb_player",
+    downloadable: false, 
+    playable: false,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+)
 player1_tournament = PlayerTournament.create!(player: player1, tournament: tournament)
 
+
+player2 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test",
+    name: "stupid_player",
+    downloadable: false,
+    playable: false, 
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+)
 player2_tournament = PlayerTournament.create!(player: player2, tournament: tournament)
 
 =begin

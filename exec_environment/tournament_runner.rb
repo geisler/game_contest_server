@@ -22,33 +22,23 @@ end.parse!
 class TournamentRunner
     def initialize(tournament_id)
         @tournament_id = tournament_id
-        @tournament = get_tournament
-        @referee = get_referee
-        @tournament_players = get_players
+        @tournament = Tournament.find(@tournament_id)
+        @referee = @tournament.contest.referee
+        @tournament_players = @tournament.players
         @number_of_players = @referee.players_per_game
         @max_match_time = 30.seconds
     end
 
-    def get_players
-       #PlayerTournaments.find_by_sql("SELECT player_id FROM Player_Tournaments WHERE tournament_id = #{@tournament_id}")
-       @tournament.players
-    end
-
-    def get_referee
-        Tournament.find(@tournament_id).contest.referee
-    end
-
-    def get_tournament
-        Tournament.find(@tournament_id)
-    end
-
-    #Runs a tournament
     def run_tournament
         @tournament.status = "pending"
         @tournament.save!
+        
+        #add logic for choosing type
         round_robin
+        
+        @tournament.status = "completed"
+        @tournament.save!
     end
-
 
     #Runs a round robin tournament with each player playing every other player twice.
     #Currently only works with 2 player games
@@ -60,29 +50,24 @@ class TournamentRunner
                 end
             end
         end
-        @tournament.status = "completed"
-        @tournament.save!
     end
-
+    
     #Uses a MatchWrapper to run a match between the given players and send the results to the database
     def run_match(*match_participants)
-        match = Match.create!(manager: @tournament , status: "Pending" , earliest_start: Time.now , completion: Date.new, match_type: MatchType.first, manager_type: "Contest" ,player_matches_attributes: create_player_matches(match_participants))
+        match = Match.create!(
+            manager: @tournament, 
+            status: "Pending",
+            earliest_start: Time.now, 
+            completion: Date.new,
+            match_type: MatchType.first,
+            manager_type: "Contest",
+            player_matches_attributes: create_player_matches(match_participants)
+        )
         match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,match_participants)
         match_wrapper.run_match
         self.send_results_to_db(match, match_wrapper.results)
     end
-
-    #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
-    def send_results_to_db(match, results)
-        results.each do |player_name, player_result|
-            player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
-            player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{match.id} AND player_id = #{player.id}").first
-            player_match.result = player_result["result"]
-            player_match.score = player_result["score"]
-            player_match.save!
-        end
-    end
-
+    
     #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
     #The match needs to do this because of the interdependency betwene the two records. Neether can exist without the other
     #so they need to be created at the same time
@@ -94,6 +79,21 @@ class TournamentRunner
             player_matches_list.push({player: player, result: result, score: score})
         end
         return player_matches_list
+    end
+
+    #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
+    def send_results_to_db(match, results)
+        puts "\n===Match "+match.id.to_s+"==="
+        results.each do |player_name, player_result|
+            player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+            player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{match.id} AND player_id = #{player.id}").first
+            player_match.result = player_result["result"]
+            player_match.score = player_result["score"]
+            puts "Player: "+player_name
+            puts "Result: "+player_match.result
+            puts "Score: "+player_match.score.to_s
+            player_match.save!
+        end
     end
 
 end
