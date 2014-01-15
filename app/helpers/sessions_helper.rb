@@ -49,4 +49,9 @@ module SessionsHelper
 	redirect_to root_path
       end
     end
+
+    def ensure_contest_owner
+      @contest = Contest.find(params[:id])
+      ensure_correct_user(@contest.user_id)
+    end
 end

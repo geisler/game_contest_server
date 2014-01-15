@@ -6,3 +6,4 @@
 <p>Contest creator: <%= link_to @contest.user.username, @contest.user %></p>
 
 <p>Create <%= link_to 'New Player', new_contest_player_path(@contest) %> for this contest.</p>
+<p>Create <%= link_to 'New Tournament', new_contest_tournament_path(@contest) %> for this contest.</p>

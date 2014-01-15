@@ -13,7 +13,7 @@ end
   MatchType.create(kind: type)
 end
 
-creator = User.create!(username: "Contest Creator" , email: "creator@test.com" , password: "password" ,password_confirmation: "password", admin: true , contest_creator: true , chat_url: "www.google.com") 
+creator = User.create!(username: "Contest_Creator" , email: "creator@test.com" , password: "password" ,password_confirmation: "password", admin: true , contest_creator: true , chat_url: "www.google.com") 
 
 student = User.create!(username: "Student" , email: "student@test.com" , password: "password" ,password_confirmation: "password", admin: false , contest_creator: false , chat_url: "www.google.com") 
 
