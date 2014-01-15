@@ -5,9 +5,8 @@ require './config/environment'
 
 tournament = Tournament.where("start < ? and status = ?", Time.now.utc, "waiting").first
 if not tournament.nil? then
-    puts "Running the tournament"
     tournament.status = "pending"
     tournament.save
+    puts "Daemon spawning tournament #"+tournament.id.to_s
     Process.spawn("rails runner exec_environment/tournament_runner.rb -t #{tournament.id}")
-    puts "This succeeded"
 end
