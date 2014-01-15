@@ -9,7 +9,7 @@ class Tournament < ActiveRecord::Base
     validates :start,               presence: true, timeliness: { type: :datetime, allow_nil: false }
     validates :tournament_type,     presence: true, inclusion: ['round robin', 'single elimination']
     # Validate that the status is one of the required statuses
-    validates :status,              presence: true, inclusion: %w[waiting pending completed]
+    validates :status,              presence: true, inclusion: %w[waiting started completed]
 
     def referee
       contest.referee

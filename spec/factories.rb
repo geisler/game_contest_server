@@ -63,7 +63,7 @@ FactoryGirl.define do
     to_create {|instance| instance.save(validate: false) }
     ignore { existing_players 0 }
 
-    status "pending"
+    status "waiting"
     completion Time.current
     earliest_start Time.current
 
@@ -71,8 +71,8 @@ FactoryGirl.define do
       association :manager, factory: :tournament
 
       before(:create) do |match, evaluator|
-        #dummy_player = create(:player, tournament: match.manager)
-        dummy_player = create(:player)
+        dummy_player = create(:player, contest: match.manager.contest)
+        dummy_player.tournaments << match.manager
       end
     end
 
@@ -92,11 +92,6 @@ FactoryGirl.define do
   factory :player do
     user
     contest
-    factory :player_with_tournament do
-      after(:create) do |player|
-        player.tournaments = create_list(:tournament, 1, contest: player.contest) unless player.tournaments
-      end
-    end
     sequence(:file_location) do |i|
       location = Rails.root.join('code',
                                  'players',

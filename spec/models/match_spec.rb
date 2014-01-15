@@ -27,7 +27,7 @@ describe Match do
   end
 
   describe "valid statuses" do
-    valid_statuses = %w[waiting pending completed]
+    valid_statuses = %w[waiting started completed]
     valid_statuses.each do |status|
       it "is valid" do
         match.status = status
@@ -38,9 +38,9 @@ describe Match do
 
   describe "invalid statuses" do
     invalid_statuses = %w[
-      Waiting Pending Completed
-      wait pend complete
-      w p c
+      Waiting Started Completed Pending
+      wait start complete pend
+      w s c p
       before during after
       ]
     invalid_statuses.each do |status|
@@ -54,7 +54,7 @@ describe Match do
   describe "empty earliest_start" do
     describe "waiting" do
       before do
-        match.status = 'Waiting'
+        match.status = 'waiting'
         match.earliest_start = ''
       end
 
@@ -63,7 +63,7 @@ describe Match do
 
     describe "started" do
       before do
-        match.status = 'Started'
+        match.status = 'started'
         match.earliest_start = ''
       end
 
@@ -72,7 +72,7 @@ describe Match do
 
     describe "completed" do
       before do
-        match.status = 'Completed'
+        match.status = 'completed'
         match.earliest_start = ''
       end
 
@@ -83,7 +83,7 @@ describe Match do
   describe "blank earliest_start" do
     describe "waiting" do
       before do
-        match.status = 'Waiting'
+        match.status = 'waiting'
         match.earliest_start = ' '
       end
 
@@ -92,7 +92,7 @@ describe Match do
 
     describe "started" do
       before do
-        match.status = 'Started'
+        match.status = 'started'
         match.earliest_start = ' '
       end
 
@@ -101,7 +101,7 @@ describe Match do
 
     describe "completed" do
       before do
-        match.status = 'Completed'
+        match.status = 'completed'
         match.earliest_start = ' '
       end
 
@@ -122,7 +122,7 @@ describe Match do
 
   describe "completion in past" do
     before do
-      match.status = 'Completed'
+      match.status = 'completed'
       match.completion = 1.day.ago
     end
 
@@ -131,7 +131,7 @@ describe Match do
 
   describe "completion now" do
     before do
-      match.status = 'Completed'
+      match.status = 'completed'
       match.completion = Time.current
     end
 
@@ -140,7 +140,7 @@ describe Match do
 
   describe "completion in future" do
     before do
-      match.status = 'Completed'
+      match.status = 'completed'
       match.completion = 1.day.from_now
     end
 
@@ -159,6 +159,7 @@ describe Match do
     before do
       match.players.clear
       (match.manager.referee.players_per_game - 1).times do
+        # Old way
         #match.players << FactoryGirl.create(:player, tournaments: [match.manager])
         player = FactoryGirl.create(:player, contest: match.manager.contest)
         player.tournaments << match.manager
@@ -173,7 +174,9 @@ describe Match do
     before do
       match.players.clear
       match.manager.referee.players_per_game.times do
-        match.players << FactoryGirl.create(:player_with_tournament)
+        player = FactoryGirl.create(:player, contest: match.manager.contest)
+        player.tournaments << match.manager
+        match.players << player
       end
     end
 
@@ -184,32 +187,45 @@ describe Match do
     before do
       match.players.clear
       (match.manager.referee.players_per_game + 1).times do
-        match.players << FactoryGirl.create(:player, tournaments: [match.manager])
+        player = FactoryGirl.create(:player, contest: match.manager.contest)
+        player.tournaments << match.manager
+        match.players << player
       end
     end
 
     it { should_not be_valid }
   end
 
+  describe "match players set up properly" do
+    before do
+      ref = FactoryGirl.create(:referee, players_per_game: 2)
+      contest = FactoryGirl.create(:contest, referee: ref)
+      tournament = FactoryGirl.create(:tournament, contest: contest)    
+      match.manager = tournament
+      match.player.clear
+      match.manager.referee.players_per_game do
+        player = FactoryGirl.create(:player, contest: contest)
+        player.tournaments << tournament
+        match.players << player
+      end
+    end
+  end
+
   # This is a kinda confusing test.
   # It makes players that are in the same contest
   # but not in the same tournament try to play in the same 
   # match in a tournament, which should not be allowed.
-  describe "players in same contest, but not in same tournament" do
+  describe "players are in the same contest, but are not in same tournament" do
     before do
-      puts "players in same contest, but not in same tournament"
       match.players.clear
       contest = FactoryGirl.create(:contest)
       match.manager.referee.players_per_game.times do
-        player = FactoryGirl.create(:player)
-        player.contest = contest
+        player = FactoryGirl.create(:player, contest: contest)
         player.tournaments = FactoryGirl.create_list(:tournament, 1, contest: contest)
-=begin
         # The proof is in the puts
-        puts "player.name        " + player.name
-        puts "player.contest_id  " + player.contest_id.to_s
-        puts "player.tournaments " + player.tournaments[0].id.to_s
-=end
+        # puts "player.name        " + player.name
+        # puts "player.contest_id  " + player.contest_id.to_s
+        # puts "player.tournaments " + player.tournaments[0].id.to_s
         match.players << player
       end
     end
@@ -220,23 +236,40 @@ describe Match do
   # This is another kinda confusing test.
   # It makes players that are in different contests try to play
   # in the same match in a tournament, which should not be allowed.
-  describe "players in different contests" do
+  describe "players not in same contest" do
     before do
-      puts "players in different contest"
       match.players.clear
       match.manager.referee.players_per_game.times do
         player = FactoryGirl.create(:player)
         player.tournaments = FactoryGirl.create_list(:tournament, 1, contest: player.contest)
-=begin
         # The proof is in the puts
-        puts "player.name        " + player.name
-        puts "player.contest_id  " + player.contest_id.to_s
-        puts "player.tournaments " + player.tournaments[0].id.to_s
-=end
+        # puts "player.name        " + player.name
+        # puts "player.contest_id  " + player.contest_id.to_s
+        # puts "player.tournaments " + player.tournaments[0].id.to_s
         match.players << player
       end
     end
 
     it { should_not be_valid }
   end
+
+  describe "players are in same contest and tournament, but the match is in a tournament they do not share" do
+    before do
+      ref = FactoryGirl.create(:referee, players_per_game: 2)
+      contest = FactoryGirl.create(:contest, referee: ref)
+      shared_tournament = FactoryGirl.create(:tournament, contest: contest)
+      not_shared_tournament = FactoryGirl.create(:tournament, contest: contest)
+      p1 = FactoryGirl.create(:player, contest: contest)
+      p1.tournaments << shared_tournament << not_shared_tournament
+      p2 = FactoryGirl.create(:player, contest: contest)
+      p2.tournaments << shared_tournament
+      match.manager = not_shared_tournament
+      match.players.clear
+      match.players << p1 << p2
+
+    end
+
+    it { should_not be_valid }
+  end
+
 end
