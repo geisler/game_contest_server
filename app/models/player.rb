@@ -4,6 +4,8 @@ class Player < ActiveRecord::Base
   belongs_to :programming_language
   has_many :player_matches
   has_many :matches, through: :player_matches
+  has_many :player_tournaments
+  has_many :tournaments, through: :player_tournaments
 
   validates :user,          presence: true
   validates :contest,       presence: true

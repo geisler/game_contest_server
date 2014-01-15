@@ -49,6 +49,21 @@ FactoryGirl.define do
         sequence(:name) { |i| "Tournament #{i}" }
         start Time.current
         tournament_type "round robin"
+        status "Some status"
+=begin
+        factory :waiting do
+            status "waiting"
+        end
+        factory :pending do
+            status "pending"
+        end
+        factory :completed do
+            status "completed"
+        end
+        factory :invalid do
+            status "bad status"
+        end
+=end
     end
 
     factory :player_tournament do
@@ -66,11 +81,11 @@ FactoryGirl.define do
         completion Time.current
         earliest_start Time.current
 
-        factory :contest_match do
-            association :manager, factory: :contest
+        factory :tournament_match do
+            association :manager, factory: :tournament
 
             before(:create) do |match, evaluator|
-                dummy_player = create(:player, contest: match.manager)
+                dummy_player = create(:player, tournament_match: match.manager)
             end
         end
 
@@ -104,7 +119,7 @@ FactoryGirl.define do
 
     factory :player_match do
         player
-        association :match, factory: :contest_match, existing_players: 1
+        association :match, factory: :tournament_match, existing_players: 1
         score 1.0
         result "Unknown Result"
 

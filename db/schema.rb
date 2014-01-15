@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20140114031740) do
     t.integer  "contest_id"
     t.datetime "start"
     t.string   "name"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

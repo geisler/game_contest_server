@@ -4,8 +4,11 @@ describe Tournament do
     let (:tournament) { FactoryGirl.create(:tournament) }
     subject { tournament }
 
+    # Tables
     it { should respond_to(:contest) }
+    # Attributes
     it { should respond_to(:name) }
+    it { should respond_to(:status) }
     it { should respond_to(:start) }
     it { should respond_to(:tournament_type) }
 
@@ -31,6 +34,20 @@ describe Tournament do
             before { tournament.name = other_tournament.name }
             it { should be_valid }
         end
+    end
+
+    describe "empty status" do
+        before { tournament.status = '' }
+        it { should_not be_valid }
+    end
+
+    describe "blank status" do
+        before { tournament.status = ' ' }
+        it { should_not be_valid }
+    end
+
+    describe "should we" do
+        pending "restrict statuses?"
     end
 
     describe "empty start" do

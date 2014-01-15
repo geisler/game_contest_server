@@ -4,6 +4,7 @@ describe User do
   let(:user) { FactoryGirl.create(:user) }
   subject { user }
 
+  # Attributes
   it { should respond_to(:username) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }

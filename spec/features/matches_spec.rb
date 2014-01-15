@@ -5,8 +5,8 @@ include ActionView::Helpers::DateHelper
 describe "MatchesPages" do
   subject { page }
 
-  describe "show (contest matches)" do
-    let (:match) { FactoryGirl.create(:contest_match) }
+  describe "show (tournament matches)" do
+    let (:match) { FactoryGirl.create(:tournament_match) }
 
     before { visit match_path(match) }
 
@@ -84,16 +84,16 @@ describe "MatchesPages" do
   end
 
   describe "show all" do
-    let (:contest) { FactoryGirl.create(:contest) }
+    let (:tournament) { FactoryGirl.create(:tournament) }
 
     before do
-      5.times { FactoryGirl.create(:contest_match, manager: contest) }
+      5.times { FactoryGirl.create(:tournament_match, manager: tournament) }
 
-      visit contest_matches_path(contest)
+      visit tournament_matches_path(tournament)
     end
 
     it "lists all the matches for a contest in the system" do
-      Match.where(manager: contest).each do |m|
+      Match.where(manager: tournament).each do |m|
 	should have_selector('li', text: m.id)
 	should have_link(m.id, match_path(m))
       end
