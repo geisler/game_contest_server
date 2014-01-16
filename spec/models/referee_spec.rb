@@ -8,34 +8,18 @@ describe Referee do
   it { should respond_to(:contests) }
   it { should respond_to(:matches) }
   it { should respond_to(:user) }
+
   # Attributes
   it { should respond_to(:name) }
   it { should respond_to(:rules_url) }
   it { should respond_to(:players_per_game) }
   it { should respond_to(:file_location) }
 
+  # For match.manager.referee if the manager is a referee
   it { should respond_to(:referee) }
 
-  describe "validations" do
-    it { should be_valid }
-  end
 
-  describe "empty file location" do
-    before { referee.file_location = '' }
-    it { should_not be_valid }
-  end
-
-  describe "blank file location" do
-    before { referee.file_location = ' ' }
-    it { should_not be_valid }
-  end
-
-  describe "file_location points to non-existant file" do
-    before { referee.file_location = '/path/to/non/existant/file' }
-
-    it { should_not be_valid }
-  end
-
+  # name tests #
   describe "empty name" do
     before { referee.name = '' }
     it { should_not be_valid }
@@ -54,6 +38,8 @@ describe Referee do
     it { should_not be_valid }
   end
 
+
+  # rules_url tests #
   describe "empty rules_url" do
     before { referee.rules_url = '' }
     it { should_not be_valid }
@@ -100,6 +86,7 @@ describe Referee do
         end
       end
     end
+
     describe "properly formed urls" do
       urls = %w[http://www.example.com
         http://www.regexbuddy.com
@@ -151,6 +138,7 @@ describe Referee do
     end
   end
 
+  # players_per_game tests #
   describe "empty players per game" do
     before { referee.players_per_game = '' }
     it { should_not be_valid }
@@ -190,4 +178,29 @@ describe Referee do
     before { referee.players_per_game = 2.5 }
     it { should_not be_valid }
   end
+
+
+  # file_location tests #
+  describe "empty file location" do
+    before { referee.file_location = '' }
+    it { should_not be_valid }
+  end
+
+  describe "blank file location" do
+    before { referee.file_location = ' ' }
+    it { should_not be_valid }
+  end
+
+  describe "file_location points to non-existant file" do
+    before { referee.file_location = '/path/to/non/existant/file' }
+
+    it { should_not be_valid }
+  end
+
+
+  describe "validations" do
+    it { should be_valid }
+    specify { expect_required_attribute(:user) }
+  end
+
 end
