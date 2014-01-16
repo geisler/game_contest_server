@@ -63,6 +63,10 @@ gem 'will_paginate', '3.0.4'
 #gem 'bootstrap-will_paginate', '0.0.9'
 gem 'kaminari'
 
+#for backend job scheduling
+gem 'daemons'
+gem 'clockwork'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
