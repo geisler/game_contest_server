@@ -10,7 +10,7 @@ require 'optparse'
 #Parsing command line arguements
 $options = {}
 OptionParser.new do |opts|
-    opts.banner = "Usage: tournament.rb -c [tournament_id]"
+    opts.banner = "Usage: tournament.rb -t [tournament_id]"
 
     opts.on('-t' , '--tournament_id [TOURNAMENT_ID]' , 'Tournament ID to start') { |v| $options[:TOURNAMENT_ID] = v}
     opts.on('-e' , '--useless [USELESS]' , '') { |v| $options[:USELESS] = v}
@@ -29,9 +29,20 @@ class TournamentRunner
     end
 
     def run_tournament
+        puts " Tournament runner started creating matches for tournament #"+@tournament_id.to_s+" ("+@tournament.tournament_type+")"
         @tournament.status = "pending"
         @tournament.save!
-        round_robin
+        case @tournament.tournament_type
+            when "round robin"
+                round_robin
+            when "single elimination"
+                puts " ERROR: This tournament type not available yet"
+                return
+            else
+                puts " ERROR: Tournament type is not recognized"
+                return
+        end
+        puts " Tournament runner finished creating matches for tournament #"+@tournament_id.to_s
     end
 
     #Runs a round robin tournament with each player playing every other player twice.
@@ -59,15 +70,9 @@ class TournamentRunner
             match_type: MatchType.first,
             player_matches_attributes: create_player_matches(match_participants)
         )
+        puts " Tournament runner created match #"+match.id.to_s
     end 
-
     
-    #Uses a MatchWrapper to run a match between the given players and send the results to the database
-    def run_match(*match_participants)
-        match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,match_participants)
-        match_wrapper.run_match
-        self.send_results_to_db(match, match_wrapper.results)
-    end
     #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
     #The match needs to do this because of the interdependency betwene the two records. Neether can exist without the other
     #so they need to be created at the same time
