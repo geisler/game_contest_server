@@ -40,10 +40,21 @@ FactoryGirl.define do
     user
     referee
     deadline Time.current + 1.day
-    start Time.current + 2.days
     description "Contest Description Here"
     sequence(:name) { |i| "Contest #{i}" }
-    contest_type "Generic Contest Type"
+  end
+
+  factory :tournament do
+    contest
+    sequence(:name) { |i| "Tournament #{i}" }
+    start Time.current
+    tournament_type "round robin"
+    status "waiting"
+  end
+
+  factory :player_tournament do
+    player
+    tournament
   end
 
   dummy_player = 0
@@ -52,15 +63,16 @@ FactoryGirl.define do
     to_create {|instance| instance.save(validate: false) }
     ignore { existing_players 0 }
 
-    status "Unknown Status"
+    status "waiting"
     completion Time.current
     earliest_start Time.current
 
-    factory :contest_match do
-      association :manager, factory: :contest
+    factory :tournament_match do
+      association :manager, factory: :tournament
 
       before(:create) do |match, evaluator|
-        dummy_player = create(:player, contest: match.manager)
+        dummy_player = create(:player, contest: match.manager.contest)
+        dummy_player.tournaments << match.manager
       end
     end
 
@@ -71,9 +83,9 @@ FactoryGirl.define do
     end
 
     after(:create) do |match, evaluator|
-        num_players = match.manager.referee.players_per_game
-        num_players -= evaluator.existing_players
-        create_list(:player_match, num_players, player: dummy_player, match: match)
+      num_players = match.manager.referee.players_per_game
+      num_players -= evaluator.existing_players
+      create_list(:player_match, num_players, player: dummy_player, match: match)
     end
   end
 
@@ -94,7 +106,7 @@ FactoryGirl.define do
 
   factory :player_match do
     player
-    association :match, factory: :contest_match, existing_players: 1
+    association :match, factory: :tournament_match, existing_players: 1
     score 1.0
     result "Unknown Result"
 
@@ -106,4 +118,5 @@ FactoryGirl.define do
       result "Loss"
     end
   end
+
 end

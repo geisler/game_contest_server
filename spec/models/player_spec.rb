@@ -4,15 +4,19 @@ describe Player do
   let (:player) { FactoryGirl.create(:player) }
   subject { player }
 
+  # Tables
   it { should respond_to(:user) }
   it { should respond_to(:contest) }
+  it { should respond_to(:player_tournaments) }
+  it { should respond_to(:tournaments) }
+  it { should respond_to(:player_matches) }
+  it { should respond_to(:matches) }
+  # Attributes
   it { should respond_to(:file_location) }
   it { should respond_to(:description) }
   it { should respond_to(:name) }
   it { should respond_to(:downloadable) }
   it { should respond_to(:playable) }
-  it { should respond_to(:player_matches) }
-  it { should respond_to(:matches) }
 
   describe "blank file_location" do
     before { player.file_location = ' ' }

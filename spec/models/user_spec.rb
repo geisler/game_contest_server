@@ -4,6 +4,12 @@ describe User do
   let(:user) { FactoryGirl.create(:user) }
   subject { user }
 
+  # Tables
+  it { should respond_to(:contests) }
+  it { should respond_to(:referees) }
+  it { should respond_to(:players) }
+
+  # Attributes
   it { should respond_to(:username) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
@@ -18,10 +24,16 @@ describe User do
 
   it { should respond_to(:chat_url) }
 
-  it { should be_valid }
+  describe "validations" do
+    it { should be_valid }
+  end
+
   it { should_not be_admin }
   it { should_not be_contest_creator }
+  it { should_not be_banned }
 
+
+  # username tests #
   describe "empty username" do
     before { user.username = '' }
     it { should_not be_valid }
@@ -32,6 +44,25 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "long username" do
+    before { user.username = 'z' * 25 }
+    it { should be_valid }
+  end
+
+  describe "too long username" do
+    before { user.username = 'z' * 26 }
+    it { should_not be_valid }
+  end
+
+  describe "duplicate username" do
+    let(:duplicate) { user.dup }
+    it "is not allowed" do
+      expect(duplicate).not_to be_valid
+    end
+  end
+
+
+  # email tests #
   describe "empty email" do
     before { user.email = '' }
     it { should_not be_valid }
@@ -42,46 +73,38 @@ describe User do
     it { should_not be_valid }
   end
 
-  describe "long username" do
-    before { user.username = "z" * 26 }
-    it { should_not be_valid }
-  end
-
   #
   # tests directly from Michael Hartl's Rails tutorial
   describe "various email formats" do
     describe "poorly formed addresses" do
-      addresses = %w[user@foo,com
-		     user_at_foo.org
-		     example.user@foo.
-		     foo@bar_baz.com
-		     foo@bar+baz.com]
-      addresses.each do |invalid_address|
-	it "is invalid" do
-	  user.email = invalid_address
-	  expect(user).not_to be_valid
-	end
+      invalid_addresses = %w[user@foo,com
+         user_at_foo.org
+         example.user@foo.
+         foo@bar_baz.com
+         foo@bar+baz.com
+      ]
+
+      invalid_addresses.each do |invalid_address|
+        it "is invalid" do
+          user.email = invalid_address
+          expect(user).not_to be_valid
+        end
       end
     end
 
     describe "properly formed addresses" do
-      addresses = %w[user@foo.COM
-		     A_US-ER@f.b.org
-		     frst.lst@foo.jp
-		     a+b@baz.cn]
-      addresses.each do |valid_address|
-	it "is valid" do
-	  user.email = valid_address
-	  expect(user).to be_valid
-	end
-      end
-    end
-  end
+      valid_addresses = %w[user@foo.COM
+         A_US-ER@f.b.org
+         frst.lst@foo.jp
+         a+b@baz.cn
+      ]
 
-  describe "duplicate username" do
-    let(:duplicate) { user.dup }
-    it "is not allowed" do
-      expect(duplicate).not_to be_valid
+      valid_addresses.each do |valid_address|
+        it "is valid" do
+          user.email = valid_address
+          expect(user).to be_valid
+        end
+      end
     end
   end
 

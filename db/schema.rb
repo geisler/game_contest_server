@@ -20,25 +20,16 @@ ActiveRecord::Schema.define(version: 20140115221141) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deadline"
-    t.datetime "start"
     t.string   "name"
-    t.string   "contest_type"
   end
 
   add_index "contests", ["name"], name: "index_contests_on_name", unique: true
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
   add_index "contests", ["user_id"], name: "index_contests_on_user_id"
 
-  create_table "match_types", force: true do |t|
-    t.string   "kind"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "matches", force: true do |t|
     t.integer  "manager_id"
     t.datetime "completion"
-    t.integer  "match_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
@@ -48,7 +39,6 @@ ActiveRecord::Schema.define(version: 20140115221141) do
 
   add_index "matches", ["manager_id", "manager_type"], name: "index_matches_on_manager_id_and_manager_type"
   add_index "matches", ["manager_id"], name: "index_matches_on_manager_id"
-  add_index "matches", ["match_type_id"], name: "index_matches_on_match_type_id"
 
   create_table "player_matches", force: true do |t|
     t.integer  "player_id"
@@ -61,6 +51,13 @@ ActiveRecord::Schema.define(version: 20140115221141) do
 
   add_index "player_matches", ["match_id"], name: "index_player_matches_on_match_id"
   add_index "player_matches", ["player_id"], name: "index_player_matches_on_player_id"
+
+  create_table "player_tournaments", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "player_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "players", force: true do |t|
     t.integer  "user_id"
@@ -100,6 +97,16 @@ ActiveRecord::Schema.define(version: 20140115221141) do
   add_index "referees", ["name"], name: "index_referees_on_name", unique: true
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
   add_index "referees", ["user_id"], name: "index_referees_on_user_id"
+
+  create_table "tournaments", force: true do |t|
+    t.string   "tournament_type"
+    t.integer  "contest_id"
+    t.datetime "start"
+    t.string   "name"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "username"

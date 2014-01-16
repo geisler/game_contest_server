@@ -6,7 +6,7 @@ class RefereesController < ApplicationController
   def index
     @referees = Referee.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
     if @referees.length ==0
-      flash.now[:info] = "There were no Referees that Matched your search. Please Try Again!"
+      flash.now[:info] = "There were no referees that matched your search. Please try again!"
     end
   end
 

@@ -8,7 +8,7 @@ class PlayersController < ApplicationController
     #@referees = Referee.all
     @players = Player.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
     if @players.length ==0
-      flash.now[:info] = "There were no Contests that Matched your search. Please Try Again!"
+      flash.now[:info] = "There were no players that matched your search. Please try again!"
     end
   end
 
