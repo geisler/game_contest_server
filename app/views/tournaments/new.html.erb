@@ -1,0 +1,32 @@
+<h1>Create Tournament </h1>
+
+<%= form_for [@tournament.contest, @tournament] do |f| %>
+    <%= render 'shared/error_messages', object: @tournament %>
+
+    <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :start %>
+        <%= f.datetime_select :start, {start_year: Time.now.year}, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :tournament_type, 'Tournament Type' %>
+        <%= f.select(:tournament_type, [['Round Robin','round robin']], class: 'form-control') %>
+    </div>
+
+    <div class="form-group">
+        <p><b>Select Players</b></p>
+        <%= f.fields_for :player_tournaments  do |builder| %>
+            <%= builder.check_box :id  %>
+            <p> this is html </p>
+        <% end %>
+    </div>
+
+    <%= f.submit "Create Tournament", class: 'btn btn-primary' %>
+<% end %>
+
+

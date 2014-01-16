@@ -4,6 +4,8 @@ class Tournament < ActiveRecord::Base
     has_many :players, through: :player_tournaments 
     has_many :matches, as: :manager
 
+    accepts_nested_attributes_for :player_tournaments
+
     validates :contest,             presence: true
     validates :name,                presence: true, uniqueness: { scope: :contest }
     validates :start,               presence: true, timeliness: { type: :datetime, allow_nil: false }

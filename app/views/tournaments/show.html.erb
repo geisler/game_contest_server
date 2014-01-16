@@ -1,7 +1,10 @@
 <h1>Tournament</h1>
 <p>Name: <%= @tournament.name %></p>
-<p>Start: <%= distance_of_tiem_in_words_to_now(@tournament.start) %></p>
+<p>Start: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
 <p>Tournament Type: <%= @tournament.tournament_type %></p>
 <p>Contest: <%= link_to @tournament.contest.name, @tournament.contest %></p>
 <p>Players: <%= render @tournament.players %></p>
+<% @tournament.player_tournaments.each do |f| %>
+    <%= f.player %>
+ <% end %>
 
