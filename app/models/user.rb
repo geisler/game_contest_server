@@ -5,9 +5,8 @@ class User < ActiveRecord::Base
   has_many :players
   has_many :contests
 
-  validates :username, presence: true,
-		       length: { maximum: 25 },
-		       uniqueness: true
+  validates :username, presence: true, length: { maximum: 25 }, uniqueness: true
+
   #
   # Note that the email regex is from Michael Hartl's Rails tutorial
   # and does a "good enough" job.  It misses some addresses that are
