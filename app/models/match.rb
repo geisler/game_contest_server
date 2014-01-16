@@ -1,6 +1,5 @@
 class Match < ActiveRecord::Base
   belongs_to :manager, polymorphic: true
-  belongs_to :match_type
   has_many :player_matches , inverse_of: :match
   has_many :players, through: :player_matches
 
@@ -12,7 +11,6 @@ class Match < ActiveRecord::Base
   validates :completion,
 	    timeliness: { type: :datetime, on_or_before: :now },
 	    if: :completed?
-#  validates :match_type, presence: true
 
 
   validate :correct_number_of_players

@@ -26,16 +26,9 @@ ActiveRecord::Schema.define(version: 20140114031740) do
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
   add_index "contests", ["user_id"], name: "index_contests_on_user_id"
 
-  create_table "match_types", force: true do |t|
-    t.string   "kind"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "matches", force: true do |t|
     t.integer  "manager_id"
     t.datetime "completion"
-    t.integer  "match_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
@@ -45,7 +38,6 @@ ActiveRecord::Schema.define(version: 20140114031740) do
 
   add_index "matches", ["manager_id", "manager_type"], name: "index_matches_on_manager_id_and_manager_type"
   add_index "matches", ["manager_id"], name: "index_matches_on_manager_id"
-  add_index "matches", ["match_type_id"], name: "index_matches_on_match_type_id"
 
   create_table "player_matches", force: true do |t|
     t.integer  "player_id"

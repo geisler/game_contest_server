@@ -17,7 +17,7 @@ OptionParser.new do |opts|
 end.parse!
 
 
-class Tournament 
+class Tournament
     def initialize(contest_id)
         @contest_id = contest_id
         @contest = get_contest
@@ -47,7 +47,7 @@ class Tournament
 
     #Creates a match object and puts it in the database
     def create_match(players)
-            match = Match.create!(manager: @contest , status: "Pending" , earliest_start: Time.now , completion: Date.new, match_type: MatchType.first, manager_type: "Contest" ,player_matches_attributes: create_player_matches(players))
+            match = Match.create!(manager: @contest , status: "Pending" , earliest_start: Time.now , completion: Date.new, manager_type: "Contest" ,player_matches_attributes: create_player_matches(players))
     end
 
     def create_player_matches(players)
@@ -84,7 +84,7 @@ class Tournament
             l2 = players[half..players.length]
             return #idontknowwhat
         end
-    end 
+    end
 
     def send_results_to_db(match, results)
         puts "CALLING!!!!!!!!!!!!!!!!!!!"
