@@ -33,11 +33,11 @@ class TestPlayer
     def play
       response_options = ['a','b','c','w']
       while input = @ref_socket.gets
-        puts "Got input: "+input
+        #puts "Got input: "+input
         if input.include?('move')
           blah = response_options.sample
           @ref_socket.puts blah
-          puts "Sent "+blah
+          #puts "Sent "+blah
         elsif input.include?('wins')
           @ref_socket.close
           return

@@ -69,7 +69,7 @@ player1 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "dumb_player",
+    name: "ruby_player",
     downloadable: false,
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
@@ -78,7 +78,7 @@ player2 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "stupid_player",
+    name: "python_player",
     downloadable: false,
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
