@@ -81,7 +81,7 @@ player2 = Player.create!(
     name: "stupid_player",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
 )
 player3 = Player.create!(
     user: student,
