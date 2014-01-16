@@ -1,24 +1,22 @@
 class TournamentsController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
   before_action :ensure_contest_creator, except: [:index, :show]
-  before_action :ensure_contest_owner, only: [:new ,:edit, :update ]
+  before_action :ensure_contest_owner, only: [:new ,:edit, :update , :destroy]
 
     def new
         contest = Contest.find(params[:contest_id])
         @tournament = contest.tournaments.build
         @tournament.contest.players.each do |f|
             @tournament.player_tournaments.build(player: f )
-        end 
-        @players = @tournament.players
-        puts 'players yo'
-        puts @players
-        puts "the build succeeded!!!!!\n" ,  @tournament.player_tournaments[1].player.name
+        end
+        @tournament.start = Time.now
     end
 
     def create
         @contest = Contest.find(params[:contest_id])
         puts "Acceptable Params = #{acceptable_params}"
         @tournament = @contest.tournaments.build(acceptable_params)
+        @tournament.status = "waiting"
         if @tournament.save
             flash[:success] = 'Tournament created.'
             redirect_to @tournament
@@ -38,7 +36,10 @@ class TournamentsController < ApplicationController
        
     def update
         @tournament = Tournament.find(params[:id])
-        if @tournament.update(accpetable_params)
+        @tournament.player_tournaments.each do |player_tournament|
+            player_tournament.destroy
+        end 
+        if @tournament.update(acceptable_params)
             flash[:success] = "Tournament updated."
             redirect_to @tournament
         else
@@ -59,7 +60,7 @@ class TournamentsController < ApplicationController
     private
 
     def acceptable_params
-        params.require(:tournament).permit(:name , :start, :tournament_type, player_ids: @contest.players.try(:ids))
+        params.require(:tournament).permit(:name , :start, :status, :tournament_type, player_ids: @contest.players.try(:ids))
     end
 
     def ensure_contest_owner

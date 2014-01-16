@@ -5,7 +5,9 @@
 
 <div class="form-group">
     <%= f.label :start %>
-    <%= f.datetime_select :start, {start_year: Time.now.year}, class: 'form-control' %>
+    <% Time.use_zone("America/Indianapolis") do %>
+        <%= f.datetime_select :start, {start_year: Time.now.year}, class: 'form-control' %>
+    <% end%>
 </div>
 
 <div class="form-group">
@@ -16,7 +18,11 @@
 <div class="form-group">
     <p><strong>Select Players</strong></p>
     <% @tournament.contest.players.each do |p| %>
-        <%= check_box_tag "tournament[player_ids][#{p.id}]" %>
-        <%= label_tag "tournament[player_ids][#{p.id}]", p.name %><br />
+        <% if @tournament.players.include? p %>
+            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, true %>
+        <% else %>
+            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, false %>
+        <% end %>
+        <%= label_tag "tournament[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %><br />
     <% end %>
 </div>
