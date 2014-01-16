@@ -1,7 +1,7 @@
 class PlayerTournament < ActiveRecord::Base
-    belongs_to :player
-    belongs_to :tournament
+  belongs_to :player
+  belongs_to :tournament
 
-    validates :player, presence: true
-    validates :tournament, presence: true
+  validates :player, presence: true
+  validates :tournament, presence: true
 end
