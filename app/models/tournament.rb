@@ -4,13 +4,20 @@ class Tournament < ActiveRecord::Base
     has_many :players, through: :player_tournaments 
     has_many :matches, as: :manager
 
-    accepts_nested_attributes_for :player_tournaments
 
     validates :contest,             presence: true
     validates :name,                presence: true, uniqueness: { scope: :contest }
     validates :start,               presence: true, timeliness: { type: :datetime, allow_nil: false }
     validates :tournament_type,     presence: true, inclusion: ['round robin', 'single elimination']
 
+    def player_ids=(ids)
+        puts "In player ids"
+        puts ids
+        ids.each do |p, use|
+            self.player_tournaments.build(player: Player.find(p))
+        end
+    end
+    
     def referee
         contest.referee
     end

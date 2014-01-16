@@ -1,0 +1,22 @@
+<div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+    <%= f.label :start %>
+    <%= f.datetime_select :start, {start_year: Time.now.year}, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+    <%= f.label :tournament_type, 'Tournament Type' %>
+    <%= f.select(:tournament_type, [['Round Robin','round robin']], class: 'form-control') %>
+</div>
+
+<div class="form-group">
+    <p><strong>Select Players</strong></p>
+    <% @tournament.contest.players.each do |p| %>
+        <%= check_box_tag "tournament[player_ids][#{p.id}]" %>
+        <%= label_tag "tournament[player_ids][#{p.id}]", p.name %><br />
+    <% end %>
+</div>

@@ -4,6 +4,10 @@
 <p>Description: <%= @contest.description %></p>
 <p>Managing referee: <%= link_to @contest.referee.name, @contest.referee %></p>
 <p>Contest creator: <%= link_to @contest.user.username, @contest.user %></p>
+<p>Contest Players: <%= render @contest.players %>
+<br/>
+<p>Tournaments: <%= render @contest.tournaments %>
 
+<br/>
 <p>Create <%= link_to 'New Player', new_contest_player_path(@contest) %> for this contest.</p>
 <p>Create <%= link_to 'New Tournament', new_contest_tournament_path(@contest) %> for this contest.</p>
