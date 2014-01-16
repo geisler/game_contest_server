@@ -7,6 +7,7 @@ describe PlayerMatch do
   # Tables
   it { should respond_to(:player) }
   it { should respond_to(:match) }
+
   # Attributes
   it { should respond_to(:score) }
   it { should respond_to(:result) }

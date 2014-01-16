@@ -1,4 +1,3 @@
-# TODO: Fix and tests.
 require 'spec_helper'
 
 describe Player do
