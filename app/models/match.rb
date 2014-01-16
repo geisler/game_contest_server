@@ -4,16 +4,16 @@ class Match < ActiveRecord::Base
   has_many :player_matches , inverse_of: :match
   has_many :players, through: :player_matches
 
+  accepts_nested_attributes_for :player_matches
+
   validates :manager,           presence: true
-  validates :status,            presence: true
+  validates :status,          presence: true, inclusion: %w[waiting started completed]
   validates :earliest_start,    presence: true, unless: :started?
   validates :completion,
 	    timeliness: { type: :datetime, on_or_before: :now },
 	    if: :completed?
 #  validates :match_type, presence: true
-    accepts_nested_attributes_for :player_matches
 
-    validates :status,          presence: true, inclusion: %w[waiting started completed]
 
   validate :correct_number_of_players
   validate :players_allowed_to_play, if: :tournament_match?
@@ -56,7 +56,3 @@ class Match < ActiveRecord::Base
     end
   end
 end
-
-
-
-

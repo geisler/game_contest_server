@@ -14,6 +14,8 @@ describe Match do
   it { should respond_to(:earliest_start) }
   it { should respond_to(:completion) }
 
+  # Do not do manager_type tests as it is set by rails
+
   describe "empty status" do
     before { match.status = '' }
 
@@ -109,17 +111,6 @@ describe Match do
     end
   end
 
-  describe "validations" do
-    it { should be_valid }
-    specify { expect_required_attribute(:manager) }
-  end
-
-  describe "too few players" do
-    before { match.players.clear }
-
-    it { should_not be_valid }
-  end
-
   describe "completion in past" do
     before do
       match.status = 'completed'
@@ -159,8 +150,6 @@ describe Match do
     before do
       match.players.clear
       (match.manager.referee.players_per_game - 1).times do
-        # Old way
-        #match.players << FactoryGirl.create(:player, tournaments: [match.manager])
         player = FactoryGirl.create(:player, contest: match.manager.contest)
         player.tournaments << match.manager
         match.players << player
@@ -196,6 +185,7 @@ describe Match do
     it { should_not be_valid }
   end
 
+  # Players should be allowed to play each other
   describe "match players set up properly" do
     before do
       ref = FactoryGirl.create(:referee, players_per_game: 2)
@@ -270,6 +260,11 @@ describe Match do
     end
 
     it { should_not be_valid }
+  end
+
+  describe "validations" do
+    it { should be_valid }
+    specify { expect_required_attribute(:manager) }
   end
 
 end
