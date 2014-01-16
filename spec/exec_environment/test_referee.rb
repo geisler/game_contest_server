@@ -34,7 +34,7 @@ class TestReferee
         #Opens connection to referee to wrapper
         @wrapper_connection = TCPSocket.open(wrapper_hostname, wrapper_port)
 
-        #Send port to wrapper for client communication iwht referee
+        #Send port to wrapper for client communication with referee
         @ref_server = TCPServer.open(0)
         ref_port = @ref_server.addr[1]
         @wrapper_connection.puts(ref_port)
