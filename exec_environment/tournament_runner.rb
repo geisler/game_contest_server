@@ -101,7 +101,6 @@ class TournamentRunner
             status: status,
             earliest_start: Time.now, 
             completion: Date.new,
-            match_type: MatchType.first,
         )
         puts " Tournament runner created match #"+match.id.to_s
         return match
