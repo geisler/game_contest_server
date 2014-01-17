@@ -41,7 +41,7 @@ FactoryGirl.define do
     referee
     deadline Time.current + 1.day
     description "Contest Description Here"
-    sequence(:name) { |i| "Contest#{i}" }
+    sequence(:name) { |i| "Contest #{i}" }
   end
 
   factory :tournament do

@@ -269,19 +269,17 @@ describe "PlayersPages" do
 
   describe "pagination" do
     before do
-      30.times { FactoryGirl.create(:player, contest: contest) }
+      30.times { FactoryGirl.create(:player, contest: contest); @slug = contest.slug }
 
-      @contest = contest
       visit contest_players_path(contest)
     end
 
     it { should have_content('10 players') }
     it { should have_selector('div.pagination') }
     #it { should have_link('2', href: "/contests/1/players?page=2" ) }
-#    href = "/contests/" + @contest.name + "/players?page=2"
-    it { should have_link('2', href: "/contests/Contest1/players?page=3") }
-    it { should have_link('3', href: "/contests/1/players?page=3") }
-    it { should_not have_link('4', href: "/contests/1/players?page=4") }
+    it { should have_link('2', href: "/contests/#{@slug}/players?page=2") }
+    it { should have_link('3', href: "/contests/#{@slug}/players?page=3") }
+    it { should_not have_link('4', href: "/contests/#{@slug}/players?page=4") }
   end
 
   describe "show all" do

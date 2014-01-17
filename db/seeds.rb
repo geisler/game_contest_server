@@ -23,6 +23,23 @@ player = Player.create!( user: student , contest: contest , description: "test" 
 
 player = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
 =end
+
+User.all.each do |u|
+  u.destroy
+end
+
+Contest.all.each do |c|
+  c.destroy
+end
+
+Referee.all.each do |r|
+  r.destroy
+end
+
+Player.all.each do |p|
+  p.destroy
+end
+
 creator = User.create!(username: "myAdmin" , email: "admin@admin.com" , password: "admin" ,password_confirmation: "admin", admin: true , contest_creator: false , chat_url: "www.google.com")
 
 student = User.create!(username: "j" , email: "j@s.com" , password: "s" , password_confirmation: "s" , admin: false , contest_creator: true , chat_url: "www.google.com")
@@ -32,5 +49,5 @@ referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://
 contest = Contest.create!(user: creator, referee: referee, deadline: DateTime.now + 15.minutes, description: "test", name: "Contest 1")
 
 25.times do |i|
-  player = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+  player = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player #{i}" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
 end
