@@ -52,7 +52,7 @@ class MatchRunner
                 player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
                 player_match.result = "Error"
                 player_match.save!        
-                print_results(player.name,"inconclusive",nil,"\n")                
+                print_results(player.name,"Error",nil,"\n")                
             end
             puts "   Match runner could not finish match #"+@match_id.to_s
             return
