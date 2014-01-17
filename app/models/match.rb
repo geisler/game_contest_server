@@ -9,9 +9,8 @@ class Match < ActiveRecord::Base
   validates :status,          presence: true, inclusion: %w[waiting started completed]
   validates :earliest_start,    presence: true, unless: :started?
   validates :completion,
-	    timeliness: { type: :datetime, on_or_before: :now },
-	    if: :completed?
-
+    timeliness: { type: :datetime, on_or_before: :now },
+    if: :completed?
 
   validate :correct_number_of_players
   validate :players_allowed_to_play, if: :tournament_match?
@@ -53,4 +52,5 @@ class Match < ActiveRecord::Base
       end
     end
   end
+
 end

@@ -9,19 +9,35 @@
   ProgrammingLanguage.create(name: lang)
 end
 
-%W(Challenge Tournament Friendly #{'King of the Hill'}).each do |type|
-  MatchType.create(kind: type)
+User.all.each do |u|
+  u.destroy
+end
+
+Contest.all.each do |c|
+  c.destroy
+end
+
+Tournament.all.each do |t|
+  t.destroy
+end
+
+Referee.all.each do |r|
+  r.destroy
+end
+
+Player.all.each do |p|
+  p.destroy
 end
 
 creator = User.create!(
-    username: "Contest Creator", 
+    username: "Contest Creator",
     email: "creator@test.com",
     password: "password",
     password_confirmation: "password",
     admin: true,
     contest_creator: true,
     chat_url: "www.google.com"
-) 
+)
 
 student = User.create!(
     username: "Student",
@@ -31,7 +47,7 @@ student = User.create!(
     admin: false,
     contest_creator: false,
     chat_url: "www.google.com"
-) 
+)
 
 referee = Referee.create!(
     user: creator,
@@ -110,4 +126,3 @@ player1_tournament2 = PlayerTournament.create!(player: player1, tournament: tour
 player2_tournament2 = PlayerTournament.create!(player: player2, tournament: tournament2)
 player3_tournament2 = PlayerTournament.create!(player: player3, tournament: tournament2)
 player4_tournament2 = PlayerTournament.create!(player: player4, tournament: tournament2)
-

@@ -11,7 +11,7 @@
         <%= active_link_to 'Contests', contests_path,
                    wrap_tag: :li, active: :exclusive %>
         <%= active_link_to 'Referees', referees_path,
-                   wrap_tag: :li, active: :exclusive %>            
+                   wrap_tag: :li, active: :exclusive %>
         <% if current_user and current_user.contest_creator %>
             <li class='dropdown'>
                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'>Create a New... <span class='caret' /></a>

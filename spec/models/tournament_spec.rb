@@ -105,12 +105,12 @@ describe Tournament do
   end
 
   describe "valid tournament type" do
-    describe "round robin" do 
+    describe "round robin" do
       before { tournament.tournament_type = 'round robin' }
       it { should be_valid }
     end
 
-    describe "single elimination" do 
+    describe "single elimination" do
       before { tournament.tournament_type = 'single elimination' }
       it { should be_valid }
     end

@@ -14,4 +14,13 @@ class Tournament < ActiveRecord::Base
   def referee
     contest.referee
   end
+
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  after_validation :move_friendly_id_error_to_name
+
+  def move_friendly_id_error_to_name
+    errors.add :name, *errors.delete(:friendly_id) if errors[:friendly_id].present?
+  end
+
 end

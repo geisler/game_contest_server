@@ -38,7 +38,7 @@ class ContestsController < ApplicationController
   end
 
   def show
-    @contest = Contest.find(params[:id])
+    @contest = Contest.friendly.find(params[:id])
   end
 
   def destroy
@@ -49,11 +49,11 @@ class ContestsController < ApplicationController
   private
 
   def acceptable_params
-      params.require(:contest).permit(:deadline, :description, :name,  :referee_id)
+    params.require(:contest).permit(:deadline, :description, :name,  :referee_id)
   end
 
   def ensure_contest_owner
-    @contest = Contest.find(params[:id])
+    @contest = Contest.friendly.find(params[:id])
     ensure_correct_user(@contest.user_id)
   end
 end
