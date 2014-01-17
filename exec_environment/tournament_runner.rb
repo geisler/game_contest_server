@@ -34,9 +34,9 @@ class TournamentRunner
         @tournament.save!
         case @tournament.tournament_type
             when "round robin"
-                round_robin
+                round_robin(@tournament_players)
             when "single elimination"
-                puts " ERROR: This tournament type not available yet"
+                single_elimination(@tournament_players)
                 return
             else
                 puts " ERROR: Tournament type is not recognized"
@@ -47,9 +47,9 @@ class TournamentRunner
 
     #Runs a round robin tournament with each player playing every other player twice.
     #Currently only works with 2 player games
-    def round_robin
-        @tournament_players.each do |player1|
-            @tournament_players.each do |player2|
+    def round_robin(players)
+        players.each do |player1|
+            players.each do |player2|
                 if player1 != player2 then
                     create_match(player1, player2)
                 end
@@ -58,6 +58,10 @@ class TournamentRunner
         #need to check matches completed
         #@tournament.status = "completed"
         #@tournament.save!
+    end
+    
+    def single_elimination(players)
+        puts "This many players: "+players.count.to_s
     end
 
 
@@ -71,6 +75,7 @@ class TournamentRunner
             player_matches_attributes: create_player_matches(match_participants)
         )
         puts " Tournament runner created match #"+match.id.to_s
+        return match
     end 
     
     #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
