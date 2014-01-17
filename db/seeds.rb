@@ -65,27 +65,11 @@ contest = Contest.create!(
     name: "test_contest"
 )
 
-tournament = Tournament.create!(
-    contest: contest,
-    name: "Round Robin Test Tournament",
-    start: Time.now + 30.seconds,
-    tournament_type: "round robin",
-    status: "waiting"
-)
-
-tournament2 = Tournament.create!(
-    contest: contest,
-    name: "Single Elimination Test Tournament",
-    start: Time.now + 30.seconds,
-    tournament_type: "single elimination",
-    status: "waiting"
-)
-
 player1 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "dumb_player",
+    name: "Phil",
     downloadable: false,
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
@@ -94,16 +78,16 @@ player2 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "stupid_player",
+    name: "Justin",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
 )
 player3 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "idiot_player",
+    name: "Alex",
     downloadable: false,
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
@@ -112,17 +96,63 @@ player4 = Player.create!(
     user: student,
     contest: contest,
     description: "test",
-    name: "smart_player",
+    name: "Doug",
+    downloadable: false,
+    playable: false,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+)
+player5 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test",
+    name: "David",
+    downloadable: false,
+    playable: false,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+)
+player6 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test",
+    name: "Nathan",
+    downloadable: false,
+    playable: false,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+)
+player7 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test",
+    name: "Juan",
     downloadable: false,
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
 )
 
+tournament = Tournament.create!(
+    contest: contest,
+    name: "Round Robin Test Tournament",
+    start: Time.now + 10.seconds,
+    tournament_type: "round robin",
+    status: "pending"
+)
 player1_tournament = PlayerTournament.create!(player: player1, tournament: tournament)
 player2_tournament = PlayerTournament.create!(player: player2, tournament: tournament)
 player3_tournament = PlayerTournament.create!(player: player3, tournament: tournament)
 
+tournament2 = Tournament.create!(
+    contest: contest,
+    name: "Single Elimination Test Tournament",
+    start: Time.now + 10.seconds,
+    tournament_type: "single elimination",
+    status: "waiting"
+)
 player1_tournament2 = PlayerTournament.create!(player: player1, tournament: tournament2)
 player2_tournament2 = PlayerTournament.create!(player: player2, tournament: tournament2)
 player3_tournament2 = PlayerTournament.create!(player: player3, tournament: tournament2)
 player4_tournament2 = PlayerTournament.create!(player: player4, tournament: tournament2)
+player5_tournament2 = PlayerTournament.create!(player: player5, tournament: tournament2)
+player6_tournament2 = PlayerTournament.create!(player: player6, tournament: tournament2)
+player7_tournament2 = PlayerTournament.create!(player: player7, tournament: tournament2)
+
+

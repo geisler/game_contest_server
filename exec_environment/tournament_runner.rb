@@ -30,13 +30,21 @@ class TournamentRunner
 
     def run_tournament
         puts " Tournament runner started creating matches for tournament #"+@tournament_id.to_s+" ("+@tournament.tournament_type+")"
+        if @tournament_players.count < 2
+            puts " ERROR: Can't run tournament with fewer than two players"
+            return
+        end
         @tournament.status = "pending"
         @tournament.save!
         case @tournament.tournament_type
             when "round robin"
-                round_robin
+                round_robin(@tournament_players)
             when "single elimination"
-                puts " ERROR: This tournament type not available yet"
+                if @number_of_players > 2
+                    puts " ERROR: Single elimination doesn't work with more than 2 players per game"
+                else
+                    single_elimination(@tournament_players)
+                end
                 return
             else
                 puts " ERROR: Tournament type is not recognized"
@@ -47,9 +55,9 @@ class TournamentRunner
 
     #Runs a round robin tournament with each player playing every other player twice.
     #Currently only works with 2 player games
-    def round_robin
-        @tournament_players.each do |player1|
-            @tournament_players.each do |player2|
+    def round_robin(players)
+        players.each do |player1|
+            players.each do |player2|
                 if player1 != player2 then
                     create_match(player1, player2)
                 end
@@ -59,31 +67,65 @@ class TournamentRunner
         #@tournament.status = "completed"
         #@tournament.save!
     end
-
-
+    
+    #Runs a single elimination tournament (two players per match)
+    def single_elimination(players)
+        count = players.count
+        #puts " This many players: "+count.to_s
+        if count == 2
+            return create_match(players[0],players[1])
+        elsif count == 3
+            child = create_raw_match("1")
+            create_player_matches(child,[players[0]])
+            create_match_path("Win",child,create_match(players[1],players[2]))
+            return child
+        else
+            child = create_raw_match("2")
+            half = count/2
+            create_match_path("Win",child,single_elimination(players[0..half-1]))
+            create_match_path("Win",child,single_elimination(players[half..count]))            
+            return child
+        end        
+    end
+    
+    #Creates a match and the associated player_matches
     def create_match(*match_participants)
+        match = create_raw_match()
+        create_player_matches(match,match_participants)
+        return match
+    end 
+    #Creates a match
+    def create_raw_match(status = "waiting")
         match = Match.create!(
             manager: @tournament, 
-            status: "waiting",
+            status: status,
             earliest_start: Time.now, 
             completion: Date.new,
             match_type: MatchType.first,
-            player_matches_attributes: create_player_matches(match_participants)
         )
         puts " Tournament runner created match #"+match.id.to_s
+        return match
     end 
-    
-    #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
-    #The match needs to do this because of the interdependency betwene the two records. Neether can exist without the other
-    #so they need to be created at the same time
-    def create_player_matches(match_participants)
-        player_matches_list = []
+    #Creates player matches
+    def create_player_matches(match,match_participants)
         match_participants.each do |player|
-            result = "Pending"
-            score = nil
-            player_matches_list.push({player: player, result: result, score: score})
+            PlayerMatch.create!(
+                match: match,
+                player: player,
+                result: "Pending",
+                score: nil,
+            )
+            puts "   Added "+player.name
         end
-        return player_matches_list
+    end
+    #Creates match paths to a given child on a certain condition (like "Win") from a parent match
+    def create_match_path(result,child,parent)
+        MatchPath.create!(
+            parent_match: parent,
+            child_match: child,
+            result: result
+        )
+        puts "   Added path (on "+result+") from match #"+parent.id.to_s+" to match #"+child.id.to_s
     end
 
 end

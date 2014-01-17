@@ -4,6 +4,8 @@ class Match < ActiveRecord::Base
   has_many :players, through: :player_matches
 
   accepts_nested_attributes_for :player_matches
+  has_many :parent_matches, :class_name => 'MatchPath', :foreign_key => 'child_match_id'
+  has_many :child_matches, :class_name => 'MatchPath', :foreign_key => 'parent_match_id'
 
   validates :manager,           presence: true
   validates :status,          presence: true, inclusion: %w[waiting started completed]
@@ -29,11 +31,7 @@ class Match < ActiveRecord::Base
 
   def correct_number_of_players
     return if self.player_matches.nil? || self.manager.nil?
-
-    unless self.player_matches.length == self.manager.referee.players_per_game
-      errors.add(:players, "number of players must equal " + self.manager.referee.players_per_game.to_s + ": You have " + self.player_matches.length.to_s + " players.")
-    end
-
+      errors.add(:players, "number of players must equal " + self.manager.referee.players_per_game.to_s + " you have " + self.player_matches.length.to_s + " players") unless self.player_matches.length <= self.manager.referee.players_per_game
   end
 
   def tournament_match?
