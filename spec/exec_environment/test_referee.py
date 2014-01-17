@@ -1,9 +1,8 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 #test_player.py
 #Douglas Brown
 #1/15/2014
-#
 
 #imports
 from optparse import OptionParser

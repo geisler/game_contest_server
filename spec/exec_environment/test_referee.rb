@@ -31,7 +31,7 @@ class TestReferee
         wrapper_hostname = 'localhost'
         wrapper_port = $options[:port]
 
-        #Opens connection to referee to wrapper
+        #Opens connection from referee to wrapper
         @wrapper_connection = TCPSocket.open(wrapper_hostname, wrapper_port)
 
         #Send port to wrapper for client communication with referee
