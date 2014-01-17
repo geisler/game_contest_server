@@ -8,7 +8,7 @@ class Match < ActiveRecord::Base
   has_many :child_matches, :class_name => 'MatchPath', :foreign_key => 'parent_match_id'
 
   validates :manager,           presence: true
-  validates :status,            presence: true 
+  validates :status,            presence: true
   validates :earliest_start,    presence: true, unless: :started?
   validates :completion,
     timeliness: { type: :datetime, on_or_before: :now },
