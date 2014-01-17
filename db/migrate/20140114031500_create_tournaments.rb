@@ -6,8 +6,10 @@ class CreateTournaments < ActiveRecord::Migration
       t.datetime :start
       t.string :name
       t.string :status
+      t.string :slug
 
       t.timestamps
     end
+    add_index :tournaments, :slug, unique: true
   end
 end

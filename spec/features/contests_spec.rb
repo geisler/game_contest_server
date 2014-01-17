@@ -211,6 +211,98 @@ describe "ContestsPages" do
     it { should_not have_link('4', href: "/contests?page=4") }
   end
   
+  describe 'search_error'do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:contest, name: "searchtest1")
+      FactoryGirl.create(:contest, name: "peter1")
+      
+      visit contests_path
+      fill_in 'search', with:':'
+      click_button submit
+    end
+      after(:all)  { User.delete_all }
+    it { should have_content("0 contests") }
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+    it {should have_alert(:info) }
+  end
+      
+      
+  
+   describe 'search_parcial' do
+    let(:submit) {"Search"}
+    before do
+      FactoryGirl.create(:contest, name: "searchtest1")
+      FactoryGirl.create(:contest, name: "peter1")
+      FactoryGirl.create(:contest, name: "searchtest2")
+      FactoryGirl.create(:contest, name: "peter2")
+      FactoryGirl.create(:contest, name: "searchtest9")
+      FactoryGirl.create(:contest, name: "peter9")
+      FactoryGirl.create(:contest, name: "searchtest4")
+      FactoryGirl.create(:contest, name: "peter4")
+      FactoryGirl.create(:contest, name: "searchtest5")
+      FactoryGirl.create(:contest, name: "peter5")
+      FactoryGirl.create(:contest, name: "searchtest6")
+      FactoryGirl.create(:contest, name: "peter6")
+      FactoryGirl.create(:contest, name: "searchtest7")
+      FactoryGirl.create(:contest, name: "peter7")
+      FactoryGirl.create(:contest, name: "searchtest8")
+      FactoryGirl.create(:contest, name: "peter8")
+      visit contests_path
+      fill_in 'search', with:'te'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+     it { should have_content("10 contests") }
+    it { should have_link('2') }
+    it { should_not have_link('3') }
+   # it { should_not have_link('3', href: "/contests?utf8=✓&direction=&sort=&search=te&commit=Search") }
+  end
+  
+  describe 'search_pagination' do
+    let(:submit) {"Search"}
+    before do
+       FactoryGirl.create(:contest, name: "searchtest1")
+      FactoryGirl.create(:contest, name: "peter1")
+      FactoryGirl.create(:contest, name: "searchtest2")
+      FactoryGirl.create(:contest, name: "peter2")
+      FactoryGirl.create(:contest, name: "searchtest3")
+      FactoryGirl.create(:contest, name: "peter3")
+      FactoryGirl.create(:contest, name: "searchtest4")
+      FactoryGirl.create(:contest, name: "peter4")
+      FactoryGirl.create(:contest, name: "searchtest5")
+      FactoryGirl.create(:contest, name: "peter5")
+      FactoryGirl.create(:contest, name: "searchtest6")
+      FactoryGirl.create(:contest, name: "peter6")
+      visit contests_path
+      fill_in 'search', with:'searchtest4'
+      click_button submit
+    end
+    after(:all)  { User.delete_all }
+    it { should have_content("1 contest") }
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+  end
+  
+  describe 'search' do
+    let(:submit) {"Search"}
+    
+    before do
+      FactoryGirl.create(:contest, name: "searchtest")
+      visit contests_path
+      fill_in 'search', with:'searchtest'
+      click_button submit
+    end
+
+    it 'should return results' do
+      should have_content('searchtest')
+      should have_content('1 contest')
+      
+   end
+   end
+  
+  
+  
+  
   describe "show" do
     let (:contest) { FactoryGirl.create(:contest) }
     

@@ -1,10 +1,19 @@
 <h1>List of Players for <%= @contest.name %></h1>
-<h3><%= pluralize(@players.length, 'player', 'players') %></h3>
+<%= form_tag contest_players_path, :method => 'get', :id => "players_search" do %>
+  <%= hidden_field_tag :direction, params[:direction] %>
+  <%= hidden_field_tag :sort, params[:sort] %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+  <h3><%= pluralize(@players.length, 'player', 'players') %></h3>
 
-<%= will_paginate %>
-
-<div id="pagination">
-  <%= render @players %>
+  <div id= "pagination">
+    <%if @players.blank?%>
+    <%="There are no players available!"%>
+    <%else%>
+      <il><%= render @players %></il>
+      <%= will_paginate%>
+    <%end%>
 </div>
-  
-<%= will_paginate %>
+<%end%>

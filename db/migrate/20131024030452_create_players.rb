@@ -5,8 +5,10 @@ class CreatePlayers < ActiveRecord::Migration
       t.references :contest, index: true
       t.string :code_path
       t.references :programming_language, index: true
+      t.string :slug
 
       t.timestamps
     end
+    add_index :players, :slug, unique: true
   end
 end

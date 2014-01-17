@@ -29,6 +29,7 @@ end
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'active_link_to'
 gem 'validates_timeliness', github: 'softace/validates_timeliness', branch: 'support_for_rails4'
+gem 'friendly_id', '~> 5.0.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -62,6 +63,10 @@ gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 #gem 'bootstrap-will_paginate', '0.0.9'
 gem 'kaminari'
+
+#for backend job scheduling
+gem 'daemons'
+gem 'clockwork'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

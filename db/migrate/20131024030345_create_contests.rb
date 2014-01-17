@@ -5,8 +5,10 @@ class CreateContests < ActiveRecord::Migration
       t.references :contest_manager, index: true
       t.text :description
       t.string :documentation_path
+      t.string :slug
 
       t.timestamps
     end
+    add_index :contests, :slug, unique: true
   end
 end

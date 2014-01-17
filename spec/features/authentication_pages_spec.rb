@@ -29,7 +29,7 @@ describe "AuthenticationPages" do
       end
 
       #  Too hard
-#      it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
+      #      it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Settings', href: edit_user_path(user)) }
       it { should have_link('Log Out', href: logout_path) }
@@ -44,7 +44,7 @@ describe "AuthenticationPages" do
         before { click_link 'Log Out' }
 
         #  Too hard
-#        it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
+        #        it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
         it { should have_button('Log In') }
         it { should have_button('Sign Up') }
         it { should_not have_link('Log Out', href: logout_path) }

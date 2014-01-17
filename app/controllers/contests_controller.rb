@@ -3,9 +3,12 @@ class ContestsController < ApplicationController
   before_action :ensure_contest_creator, except: [:index, :show]
   before_action :ensure_contest_owner, only: [:edit, :update, :destroy]
 
+
   def index
-    #@contests = Contest.all
-    @contests = Contest.paginate(page: params[:page], :per_page => 10)
+    @contests = Contest.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+    if @contests.length == 0
+      flash.now[:info] = "There were no contests that matched your search. Please try again!"
+    end
   end
 
   def new
@@ -35,7 +38,7 @@ class ContestsController < ApplicationController
   end
 
   def show
-    @contest = Contest.find(params[:id])
+    @contest = Contest.friendly.find(params[:id])
   end
 
   def destroy
@@ -45,12 +48,12 @@ class ContestsController < ApplicationController
 
   private
 
-    def acceptable_params
-      params.require(:contest).permit(:deadline,  :description, :name,  :referee_id)
-    end
+  def acceptable_params
+    params.require(:contest).permit(:deadline, :description, :name,  :referee_id)
+  end
 
-    def ensure_contest_owner
-      @contest = Contest.find(params[:id])
-      ensure_correct_user(@contest.user_id)
-    end
+  def ensure_contest_owner
+    @contest = Contest.friendly.find(params[:id])
+    ensure_correct_user(@contest.user_id)
+  end
 end

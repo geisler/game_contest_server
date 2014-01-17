@@ -56,6 +56,9 @@ GEM
       timers (~> 1.1.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
+    clockwork (0.7.0)
+      activesupport
+      tzinfo (~> 0.3.35)
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -64,6 +67,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    daemons (1.1.9)
     diff-lcs (1.2.5)
     em-websocket (0.5.0)
       eventmachine (>= 0.12.9)
@@ -80,6 +84,8 @@ GEM
       i18n (~> 0.5)
     ffi (1.9.3)
     formatador (0.2.4)
+    friendly_id (5.0.2)
+      activerecord (~> 4.0.0)
     guard (2.2.5)
       formatador (>= 0.2.4)
       listen (~> 2.1)
@@ -222,9 +228,12 @@ DEPENDENCIES
   bootstrap-sass!
   capybara
   childprocess
+  clockwork
   coffee-rails (~> 4.0.0)
+  daemons
   factory_girl_rails
   faker (= 1.1.2)
+  friendly_id (~> 5.0.0)
   guard-livereload
   guard-rspec
   guard-spork
