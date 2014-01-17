@@ -1,6 +1,6 @@
 class Match < ActiveRecord::Base
   belongs_to :manager, polymorphic: true
-  has_many :player_matches , inverse_of: :match
+  has_many :player_matches , inverse_of: :match , :dependent => :destroy
   has_many :players, through: :player_matches
 
   accepts_nested_attributes_for :player_matches
