@@ -34,7 +34,7 @@ class TournamentRunner
             puts " ERROR: Can't run tournament with fewer than two players"
             return
         end
-        @tournament.status = "pending"
+        @tournament.status = "started"
         @tournament.save!
         case @tournament.tournament_type
             when "round robin"
