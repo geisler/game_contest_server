@@ -41,17 +41,22 @@ class MatchRunner
     #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
     def send_results_to_db(results)
         puts "   Match runner writing results match #"+@match_id.to_s
-        results.each do |player_name, player_result|
-            player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
-            player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match.id} AND player_id = #{player.id}").first
-            player_match.result = player_result["result"]
-            player_match.score = player_result["score"]
-            puts "    "+(player.name).ljust(24).slice(0,23)+
-                 " Result: "+player_match.result.ljust(10).slice(0,9)+
-                 " Score: "+player_match.score.to_s
-            player_match.save!
+        if results.include? "INCONCLUSIVE"
+            #TODO Better handling of errors from bad matches
+            return
+        else
+            results.each do |player_name, player_result|
+                player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+                player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match.id} AND player_id = #{player.id}").first
+                player_match.result = player_result["result"]
+                player_match.score = player_result["score"]
+                puts "    "+(player.name).ljust(24).slice(0,23)+
+                     " Result: "+player_match.result.ljust(10).slice(0,9)+
+                     " Score: "+player_match.score.to_s
+                player_match.save!
+            end
+            puts "   Match runner finished match #"+@match_id.to_s
         end
-        puts "   Match runner finished match #"+@match_id.to_s
     end
 end 
 
