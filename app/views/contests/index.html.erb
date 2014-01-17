@@ -6,14 +6,18 @@
     <%= text_field_tag :search, params[:search] %>
     <%= submit_tag "Search", :description => nil %>
   </p>
-  <h3><%= pluralize(@contests.length, 'contest', 'contests') %></h3>
-
-  <div id= "pagination">
-    <%if @contests.blank?%>
-    <%="There are no contests available!"%>
-    <%else%>
-      <il><%= render @contests %></il>
-      <%= will_paginate%>
-    <%end%>
-</div>
 <%end%>
+
+<h3><%= pluralize(@contests.length, 'contest', 'contests') %></h3>
+
+<div id= "pagination">
+  <%if @contests.blank?%>
+  <h3><%="There are no contests available!"%></h3>
+  <%else%>
+  <% @contests.each do %>
+  <li>
+    <%= render @contests %> | <%= link_to 'edit', edit_contest_path(@contest.user) %></li>
+  <%end%>
+  <%= will_paginate%>
+  <%end%>
+</div>
