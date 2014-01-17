@@ -1,0 +1,8 @@
+<h1>Update Tournament </h1>
+
+<%= form_for @tournament do |f| %>
+    <%= render 'shared/error_messages', object: @tournament %>
+    <%= render 'fields', f: f %>
+
+    <%= f.submit "Update Tournament", class: 'btn btn-primary' %>
+<% end %>

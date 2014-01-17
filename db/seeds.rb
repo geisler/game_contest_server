@@ -121,9 +121,4 @@ player3_tournament2 = PlayerTournament.create!(player: player3, tournament: tour
 player4_tournament2 = PlayerTournament.create!(player: player4, tournament: tournament2)
 player5_tournament2 = PlayerTournament.create!(player: player5, tournament: tournament2)
 
-=begin
-    This is a multi 
-    line
-    comment
-=end
 

@@ -1,7 +1,7 @@
 class Match < ActiveRecord::Base
   belongs_to :manager, polymorphic: true
   belongs_to :match_type
-  has_many :player_matches , inverse_of: :match
+  has_many :player_matches , inverse_of: :match , :dependent => :destroy
   has_many :players, through: :player_matches
 
   has_many :parent_matches, :class_name => 'MatchPath', :foreign_key => 'parent_match_id'

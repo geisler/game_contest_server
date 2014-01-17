@@ -9,6 +9,7 @@ GameContestServer::Application.routes.draw do
   resources :contests do
     resources :players, shallow: true
     resources :matches, only: [:show, :index], shallow: true
+    resources :tournaments,  shallow: true
   end
 
   resources :sessions, only: [:new, :create, :destroy]
