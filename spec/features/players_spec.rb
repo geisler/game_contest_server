@@ -268,22 +268,24 @@ describe "PlayersPages" do
   end
 
   describe "pagination" do
+    let (:slug) { contest.slug }
+
     before do
-      30.times { FactoryGirl.create(:player, contest: contest); @slug = contest.slug }
+      30.times { FactoryGirl.create(:player, contest: contest) }
 
       visit contest_players_path(contest)
     end
 
     it { should have_content('10 players') }
     it { should have_selector('div.pagination') }
-    #it { should have_link('2', href: "/contests/1/players?page=2" ) }
-    it { should have_link('2', href: "/contests/#{@slug}/players?page=2") }
-    it { should have_link('3', href: "/contests/#{@slug}/players?page=3") }
-    it { should_not have_link('4', href: "/contests/#{@slug}/players?page=4") }
+    it { should have_link('2', href: "/contests/#{slug}/players?page=2") }
+    it { should have_link('3', href: "/contests/#{slug}/players?page=3") }
+    it { should_not have_link('4', href: "/contests/#{slug}/players?page=4") }
   end
 
   describe 'search_error'do
     let(:submit) {"Search"}
+
     before do
       FactoryGirl.create(:player, name: "searchtest1", contest: contest)
       FactoryGirl.create(:player, name: "peter1", contest: contest)
@@ -327,6 +329,7 @@ describe "PlayersPages" do
     # it { should_not have_link('3', href: "/contests?utf8=✓&direction=&sort=&search=te&commit=Search") }
   end
 
+  # Ummm. What is this? TODO
   describe 'search_pagination' do
     let(:submit) {"Search"}
     before do

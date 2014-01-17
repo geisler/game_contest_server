@@ -28,8 +28,7 @@ describe "AuthenticationPages" do
         click_button 'Log In'
       end
 
-      #  Too hard
-      #      it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
+      it { should have_selector(:xpath, "//li/a", text: 'Account') }
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Settings', href: edit_user_path(user)) }
       it { should have_link('Log Out', href: logout_path) }
@@ -43,10 +42,9 @@ describe "AuthenticationPages" do
       describe "followed by logout" do
         before { click_link 'Log Out' }
 
-        #  Too hard
-        #        it { should have_selector(:xpath, "//li/a/", text: 'Account ') }
         it { should have_button('Log In') }
         it { should have_button('Sign Up') }
+        it { should_not have_selector(:xpath, "//li/a", text: 'Account') }
         it { should_not have_link('Log Out', href: logout_path) }
         it { should_not have_link('Settings') }
         it { should_not have_link('Profile') }
@@ -68,6 +66,14 @@ describe "AuthorizationPages" do
         it_behaves_like "redirects to a login" do
           let (:path) { edit_user_path(user) }
           let (:method) { :patch }
+          let (:http_path) { user_path(user) }
+        end
+      end
+
+      describe "delete action" do
+        it_behaves_like "redirects to a login", skip_browser: true do
+          let (:user) { FactoryGirl.create(:user) }
+          let (:method) { :delete }
           let (:http_path) { user_path(user) }
         end
       end
@@ -294,10 +300,8 @@ describe "AuthorizationPages" do
       end
     end
 
-    pending "edit action (other)" do
+    pending "edit action (other admin)" do
     end
 
-    pending "update action (other)", type: :request do
-    end
   end
 end
