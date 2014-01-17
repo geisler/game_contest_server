@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 
+=begin
 
 describe "TournamentRunner" do
     before :each do
@@ -28,6 +29,8 @@ describe "TournamentRunner" do
         end
     end
 end
+
+=end
 
 
 #Run tournament, should create matches and PlayerMatches
