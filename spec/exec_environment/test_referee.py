@@ -37,7 +37,7 @@ def run():
         addresses.append(addr)
         #print 'Connected with ' + addresses[i][0] + ':' + str(addresses[i][1])
         name = conn.recv(1024)
-        names.append(name)
+        names.append(name.strip())
         #print "Player "+str(i)+" is named "+name
         
     #print "Running game"
@@ -59,10 +59,10 @@ def move(conn,playernum):
     #print names[playernum]+"'s turn"
     conn.send('move\n') 
     while True:
-        reply = conn.recv(1024)
-        if reply.strip()!= "":
+        reply = conn.recv(1024).strip()
+        if reply != "":
             break
-    #print names[playernum]+" guessed "+reply.strip()
+    #print names[playernum]+" guessed "+reply
     if check_win(reply):
         inform_players_of_win(playernum)
         #report_results(player_name)

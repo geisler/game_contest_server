@@ -53,7 +53,8 @@ class MatchWrapper
 
         #Start players
         @players.each do |player|
-            @child_list.push(Process.spawn("#{player.file_location} -p #{@client_port} --name #{player.name}") )
+            #Name must be given before port because it crashes for mysterious ("--name not found") reasons otherwise
+            @child_list.push(Process.spawn("#{player.file_location}  --name #{player.name} -p #{@client_port} "))
         end
         
         begin

@@ -101,6 +101,15 @@ player4 = Player.create!(
     playable: false,
     file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
 )
+player5 = Player.create!(
+    user: student,
+    contest: contest,
+    description: "test",
+    name: "another_python_player",
+    downloadable: false,
+    playable: false,
+    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+)
 
 player1_tournament = PlayerTournament.create!(player: player1, tournament: tournament)
 player2_tournament = PlayerTournament.create!(player: player2, tournament: tournament)
@@ -110,6 +119,7 @@ player1_tournament2 = PlayerTournament.create!(player: player1, tournament: tour
 player2_tournament2 = PlayerTournament.create!(player: player2, tournament: tournament2)
 player3_tournament2 = PlayerTournament.create!(player: player3, tournament: tournament2)
 player4_tournament2 = PlayerTournament.create!(player: player4, tournament: tournament2)
+player5_tournament2 = PlayerTournament.create!(player: player5, tournament: tournament2)
 
 =begin
     This is a multi 

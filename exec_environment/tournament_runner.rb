@@ -30,13 +30,21 @@ class TournamentRunner
 
     def run_tournament
         puts " Tournament runner started creating matches for tournament #"+@tournament_id.to_s+" ("+@tournament.tournament_type+")"
+        if @tournament_players.count < 2
+            puts " ERROR: Can't run tournament with fewer than two players"
+            return
+        end
         @tournament.status = "pending"
         @tournament.save!
         case @tournament.tournament_type
             when "round robin"
                 round_robin(@tournament_players)
             when "single elimination"
-                single_elimination(@tournament_players)
+                if @number_of_players > 2
+                    puts " ERROR: Single elimination doesn't work with more than 2 players per game"
+                else
+                    single_elimination(@tournament_players)
+                end
                 return
             else
                 puts " ERROR: Tournament type is not recognized"
@@ -60,36 +68,50 @@ class TournamentRunner
         #@tournament.save!
     end
     
+    #Runs a single elimination tournament (two players per match)
     def single_elimination(players)
-        puts "This many players: "+players.count.to_s
+        count = players.count
+        puts "This many players: "+count.to_s
+        if count == 2
+            #return create_match(players[0],players[1])
+        elsif count == 3
+            #match = create_match(players[0],players[1])
+        else
+            half = count/2
+            single_elimination(players[0..half-1])
+            single_elimination(players[half..count])
+        end        
     end
-
-
+    
+    #Creates a match and the associated player_matches
     def create_match(*match_participants)
+        match = create_raw_match(match_participants)
+        create_player_matches(match,match_participants)
+    end 
+    #Creates a match
+    def create_raw_match(match_participants,status = "waiting")
         match = Match.create!(
             manager: @tournament, 
-            status: "waiting",
+            status: status,
             earliest_start: Time.now, 
             completion: Date.new,
             match_type: MatchType.first,
-            player_matches_attributes: create_player_matches(match_participants)
         )
         puts " Tournament runner created match #"+match.id.to_s
         return match
     end 
-    
-    #Returns a dictionary with the attributes necessary for a match to create stub PlayerMatches as it it being created.
-    #The match needs to do this because of the interdependency betwene the two records. Neether can exist without the other
-    #so they need to be created at the same time
-    def create_player_matches(match_participants)
-        player_matches_list = []
+    #Creates player matches
+    def create_player_matches(match,match_participants)
         match_participants.each do |player|
-            result = "Pending"
-            score = nil
-            player_matches_list.push({player: player, result: result, score: score})
+            PlayerMatch.create!(
+                match: match,
+                player: player,
+                result: "Pending",
+                score: nil,
+            )
+            puts "   Added "+player.name
         end
-        return player_matches_list
-    end
+    end    
 
 end
 

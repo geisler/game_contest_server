@@ -40,7 +40,7 @@ class Match < ActiveRecord::Base
     end
 =end
 
-      errors.add(:players, "number of players must equal " + self.manager.referee.players_per_game.to_s + " you have " + self.player_matches.length.to_s + " players") unless self.player_matches.length == self.manager.referee.players_per_game
+      errors.add(:players, "number of players must equal " + self.manager.referee.players_per_game.to_s + " you have " + self.player_matches.length.to_s + " players") unless self.player_matches.length <= self.manager.referee.players_per_game
 
   end
 end
