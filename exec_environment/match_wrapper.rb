@@ -37,7 +37,7 @@ class MatchWrapper
 
         #Wait for referee to tell wrapper_server what port to start players on
         begin
-            Timeout::timeout(10) do
+            Timeout::timeout(3) do
                 #Wait for referee to connect
                 @ref_client = @wrapper_server.accept
                 @client_port = nil #TODO is there a better way to wait for this?
@@ -46,7 +46,7 @@ class MatchWrapper
                 end
             end
         rescue Timeout::Error
-            @results = "INCONCLUSIVE: Referee failed to provide a port!"
+            @results = "INCONCLUSIVE: Referee failed to provide a port!"  
             reap_children
             return
         end
@@ -58,7 +58,7 @@ class MatchWrapper
         end
         
         begin
-            Timeout::timeout(10) do
+            Timeout::timeout(@max_match_time) do
                 self.wait_for_result
             end
         rescue Timeout::Error

@@ -3,7 +3,7 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+require '/home/dbrown/game_contest_server_jterm/exec_environment/match_wrapper.rb'
 #require './config/boot'
 #require './config/environment'
 require 'optparse'
@@ -26,7 +26,7 @@ class MatchRunner
        @match_participants = @match.players
        @referee = @match.manager.contest.referee
        @number_of_players = @referee.players_per_game
-       @max_match_time = 30.seconds
+       @max_match_time = 8.seconds
        @tournament = @match.manager
     end 
     
@@ -50,9 +50,9 @@ class MatchRunner
             puts "   "+results
             @match_participants.each do |player|
                 player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
-                player_match.result = "inconclusive"
+                player_match.result = "Error"
                 player_match.save!        
-                print_results(player.name,"inconclusive",nil)                
+                print_results(player.name,"Error",nil,"\n")                
             end
             puts "   Match runner could not finish match #"+@match_id.to_s
             return
@@ -82,10 +82,11 @@ class MatchRunner
     end
     
     #Prints a name, result, and score
-    def print_results(name,result,score)    
+    def print_results(name,result,score,separator="")    
         print "    "+name.ljust(24).slice(0,23)+
          " Result: "+result.ljust(10).slice(0,9)+
-         " Score: "+score.to_s.ljust(10).slice(0,9)
+         " Score: "+score.to_s.ljust(10).slice(0,9)+
+         separator
     end
     
     #Creates player_match and updates the match status to waiting if necessary 
