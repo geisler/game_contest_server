@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :username, use: :slugged
-  after_validation :move_friendly_id_error_to_name
+  after_validation :move_friendly_id_error_to_username
 
-  def move_friendly_id_error_to_name
+  def move_friendly_id_error_to_username
     errors.add :username, *errors.delete(:friendly_id) if errors[:friendly_id].present?
   end
 end

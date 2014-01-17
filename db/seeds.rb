@@ -26,3 +26,11 @@ player = Player.create!( user: student , contest: contest , description: "test" 
 creator = User.create!(username: "myAdmin" , email: "admin@admin.com" , password: "admin" ,password_confirmation: "admin", admin: true , contest_creator: false , chat_url: "www.google.com")
 
 student = User.create!(username: "j" , email: "j@s.com" , password: "s" , password_confirmation: "s" , admin: false , contest_creator: true , chat_url: "www.google.com")
+
+referee = Referee.create!(user: creator , name: "Guess W!" , rules_url: "http://www.google.com" , players_per_game: 2 , file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s)
+
+contest = Contest.create!(user: creator, referee: referee, deadline: DateTime.now + 15.minutes, description: "test", name: "Contest 1")
+
+25.times do |i|
+  player = Player.create!( user: student , contest: contest , description: "test" , name: "dumb_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
+end

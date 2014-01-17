@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.integer  "user_id"
     t.integer  "referee_id"
     t.text     "description"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deadline"
@@ -24,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   end
 
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
+  add_index "contests", ["slug"], name: "index_contests_on_slug", unique: true
   add_index "contests", ["user_id"], name: "index_contests_on_user_id"
 
   create_table "friendly_id_slugs", force: true do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.integer  "contest_id"
     t.string   "file_location"
     t.integer  "programming_language_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
@@ -86,6 +89,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
 
   add_index "players", ["contest_id"], name: "index_players_on_contest_id"
   add_index "players", ["programming_language_id"], name: "index_players_on_programming_language_id"
+  add_index "players", ["slug"], name: "index_players_on_slug", unique: true
   add_index "players", ["user_id"], name: "index_players_on_user_id"
 
   create_table "programming_languages", force: true do |t|
@@ -97,6 +101,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   create_table "referees", force: true do |t|
     t.string   "file_location"
     t.integer  "programming_language_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
@@ -106,6 +111,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   end
 
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
+  add_index "referees", ["slug"], name: "index_referees_on_slug", unique: true
   add_index "referees", ["user_id"], name: "index_referees_on_user_id"
 
   create_table "tournaments", force: true do |t|
@@ -114,9 +120,12 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.datetime "start"
     t.string   "name"
     t.string   "status"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "tournaments", ["slug"], name: "index_tournaments_on_slug", unique: true
 
   create_table "users", force: true do |t|
     t.string   "username"

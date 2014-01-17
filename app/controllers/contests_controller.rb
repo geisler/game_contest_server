@@ -35,7 +35,7 @@ class ContestsController < ApplicationController
   end
 
   def show
-    @contest = Contest.find(params[:id])
+    @contest = Contest.friendly.find(params[:id])
   end
 
   def destroy
@@ -50,7 +50,7 @@ class ContestsController < ApplicationController
     end
 
     def ensure_contest_owner
-      @contest = Contest.find(params[:id])
+      @contest = Contest.friendly.find(params[:id])
       ensure_correct_user(@contest.user_id)
     end
 end

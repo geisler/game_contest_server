@@ -35,27 +35,26 @@ class RefereesController < ApplicationController
   end
 
   def show
-    @referee = Referee.find(params[:id])
+    @referee = Referee.friendly.find(params[:id])
   end
 
   def destroy
     @referee.destroy
     flash[:success] = 'Referee deleted.'
-#    redirect_to current_user
     redirect_to referees_path
   end
 
   private
 
-    def acceptable_params
-      params.require(:referee).permit(:name,
-				      :rules_url,
-				      :players_per_game,
-				      :upload)
-    end
+  def acceptable_params
+    params.require(:referee).permit(:name,
+                                    :rules_url,
+                                    :players_per_game,
+                                    :upload)
+  end
 
-    def ensure_referee_owner
-      @referee = Referee.find(params[:id])
-      ensure_correct_user(@referee.user_id)
-    end
+  def ensure_referee_owner
+    @referee = Referee.friendly.find(params[:id])
+    ensure_correct_user(@referee.user_id)
+  end
 end
