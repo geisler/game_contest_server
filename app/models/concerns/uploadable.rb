@@ -19,6 +19,7 @@ module Uploadable
 					   SecureRandom.hex).to_s
       IO.copy_stream(uploaded_io, self.file_location)
       system("chmod +x #{self.file_location}")
+      system("dos2unix -q #{self.file_location}")
     end
   end
 

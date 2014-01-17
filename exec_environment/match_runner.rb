@@ -3,7 +3,7 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/dbrown/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb'
 #require './config/boot'
 #require './config/environment'
 require 'optparse'
@@ -45,28 +45,33 @@ class MatchRunner
 
     #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
     def send_results_to_db(results)
-        #Get potential match paths
-        child_matches = MatchPath.find_by_sql("SELECT result,child_match_id FROM match_paths WHERE match_paths.parent_match_id = #{@match_id}")
-        #Write results
-        puts "   Match runner writing results match #"+@match_id.to_s
-        results.each do |player_name, player_result|
-            player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
-            player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
-            player_match.result = player_result["result"]
-            player_match.score = player_result["score"]
-            print "    "+(player.name).ljust(24).slice(0,23)+
-                 " Result: "+player_match.result.ljust(10).slice(0,9)+
-                 " Score: "+player_match.score.to_s.ljust(10).slice(0,9)
-            player_match.save!  
-            #Create match paths
-            child_matches.each do |data|
-                if data.result == player_match.result
-                    create_player_match(Match.find(data.child_match_id),player)
+        if results.include? "INCONCLUSIVE"
+            #TODO Better handling of errors from bad matches
+            return
+        else
+            #Get potential match paths
+            child_matches = MatchPath.find_by_sql("SELECT result,child_match_id FROM match_paths WHERE match_paths.parent_match_id = #{@match_id}")
+            #Write results
+            puts "   Match runner writing results match #"+@match_id.to_s
+            results.each do |player_name, player_result|
+                player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+                player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
+                player_match.result = player_result["result"]
+                player_match.score = player_result["score"]
+                print "    "+(player.name).ljust(24).slice(0,23)+
+                     " Result: "+player_match.result.ljust(10).slice(0,9)+
+                     " Score: "+player_match.score.to_s.ljust(10).slice(0,9)
+                player_match.save!  
+                #Create match paths
+                child_matches.each do |data|
+                    if data.result == player_match.result
+                        create_player_match(Match.find(data.child_match_id),player)
+                    end
                 end
+                print "\n"
             end
-            print "\n"
+            puts "   Match runner finished match #"+@match_id.to_s
         end
-        puts "   Match runner finished match #"+@match_id.to_s
     end
     
     #Creates player match and updates the match status to waiting if necessary 
