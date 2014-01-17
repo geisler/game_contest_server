@@ -58,7 +58,7 @@ class MatchWrapper
         end
         
         begin
-            Timeout::timeout(100) do
+            Timeout::timeout(10) do
                 self.wait_for_result
             end
         rescue Timeout::Error
