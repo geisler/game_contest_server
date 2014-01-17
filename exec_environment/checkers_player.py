@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 EMPTY=0
 INCs=[-1,1]
 VALID_RANGE=range(8)
@@ -8,6 +10,7 @@ from math import *
 import random
 import game_contest_server_checkers
 
+print "here"
 def getPossibles(CB,player):
     possibles={}
     if player=="black":

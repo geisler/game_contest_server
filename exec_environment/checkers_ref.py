@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+
+
 import cTurtle
 import math
 import random
