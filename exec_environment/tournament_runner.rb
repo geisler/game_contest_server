@@ -71,25 +71,31 @@ class TournamentRunner
     #Runs a single elimination tournament (two players per match)
     def single_elimination(players)
         count = players.count
-        puts "This many players: "+count.to_s
+        #puts " This many players: "+count.to_s
         if count == 2
-            #return create_match(players[0],players[1])
+            return create_match(players[0],players[1])
         elsif count == 3
-            #match = create_match(players[0],players[1])
+            child = create_raw_match("1")
+            create_player_matches(child,[players[0]])
+            create_match_path("Win",child,create_match(players[1],players[2]))
+            return child
         else
+            child = create_raw_match("2")
             half = count/2
-            single_elimination(players[0..half-1])
-            single_elimination(players[half..count])
+            create_match_path("Win",child,single_elimination(players[0..half-1]))
+            create_match_path("Win",child,single_elimination(players[half..count]))            
+            return child
         end        
     end
     
     #Creates a match and the associated player_matches
     def create_match(*match_participants)
-        match = create_raw_match(match_participants)
+        match = create_raw_match()
         create_player_matches(match,match_participants)
+        return match
     end 
     #Creates a match
-    def create_raw_match(match_participants,status = "waiting")
+    def create_raw_match(status = "waiting")
         match = Match.create!(
             manager: @tournament, 
             status: status,
@@ -111,7 +117,16 @@ class TournamentRunner
             )
             puts "   Added "+player.name
         end
-    end    
+    end
+    #Creates match paths to a given child on a certain condition (like "Win") from a parent match
+    def create_match_path(result,child,parent)
+        MatchPath.create!(
+            parent_match: parent,
+            child_match: child,
+            result: result
+        )
+        puts "   Added path (on "+result+") from match #"+parent.id.to_s+" to match #"+child.id.to_s
+    end
 
 end
 
