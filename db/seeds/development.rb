@@ -114,7 +114,7 @@ tournament = Tournament.create!(
     name: "Round Robin Test Tournament",
     start: Time.now + 10.seconds,
     tournament_type: "round robin",
-    status: "started"
+    status: "waiting"
 )
 player1_tournament = PlayerTournament.create!(player: player1, tournament: tournament)
 player2_tournament = PlayerTournament.create!(player: player2, tournament: tournament)

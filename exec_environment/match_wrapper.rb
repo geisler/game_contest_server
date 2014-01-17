@@ -37,7 +37,7 @@ class MatchWrapper
 
         #Wait for referee to tell wrapper_server what port to start players on
         begin
-            Timeout::timeout(30) do
+            Timeout::timeout(10) do
                 #Wait for referee to connect
                 @ref_client = @wrapper_server.accept
                 @client_port = nil #TODO is there a better way to wait for this?
@@ -90,8 +90,3 @@ class MatchWrapper
         #TODO - reap children that crash!
     end 
 end
-
-#match_wrapper = MatchWrapper.new("./test_referee.rb", 2, 5, p1, p2)
-#match_wrapper.run_match
-
-#puts match_wrapper.result
