@@ -23,3 +23,6 @@ player = Player.create!( user: student , contest: contest , description: "test" 
 
 player = Player.create!( user: student , contest: contest , description: "test" , name: "stupid_player" , downloadable: false, playable: false , file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s)
 =end
+creator = User.create!(username: "myAdmin" , email: "admin@admin.com" , password: "admin" ,password_confirmation: "admin", admin: true , contest_creator: false , chat_url: "www.google.com")
+
+student = User.create!(username: "j" , email: "j@s.com" , password: "s" , password_confirmation: "s" , admin: false , contest_creator: true , chat_url: "www.google.com")

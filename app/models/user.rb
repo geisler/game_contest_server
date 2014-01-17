@@ -14,5 +14,13 @@ class User < ActiveRecord::Base
   # robust email regex in his homework section at the end of Chapter 6.
   #
   validates :email, presence: true,
-		    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+
+  extend FriendlyId
+  friendly_id :username, use: :slugged
+  after_validation :move_friendly_id_error_to_name
+
+  def move_friendly_id_error_to_name
+    errors.add :username, *errors.delete(:friendly_id) if errors[:friendly_id].present?
+  end
 end

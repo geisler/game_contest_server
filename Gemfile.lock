@@ -80,6 +80,8 @@ GEM
       i18n (~> 0.5)
     ffi (1.9.3)
     formatador (0.2.4)
+    friendly_id (5.0.2)
+      activerecord (~> 4.0.0)
     guard (2.2.5)
       formatador (>= 0.2.4)
       listen (~> 2.1)
@@ -225,6 +227,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   factory_girl_rails
   faker (= 1.1.2)
+  friendly_id (~> 5.0.0)
   guard-livereload
   guard-rspec
   guard-spork
