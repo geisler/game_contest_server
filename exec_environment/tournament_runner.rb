@@ -30,7 +30,7 @@ class TournamentRunner
 
     def run_tournament
         puts " Tournament runner started creating matches for tournament #"+@tournament_id.to_s+" ("+@tournament.tournament_type+")"
-        if @number_of_players < 2
+        if @tournament_players.count < 2
             puts " ERROR: Can't run tournament with fewer than two players"
             return
         end
