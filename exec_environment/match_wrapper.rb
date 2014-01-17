@@ -37,7 +37,7 @@ class MatchWrapper
 
         #Wait for referee to tell wrapper_server what port to start players on
         begin
-            Timeout::timeout(3) do
+            Timeout::timeout(30) do
                 #Wait for referee to connect
                 @ref_client = @wrapper_server.accept
                 @client_port = nil #TODO is there a better way to wait for this?
@@ -53,11 +53,12 @@ class MatchWrapper
 
         #Start players
         @players.each do |player|
-            @child_list.push(Process.spawn("#{player.file_location}  --name #{player.name} -p #{@client_port} ") )
+            #Name must be given before port because it crashes for mysterious ("--name not found") reasons otherwise
+            @child_list.push(Process.spawn("#{player.file_location} --name #{player.name} -p #{@client_port} "))
         end
         
         begin
-            Timeout::timeout(10) do
+            Timeout::timeout(100) do
                 self.wait_for_result
             end
         rescue Timeout::Error
@@ -68,7 +69,7 @@ class MatchWrapper
     end
 
     def wait_for_result
-        for i in 0...@number_of_players
+        @number_of_players.times do |i|
             individual_result = nil
             while individual_result.nil?
                 individual_result = @ref_client.gets

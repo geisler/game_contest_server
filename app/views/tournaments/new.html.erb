@@ -1,0 +1,10 @@
+<h1>Create Tournament </h1>
+
+<%= form_for [@tournament.contest, @tournament] do |f| %>
+    <%= render 'shared/error_messages', object: @tournament %>
+    <%= render "fields", f:f %>
+
+    <%= f.submit "Create Tournament", class: 'btn btn-primary' %>
+<% end %>
+
+

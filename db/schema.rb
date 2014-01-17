@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140116224848) do
+ActiveRecord::Schema.define(version: 20140117015512) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -41,6 +41,17 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "match_paths", force: true do |t|
+    t.integer  "parent_match_id"
+    t.integer  "child_match_id"
+    t.string   "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "match_paths", ["child_match_id"], name: "index_match_paths_on_child_match_id"
+  add_index "match_paths", ["parent_match_id"], name: "index_match_paths_on_parent_match_id"
 
   create_table "matches", force: true do |t|
     t.integer  "manager_id"

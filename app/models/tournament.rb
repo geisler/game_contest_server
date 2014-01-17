@@ -1,8 +1,9 @@
 class Tournament < ActiveRecord::Base
-  belongs_to :contest
-  has_many :matches, as: :manager
-  has_many :player_tournaments, inverse_of: :tournament
-  has_many :players, through: :player_tournaments
+    belongs_to :contest
+    has_many :player_tournaments, inverse_of: :tournament , :dependent => :destroy
+    has_many :players, through: :player_tournaments 
+    has_many :matches, as: :manager , :dependent => :destroy
+
 
   validates :contest,             presence: true
   validates :name,                presence: true, uniqueness: { scope: :contest }
@@ -22,5 +23,11 @@ class Tournament < ActiveRecord::Base
   def move_friendly_id_error_to_name
     errors.add :name, *errors.delete(:friendly_id) if errors[:friendly_id].present?
   end
+    def player_ids=(ids)
+        ids.each do |p, use|
+            self.player_tournaments.build(player: Player.find(p))
+        end
+    end
+    
 
 end
