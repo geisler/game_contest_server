@@ -11,7 +11,7 @@ import socket
 from random import choice
 
 #Parsing command line arguments
-#Usage: client.py -p [port] --name [name]"
+#Usage: client.py --name [name] -p [port]"
 parser = OptionParser()
 parser.add_option("-p","--port",action="store",type="int",dest="port")
 parser.add_option("-n","--name",action="store",type="string",dest="name")
@@ -33,10 +33,8 @@ ip = socket.gethostbyname(HOST)
 s.connect((ip,PORT)) #Connect to server
 #print 'Socket Connected to ' + HOST + ' on ip ' + ip
 
-#Send some data to remote server
-message = NAME
-s.send(message+"\n")     #Set the whole string
-#print 'Message sent successfully'
+message = str(NAME)+"\n"
+s.send(message)   
 
 #Now receive data
 while True:

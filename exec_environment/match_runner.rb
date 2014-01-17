@@ -3,7 +3,7 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+require '/home/dbrown/game_contest_server_jterm/exec_environment/match_wrapper.rb'
 #require './config/boot'
 #require './config/environment'
 require 'optparse'
@@ -32,6 +32,11 @@ class MatchRunner
     
     #Uses a MatchWrapper to run a match between the given players and send the results to the database
     def run_match
+        if @number_of_players != @match_participants.count()
+            puts "   Match runner skipping match #"+@match_id.to_s+
+                 "("+@match_participants.count().to_s+"/"+@number_of_players.to_s+" in player_matches)"
+            return
+        end
         match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,@match_participants)
         puts "   Match runner running match #"+@match_id.to_s
         match_wrapper.run_match
@@ -50,6 +55,7 @@ class MatchRunner
                  " Result: "+player_match.result.ljust(10).slice(0,9)+
                  " Score: "+player_match.score.to_s
             player_match.save!
+
         end
         puts "   Match runner finished match #"+@match_id.to_s
     end
