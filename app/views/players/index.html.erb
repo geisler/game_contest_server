@@ -15,7 +15,7 @@
     <%else%>
       <% @players.each do |player| %>
         <li><%= link_to player.name, player %>
-          <% if current_user?(player.user) and player.user_id and player.user %>
+          <% if current_user==player.user and player.user_id and player.user %>
             | <%= link_to 'edit', edit_player_path(player) %>
           <% end %>
         </li>

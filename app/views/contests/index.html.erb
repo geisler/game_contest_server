@@ -16,7 +16,7 @@
   <% else %>
      <% @contests.each do |contest| %>
         <li><%= link_to contest.name, contest %>
-          <% if current_user?(contest.user) and current_user.contest_creator %>
+          <% if current_user==contest.user and current_user.contest_creator %>
             | <%= link_to 'edit', edit_contest_path(contest) %>
           <% end %>
         </li>
