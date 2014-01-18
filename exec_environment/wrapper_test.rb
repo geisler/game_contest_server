@@ -15,9 +15,9 @@ class MockPlayer
     end
 end
 
-p1 = MockPlayer.new("./checkers_helper.py","first")
-p2 = MockPlayer.new("./checkers_helper.py", "second")
-ref = MockPlayer.new("./checkers_ref.py", "ref")
+p1 = MockPlayer.new("../examples/checkers_helper.py","first")
+p2 = MockPlayer.new("../examples/checkers_helper.py", "second")
+ref = MockPlayer.new("../examples/checkers_ref.py", "ref")
 
 #p1 = MockPlayer.new("../spec/exec_environment/test_player.py","first")
 #p2 = MockPlayer.new("../spec/exec_environment/test_player.rb", "second")

@@ -95,3 +95,5 @@ VI. Future Work
 VII. Known Bugs
     - Round Robin tournaments are currently never set to completed. Need a way to check that all matches are completed and set tournament status
     - Children are not being reaped properly in many cases in match_wrapper.rb 
+    - Occasionally when running lots of games, the db will be locked and we will fail to write the results
+    - Checkers needs a max number of moves or too many games time out
