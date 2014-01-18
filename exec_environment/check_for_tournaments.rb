@@ -1,4 +1,10 @@
 #! /usr/bin/env ruby
+#Alex Sjoberg
+#check_for_tournaments.rb
+#Jan 2014
+#
+# Checks the db for tournaments whose start time has passed and are "waiting" to be started
+# Tournament runner will then create necessary Match objects in the db
 
 require './config/boot'
 require './config/environment'

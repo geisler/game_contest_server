@@ -9,6 +9,7 @@ from optparse import OptionParser
 import socket
 import sys
 
+#Guess W! referee written in python. Mostly identical to test_referee.rb, except in python
 
 #NOTE currently not a complete example of a referee as it does not communicate with match_wrapper properly.
 # It does provide a good example of python socket communication though.

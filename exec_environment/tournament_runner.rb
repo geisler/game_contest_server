@@ -1,11 +1,19 @@
 #!/usr/bin/env ruby
+# Alex Sjoberg
+# tournament_runner.rb
+# Jan 2014
+#
+# Takes a tournament from the db and creates the necessary matches for it
 
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
+require 'optparse'
+
+# Possible alternative to using rails runner to access rails environment
 #require './config/boot'
 #require './config/environment'
-require 'optparse'
+
 
 #Parsing command line arguements
 $options = {}
@@ -13,12 +21,17 @@ OptionParser.new do |opts|
     opts.banner = "Usage: tournament.rb -t [tournament_id]"
 
     opts.on('-t' , '--tournament_id [TOURNAMENT_ID]' , 'Tournament ID to start') { |v| $options[:TOURNAMENT_ID] = v}
+
+    #See match_runner.py for why this line is necessary
     opts.on('-e' , '--useless [USELESS]' , '') { |v| $options[:USELESS] = v}
 
 end.parse!
 
 
+# Class to spawn match objects for a given tournament object retrieved from the db
 class TournamentRunner
+
+    #Get information from database
     def initialize(tournament_id)
         @tournament_id = tournament_id
         @tournament = Tournament.find(@tournament_id)
@@ -28,14 +41,21 @@ class TournamentRunner
         @max_match_time = 30.seconds
     end
 
+
+    # Creates match objects for the given tournament
+    # TODO Error checking that does more than output errors to the screen
     def run_tournament
         puts " Tournament runner started creating matches for tournament #"+@tournament_id.to_s+" ("+@tournament.tournament_type+")"
+        #TODO This should probably be a validation instead of an error here
         if @tournament_players.count < 2
             puts " ERROR: Can't run tournament with fewer than two players"
             return
         end
+        # Change status so daemon does't pick it up again
         @tournament.status = "started"
         @tournament.save!
+
+        # Run different tournament types
         case @tournament.tournament_type
             when "round robin"
                 round_robin(@tournament_players)
@@ -54,7 +74,7 @@ class TournamentRunner
     end
 
     #Runs a round robin tournament with each player playing every other player twice.
-    #Currently only works with 2 player games
+    #Currently only works with 2 player games #TODO make it work with more than 2 players
     def round_robin(players)
         players.each do |player1|
             players.each do |player2|
@@ -63,7 +83,7 @@ class TournamentRunner
                 end
             end
         end
-        #need to check matches completed
+        #TODO need a way to check that all the matches are completed and set the tournament to completed in the db
         #@tournament.status = "completed"
         #@tournament.save!
     end

@@ -4,6 +4,8 @@
 #Douglas Brown
 #1/15/2014
 #
+#Player that never wins for testing
+
 
 #imports
 from optparse import OptionParser

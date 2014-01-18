@@ -4,6 +4,8 @@
 #Alex Sjoberg
 #1/8/2014
 #
+#Player for "Guess W!" as hosted by test_referee.rb. First person to input 'w' wins!
+#Provides an example for what a player needs to do to interract with match_wrapper and a referee
 
 #imports
 require 'socket'
@@ -21,6 +23,7 @@ end.parse!
 
 class TestPlayer
 
+    # Sends name to referee on given port
     def initialize()
       hostname = 'localhost'
       port = $options[:port]
@@ -29,15 +32,13 @@ class TestPlayer
       @ref_socket.puts(@name)
     end
 
-    #Connects to referee and guess random letter, closes when referee says wins
+    #Game logic for "Guess W!" Sends random letter when referee says 'move' Closes when ref says 'wins'
     def play
       response_options = ['a','b','c','w']
       while input = @ref_socket.gets
-        #puts "Got input: "+input
         if input.include?('move')
           blah = response_options.sample
           @ref_socket.puts blah
-          #puts "Sent "+blah
         elsif input.include?('wins')
           @ref_socket.close
           return
@@ -47,5 +48,6 @@ class TestPlayer
 
 end
 
+#To be run when match_wrapper starts the player. Remember, players must be executable!
 p1 = TestPlayer.new
 p1.play

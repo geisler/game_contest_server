@@ -1,4 +1,10 @@
 #! /usr/bin/env ruby
+#Alex Sjoberg
+#match_checker.rb
+#Jan 2014
+# Queries db for matches whose start date has passed and is "waiting" to be started
+#
+# TODO Queueing all available matches instead of just spawning one each time. Maybe using Delayed Job?
 
 require './config/boot'
 require './config/environment'
