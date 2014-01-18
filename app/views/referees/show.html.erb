@@ -1,4 +1,9 @@
 <h1>Referee</h1>
+
+<% if current_user?(@referee.user) and @referee.user_id and current_user.contest_creator %>
+<%= link_to 'edit', edit_referee_path(@referee) %>
+<% end %>
+
 <p>Name: <%= @referee.name %></p>
 <p><%= link_to 'Rules', @referee.rules_url %></p>
 <p>Players per game: <%= @referee.players_per_game %></p>
