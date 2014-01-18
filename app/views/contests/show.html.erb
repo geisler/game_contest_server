@@ -1,13 +1,14 @@
 <h1>Contest</h1>
+
+<% if current_user?(@contest.user) and current_user.contest_creator %>
+  <%= link_to 'edit', edit_contest_path(@contest) %>
+<% end %>
+
 <p>Name: <%= @contest.name %></p>
 <p>Deadline: <%= distance_of_time_in_words_to_now(@contest.deadline) %></p>
 <p>Description: <%= @contest.description %></p>
 <p>Managing referee: <%= link_to @contest.referee.name, @contest.referee %></p>
 <p>Contest creator: <%= link_to @contest.user.username, @contest.user %></p>
-<p>Contest Players: <%= render @contest.players %>
-<br/>
-<p>Tournaments: <%= render @contest.tournaments %>
 
-<br/>
 <p>Create <%= link_to 'New Player', new_contest_player_path(@contest) %> for this contest.</p>
 <p>Create <%= link_to 'New Tournament', new_contest_tournament_path(@contest) %> for this contest.</p>
