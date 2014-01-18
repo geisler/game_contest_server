@@ -27,7 +27,10 @@ class TournamentsController < ApplicationController
 
     def index
         @contest = Contest.friendly.find(params[:contest_id])
-        @tournaments = Tournament.paginate(page: params[:page], :per_page => 10)
+        @tournaments = Tournament.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+      if @tournaments.length == 0
+      flash.now[:info] = "There were no tournaments that matched your search. Please try again!"
+    end
     end
 
     def edit
