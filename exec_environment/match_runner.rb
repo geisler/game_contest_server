@@ -3,7 +3,7 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+require '/home/dbrown/game_contest_server_jterm/exec_environment/match_wrapper.rb'
 #require './config/boot'
 #require './config/environment'
 require 'optparse'
@@ -26,7 +26,7 @@ class MatchRunner
        @match_participants = @match.players
        @referee = @match.manager.contest.referee
        @number_of_players = @referee.players_per_game
-       @max_match_time = 30.seconds
+       @max_match_time = 8.seconds
        @tournament = @match.manager
     end 
     
@@ -46,23 +46,29 @@ class MatchRunner
     #Creates PlayerMatch objects for each player using the results dictionary we got back from the MatchWrapper
     def send_results_to_db(results)
         if results.include? "INCONCLUSIVE"
-            #TODO Better handling of errors from bad matches
+            #Error handling, save "inconclusive" as match status
+            puts "   "+results
+            @match_participants.each do |player|
+                player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
+                player_match.result = "Error"
+                player_match.save!        
+                print_results(player.name,"Error",nil,"\n")                
+            end
+            puts "   Match runner could not finish match #"+@match_id.to_s
             return
         else
-            #Get potential match paths
-            child_matches = MatchPath.find_by_sql("SELECT result,child_match_id FROM match_paths WHERE match_paths.parent_match_id = #{@match_id}")
-            #Write results
+            #Print and save results, schedule follow-up matches
+            child_matches = MatchPath.find_by_sql("SELECT result,child_match_id FROM match_paths WHERE match_paths.parent_match_id = #{@match_id}") 
             puts "   Match runner writing results match #"+@match_id.to_s
             results.each do |player_name, player_result|
+                #Print and save
                 player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
                 player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
                 player_match.result = player_result["result"]
                 player_match.score = player_result["score"]
-                print "    "+(player.name).ljust(24).slice(0,23)+
-                     " Result: "+player_match.result.ljust(10).slice(0,9)+
-                     " Score: "+player_match.score.to_s.ljust(10).slice(0,9)
-                player_match.save!  
-                #Create match paths
+                player_match.save!        
+                print_results(player.name,player_match.result,player_match.score)
+                #Follow up matches
                 child_matches.each do |data|
                     if data.result == player_match.result
                         create_player_match(Match.find(data.child_match_id),player)
@@ -72,10 +78,20 @@ class MatchRunner
             end
             puts "   Match runner finished match #"+@match_id.to_s
         end
+
     end
     
-    #Creates player match and updates the match status to waiting if necessary 
+    #Prints a name, result, and score
+    def print_results(name,result,score,separator="")    
+        print "    "+name.ljust(24).slice(0,23)+
+         " Result: "+result.ljust(10).slice(0,9)+
+         " Score: "+score.to_s.ljust(10).slice(0,9)+
+         separator
+    end
+    
+    #Creates player_match and updates the match status to waiting if necessary 
     def create_player_match(match,player)
+        #Create player_match
         PlayerMatch.create!(
             match: match,
             player: player,
@@ -83,10 +99,9 @@ class MatchRunner
             score: nil,
         )
         print "=> Match #"+match.id.to_s
-        if match.status == "1"
+        #Change status of match if necessary
+        if match.players.count == @number_of_players
             match.status = "waiting"
-        else
-            match.status = (Integer(match.status)-1).to_s
         end
         match.save!
     end

@@ -75,12 +75,12 @@ class TournamentRunner
         if count == 2
             return create_match(players[0],players[1])
         elsif count == 3
-            child = create_raw_match("1")
+            child = create_raw_match("unassigned")
             create_player_matches(child,[players[0]])
             create_match_path("Win",child,create_match(players[1],players[2]))
             return child
         else
-            child = create_raw_match("2")
+            child = create_raw_match("unassigned")
             half = count/2
             create_match_path("Win",child,single_elimination(players[0..half-1]))
             create_match_path("Win",child,single_elimination(players[half..count]))            
@@ -101,7 +101,6 @@ class TournamentRunner
             status: status,
             earliest_start: Time.now, 
             completion: Date.new,
-            match_type: MatchType.first,
         )
         puts " Tournament runner created match #"+match.id.to_s
         return match
