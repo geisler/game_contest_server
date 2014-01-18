@@ -14,7 +14,6 @@ class TournamentsController < ApplicationController
 
     def create
         @contest = Contest.friendly.find(params[:contest_id])
-        puts "Acceptable Params = #{acceptable_params}"
         @tournament = @contest.tournaments.build(acceptable_params)
         @tournament.status = "waiting"
         if @tournament.save
@@ -33,12 +32,12 @@ class TournamentsController < ApplicationController
     def edit
         @tournament = Tournament.friendly.find(params[:id])
     end
-       
+
     def update
         @tournament = Tournament.friendly.find(params[:id])
         @tournament.player_tournaments.each do |player_tournament|
             player_tournament.destroy
-        end 
+        end
         if @tournament.update(acceptable_params)
             flash[:success] = "Tournament updated."
             redirect_to @tournament
@@ -47,7 +46,7 @@ class TournamentsController < ApplicationController
         end
     end
 
-    def show 
+    def show
         @tournament = Tournament.friendly.find(params[:id])
     end
 

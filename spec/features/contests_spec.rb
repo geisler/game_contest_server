@@ -34,7 +34,7 @@ describe "ContestsPages" do
 
       illegal_dates = [{month: 'Feb', day: '30'},
         {month: 'Feb', day: '31'},
-        {year: '2018', month: 'Feb', day: '29'},
+        {year: '2015', month: 'Feb', day: '29'},
         {month: 'Apr', day: '31'},
         {month: 'Jun', day: '31'},
         {month: 'Sep', day: '31'},

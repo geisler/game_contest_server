@@ -3,10 +3,11 @@ require 'spec_helper'
 describe 'TournamentsPages' do
   let (:creator) { FactoryGirl.create(:contest_creator) }
   let!(:referee) { FactoryGirl.create(:referee) }
-  let (:contest) { FactoryGirl.create(:contest) }
+  let (:contest) { FactoryGirl.create(:contest, user: creator) }
 
   let (:name) { 'Test Tournament' }
-  let (:status) { 'waiting' }
+  # Status shouldn't be in the form
+  # let (:status) { 'waiting' }
   let (:now) { Time.current }
   let (:tournament_type) { 'round robin' }
 
@@ -35,7 +36,7 @@ describe 'TournamentsPages' do
 
       illegal_dates = [{month: 'Feb', day: '30'},
         {month: 'Feb', day: '31'},
-        {year: '2018', month: 'Feb', day: '29'},
+        {year: '2015', month: 'Feb', day: '29'},
         {month: 'Apr', day: '31'},
         {month: 'Jun', day: '31'},
         {month: 'Sep', day: '31'},
@@ -44,9 +45,8 @@ describe 'TournamentsPages' do
         describe "illegal date (#{date.to_s})" do
           before do
             fill_in 'Name', with: name
-            fill_in 'Status', with: status
             select_illegal_datetime('Start', date)
-            fill_in 'Tournament type', with: tournament_type
+            select 'Round Robin', from: 'Tournament type'
             click_button submit
           end
 
@@ -59,9 +59,8 @@ describe 'TournamentsPages' do
     describe 'valid information' do
       before do
         fill_in 'Name', with: name
-        fill_in 'Status', with: status
         select_datetime(now, 'Start')
-        fill_in 'Tournament type', with: tournament_type
+        select 'Round Robin', from: 'Tournament type'
       end
 
       it "should create a tournament" do
