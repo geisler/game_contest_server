@@ -1,4 +1,9 @@
 #! /usr/bin/env ruby
+#
+#Alex Sjoberg
+#wrapper_test.rb
+#Jan 2014
+#Can be used test any players and referees without having to worry about tournaments/databases/etc
 
 require_relative 'match_wrapper'
 
@@ -17,6 +22,6 @@ ref = MockPlayer.new("./checkers_ref.py", "ref")
 match_wrapper = MatchWrapper.new(ref, 2, 5, [p1, p2])
 match_wrapper.run_match
 
-puts( match_wrapper.result)
+puts(match_wrapper.result)
 
 

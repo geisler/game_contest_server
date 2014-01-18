@@ -9,6 +9,10 @@ from optparse import OptionParser
 import socket
 import sys
 
+
+#NOTE currently not a complete example of a referee as it does not communicate with match_wrapper properly.
+# It does provide a good example of python socket communication though.
+
 #Parsing command line arguments
 #Usage: client.py -p [port] --num [num]"
 parser = OptionParser()

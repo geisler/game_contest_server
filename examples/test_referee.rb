@@ -1,8 +1,14 @@
 #! /usr/bin/env ruby
+#    ^
+#    |
+#    |
+#NOTE don't forget the shebang in your ref and players! 
 
 #test_referee.rb
 ##Alex Sjoberg
 #1/8/14
+# Example referee for a simple game in which the first player to input the letter 'w' wins.
+# Showcases the basic functionality a referee needs to interact with our server
 
 #Imports
 require 'socket'
@@ -20,8 +26,9 @@ end.parse!
 
 
 class TestReferee
+
     #Intialize function that opens communication from referee to wrapper and selects port 
-    #for referee to cleint communication
+    #for referee to client communication
     def initialize 
         @players = {}
         #@num_players = 2
@@ -34,7 +41,7 @@ class TestReferee
         #Opens connection from referee to wrapper
         @wrapper_connection = TCPSocket.open(wrapper_hostname, wrapper_port)
 
-        #Send port to wrapper for client communication with referee
+        #Send port to wrapper for player communication with referee
         @ref_server = TCPServer.open(0)
         ref_port = @ref_server.addr[1]
         @wrapper_connection.puts(ref_port)

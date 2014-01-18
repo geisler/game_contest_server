@@ -5,6 +5,8 @@
 #1/15/2014
 #
 
+# Guess W! player written in python. Can interact properly with test_referee.rb
+
 #imports
 from optparse import OptionParser
 import socket
