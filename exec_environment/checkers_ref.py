@@ -349,7 +349,7 @@ def readCheckerFile(CB):
             CB.append(row)
         p=random.randint(0,1)
         if p==0:
-            return "gray"
+            return "black"
         else:
             return "red"
     
@@ -473,7 +473,7 @@ def tourney(PlayerB,PlayerR):
     bob=cTurtle.Turtle()
     Rwin=0
     Bwin=0
-    iters=51
+    iters=1
     score=0
     for i in range(1,iters+1):
         CB=[]
@@ -490,6 +490,7 @@ def tourney(PlayerB,PlayerR):
         print("Black wins = ",Bwin)
         print("Red wins = ",Rwin)
         print("Black average score = ",score/i)
+    report_results(Bwin,Rwin) #On the assumption p1 is always black, and p2 red
     return
     
 #run the game!!!!

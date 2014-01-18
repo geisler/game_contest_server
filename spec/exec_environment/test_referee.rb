@@ -89,6 +89,7 @@ class TestReferee
                 if check_win(input)
                     inform_players_of_win(player_name)
                     report_results(player_name)
+                    @wrapper_connection.close
                     return
                 end
             end
@@ -98,7 +99,7 @@ class TestReferee
     #Sends a notification to our players that the game is over
     def inform_players_of_win(winner_name)
         @players.each do |player_name,socket|
-            socket.puts(player_name + ' wins!' )
+            socket.puts(winner_name + ' wins!' )
             socket.close
         end
     end
