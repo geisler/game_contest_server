@@ -66,18 +66,6 @@ describe 'TournamentsPages' do
         fill_in 'Name', with: name
         select_datetime(now, 'Start')
         select tournament_type, from: 'Tournament type'
-=begin
-        puts "****************** BODY ****************"
-        puts page.body
-        puts
-        puts
-        puts
-        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!! AQUI !!!!!!!!!!!!!!!!!!!!!!!!!"
-        puts "player1: #{player1}"
-        puts
-        puts
-        puts
-=end
         check("#{player1.name} | #{player1.user.username}")
 
 
@@ -127,6 +115,7 @@ describe 'TournamentsPages' do
   end # create
 
   describe "edit" do
+    #let (:tournament) { FactoryGirl.create(:tournament, contest: contest, tournament_type: tournament_type.downcase) }
     let (:tournament) { FactoryGirl.create(:tournament, contest: contest) }
     let!(:orig_name) { tournament.name }
     let (:submit) { 'Update Tournament' }
@@ -140,7 +129,9 @@ describe 'TournamentsPages' do
 
     it { should have_field('Name', with: tournament.name) }
     it { expect_datetime_select(tournament.start, 'Start') }
-    it { should have_select('Tournament type', selected: tournament.tournament_type) }
+    it { should have_select('Tournament type',
+                            options: %w[ Round\ Robin   Single\ Elimination ],
+                            selected: tournament_type) }
 
     it { should have_checked_field("#{player1.name} | #{player1.user.username}") }
     it { should_not have_unchecked_field("#{player1.name} | #{player1.user.username}") }
@@ -193,9 +184,6 @@ describe 'TournamentsPages' do
     end # forbidden attributes
 
     describe "with valid information" do
-      let (:new_name) { 'Some random new name' }
-      let (:new_tournament_type) { 'Single Elimination' }
-
       before do
         fill_in 'Name', with: edit_name
         select_datetime(edit_time, 'Start')
@@ -210,7 +198,6 @@ describe 'TournamentsPages' do
         it { should have_alert(:success) }
         specify { expect(tournament.reload.name).to eq(edit_name) }
         specify { expect_same_minute(tournament.reload.start, edit_time) }
-        # specify { expect(contest.reload.description).to eq(description) }
         specify { expect(tournament.reload.tournament_type).to eq(edit_tournament_type.downcase) }
 
         it { should_not have_link(player1.name,
@@ -248,7 +235,7 @@ describe 'TournamentsPages' do
     describe "redirects properly" do
       before { delete tournament_path(tournament) }
 
-      specify { expect(response).to redirect_to(tournaments_path) }
+      specify { expect(response).to redirect_to(contest_tournaments_path(tournament.contest)) }
     end
 
     it "produces a delete message" do
@@ -260,7 +247,10 @@ describe 'TournamentsPages' do
     it "removes a tournament from the system" do
       expect { delete tournament_path(tournament) }.to change(Tournament, :count).by(-1)
     end
-  end
+  end # destroy
+
+  describe 'show' do
+  end # show
 end
 
 
