@@ -90,3 +90,8 @@ VI. Future Work
     - Support queueing of matches in the daemon. Currently launches a match every 10 seconds regardless of
         whether the previous one has finished or not. Could cause serious performance issues
     - Much more robust unit testing of the backend.
+    - Create Matches page with pagination and search
+
+VII.
+    - Round Robin tournaments are currently never set to completed. Need a way to check that all matches are completed
+    - 

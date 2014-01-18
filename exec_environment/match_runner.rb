@@ -1,12 +1,20 @@
 #!/usr/bin/env ruby
+#
+#Alex Sjoberg
+#match_runner.rb
+#Jan 2014
+#
+#Takes a match_id and 
 
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/dbrown/game_contest_server_jterm/exec_environment/match_wrapper.rb'
+require '/home/asjoberg/game_contest_server_jterm/exec_environment/match_wrapper.rb' #NOTE this is hardcoded to be using the match_wrapper in asjoberg's directory right now
+require 'optparse'
+
+#This may be an alternative to running the file using 'rails runner'. These provide access to the rails environment
 #require './config/boot'
 #require './config/environment'
-require 'optparse'
 
 #Parsing command line arguements
 $options = {}
@@ -14,12 +22,16 @@ OptionParser.new do |opts|
     opts.banner = "Usage: match_runner.rb -m [match_id]"
 
     opts.on('-m' , '--match_id [MATCH_ID]' , 'Match ID to start') { |v| $options[:MATCH_ID] = v}
-    opts.on('-e' , '--useless [USELESS]' , '') { |v| $options[:USELESS] = v}
+
+    # This is to allow specifying a rails environment when using 'rails runner'
+    # A command of the form "rails runner -e test match_runner.rb -m 5" will make optionparser complain that it doesn't know what the -e flag is unless we accept it here.
+    opts.on('-e' , '--useless [USELESS]' , '') { |v| $options[:USELESS] = v} 
 
 end.parse!
     
 class MatchRunner
     
+    #Get necessary info from the database
     def initialize(match_id)
        @match_id = match_id 
        @match = Match.find(match_id)
