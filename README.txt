@@ -92,6 +92,6 @@ VI. Future Work
     - Much more robust unit testing of the backend.
     - Create Matches page with pagination and search
 
-VII.
-    - Round Robin tournaments are currently never set to completed. Need a way to check that all matches are completed
-    - 
+VII. Known Bugs
+    - Round Robin tournaments are currently never set to completed. Need a way to check that all matches are completed and set tournament status
+    - Children are not being reaped properly in many cases in match_wrapper.rb 
