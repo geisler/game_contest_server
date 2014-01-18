@@ -1,0 +1,28 @@
+<div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+    <%= f.label :start %>
+    <% Time.use_zone("America/Indianapolis") do %>
+        <%= f.datetime_select :start, {start_year: Time.now.year}, with_css_classes: true %>
+    <% end%>
+</div>
+
+<div class="form-group">
+    <%= f.label :tournament_type, 'Tournament Type' %>
+    <%= f.select(:tournament_type, [['Round Robin','round robin'],['Single Elimination', 'single elimination']], class: 'form-control') %>
+</div>
+
+<div class="form-group">
+    <p><strong>Select Players</strong></p>
+    <% @tournament.contest.players.each do |p| %>
+        <% if @tournament.players.include? p %>
+            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, true %>
+        <% else %>
+            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, false %>
+        <% end %>
+        <%= label_tag "tournament[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %><br />
+    <% end %>
+</div>

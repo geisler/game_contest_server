@@ -41,7 +41,7 @@ while True:
     reply = s.recv(4096)
     #print "Got input: "+reply.strip()
     if "move" in reply:
-        guesses = ['a','b','c']
+        guesses = ['a','b','c','w']
         blah = choice(guesses)+"\n"
         s.send(blah)
         #print "Sent "+blah

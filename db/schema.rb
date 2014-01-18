@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140116224848) do
+ActiveRecord::Schema.define(version: 20140117015512) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
     t.integer  "referee_id"
     t.text     "description"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deadline"
@@ -25,6 +26,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
 
   add_index "contests", ["name"], name: "index_contests_on_name", unique: true
   add_index "contests", ["referee_id"], name: "index_contests_on_referee_id"
+  add_index "contests", ["slug"], name: "index_contests_on_slug", unique: true
   add_index "contests", ["user_id"], name: "index_contests_on_user_id"
 
   create_table "friendly_id_slugs", force: true do |t|
@@ -39,6 +41,17 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "match_paths", force: true do |t|
+    t.integer  "parent_match_id"
+    t.integer  "child_match_id"
+    t.string   "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "match_paths", ["child_match_id"], name: "index_match_paths_on_child_match_id"
+  add_index "match_paths", ["parent_match_id"], name: "index_match_paths_on_parent_match_id"
 
   create_table "matches", force: true do |t|
     t.integer  "manager_id"
@@ -77,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.integer  "contest_id"
     t.string   "file_location"
     t.integer  "programming_language_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
@@ -88,6 +102,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   add_index "players", ["contest_id"], name: "index_players_on_contest_id"
   add_index "players", ["name"], name: "index_players_on_name", unique: true
   add_index "players", ["programming_language_id"], name: "index_players_on_programming_language_id"
+  add_index "players", ["slug"], name: "index_players_on_slug", unique: true
   add_index "players", ["user_id"], name: "index_players_on_user_id"
 
   create_table "programming_languages", force: true do |t|
@@ -99,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
   create_table "referees", force: true do |t|
     t.string   "file_location"
     t.integer  "programming_language_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
@@ -109,6 +125,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
 
   add_index "referees", ["name"], name: "index_referees_on_name", unique: true
   add_index "referees", ["programming_language_id"], name: "index_referees_on_programming_language_id"
+  add_index "referees", ["slug"], name: "index_referees_on_slug", unique: true
   add_index "referees", ["user_id"], name: "index_referees_on_user_id"
 
   create_table "tournaments", force: true do |t|
@@ -117,12 +134,16 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.datetime "start"
     t.string   "name"
     t.string   "status"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "tournaments", ["slug"], name: "index_tournaments_on_slug", unique: true
+
   create_table "users", force: true do |t|
     t.string   "username"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
@@ -133,6 +154,7 @@ ActiveRecord::Schema.define(version: 20140116224848) do
     t.string   "chat_url"
   end
 
+  add_index "users", ["slug"], name: "index_users_on_slug", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
 
 end

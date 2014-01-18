@@ -46,18 +46,19 @@ class MatchWrapper
                 end
             end
         rescue Timeout::Error
-            @results = "INCONCLUSIVE: Referee failed to provide a port!"
+            @results = "INCONCLUSIVE: Referee failed to provide a port!"  
             reap_children
             return
         end
 
         #Start players
         @players.each do |player|
-            @child_list.push(Process.spawn("#{player.file_location}  --name #{player.name} -p #{@client_port} ") )
+            #Name must be given before port because it crashes for mysterious ("--name not found") reasons otherwise
+            @child_list.push(Process.spawn("#{player.file_location} --name #{player.name} -p #{@client_port} "))
         end
         
         begin
-            Timeout::timeout(10) do
+            Timeout::timeout(@max_match_time) do
                 self.wait_for_result
             end
         rescue Timeout::Error
@@ -68,7 +69,7 @@ class MatchWrapper
     end
 
     def wait_for_result
-        for i in 0...@number_of_players
+        @number_of_players.times do |i|
             individual_result = nil
             while individual_result.nil?
                 individual_result = @ref_client.gets
@@ -89,8 +90,3 @@ class MatchWrapper
         #TODO - reap children that crash!
     end 
 end
-
-#match_wrapper = MatchWrapper.new("./test_referee.rb", 2, 5, p1, p2)
-#match_wrapper.run_match
-
-#puts match_wrapper.result

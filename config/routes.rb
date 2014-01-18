@@ -6,15 +6,6 @@ GameContestServer::Application.routes.draw do
 
     resources :users
     resources :referees
-=begin
-    resources :contests, shallow: true do
-        resources :players
-        resources :tournaments, shallow: true do
-            resources :players
-            resources :matches, only: [:show, :index]
-        end
-    end
-=end
     shallow do
         resources :contests do
             resources :players
