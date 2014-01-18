@@ -2,6 +2,8 @@
 
 require 'optparse'
 
+#For testing a broken ref that never responds
+
 #This section contains the code to allow for command line arguements
 $options = {}
 OptionParser.new do |opts|
