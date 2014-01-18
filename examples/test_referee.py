@@ -13,6 +13,7 @@ import sys
 
 #NOTE currently not a complete example of a referee as it does not communicate with match_wrapper properly.
 # It does provide a good example of python socket communication though.
+# Though it probably doesn't work with python3 since one has to encode/decode strings now
 
 #Parsing command line arguments
 #Usage: client.py -p [port] --num [num]"
