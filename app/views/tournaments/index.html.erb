@@ -1,2 +1,19 @@
 <h1>List of Tournaments</h1>
-<%= render @tournaments %>
+<%= form_tag contest_tournaments_path, :method => 'get', :id => "tournaments_search" do %>
+  <%= hidden_field_tag :direction, params[:direction] %>
+  <%= hidden_field_tag :sort, params[:sort] %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :description => nil %>
+  </p>
+  <h3><%= pluralize(@tournaments.length, 'tournament', 'tournaments') %></h3>
+
+  <div id="pagination">
+    <%if @tournaments.blank?%>
+    <%="There are no tournaments available!"%>
+    <%else%>
+      <ul><%= render @tournaments %></ul>
+      <%= will_paginate%>
+    <%end%>
+</div>
+<%end%>
