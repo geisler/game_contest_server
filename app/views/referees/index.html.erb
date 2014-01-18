@@ -7,15 +7,20 @@
     <%= text_field_tag :search, params[:search] %>
     <%= submit_tag "Search", :name => nil %>
   </p>
+  <%end%>
   <h3><%= pluralize(@referees.length, 'referee', 'referees') %></h3>
 
-  <div id= "pagination">
-    <%if @referees.blank?%>
-    <h3><%="There are no referees available!"%></h3>
-    <%else%>
-    
-      <il><%= render @referees %></il>
-      <%= will_paginate%>
-    <%end%>
+<div id= "pagination">
+  <%if @referees.blank?%>
+    <h3><%="There are no contests available!"%></h3>
+  <% else %>
+     <% @referees.each do |referee| %>
+        <li><%= link_to referee.name, referee %>
+          <% if current_user?(referee.user) and referee.user_id and current_user.contest_creator %>
+            | <%= link_to 'edit', edit_referee_path(referee) %>
+          <% end %>
+        </li>
+    <% end %>
+  <% end %>
+  <%= will_paginate%>
 </div>
-<%end%>

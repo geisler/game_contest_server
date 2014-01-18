@@ -12,12 +12,15 @@
 
 <div id= "pagination">
   <%if @contests.blank?%>
-  <h3><%="There are no contests available!"%></h3>
-  <%else%>
-  <% @contests.each do %>
-  <li>
-    <%= render @contests %> | <%= link_to 'edit', edit_contest_path(@contest.user) %></li>
-  <%end%>
+    <h3><%="There are no contests available!"%></h3>
+  <% else %>
+     <% @contests.each do |contest| %>
+        <li><%= link_to contest.name, contest %>
+          <% if current_user?(contest.user) and current_user.contest_creator %>
+            | <%= link_to 'edit', edit_contest_path(contest) %>
+          <% end %>
+        </li>
+    <% end %>
+  <% end %>
   <%= will_paginate%>
-  <%end%>
 </div>

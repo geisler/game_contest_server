@@ -1,4 +1,9 @@
 <h1>Contest</h1>
+
+<% if current_user?(@contest.user) and current_user.contest_creator %>
+  <%= link_to 'edit', edit_contest_path(@contest) %>
+<% end %>
+
 <p>Name: <%= @contest.name %></p>
 <p>Deadline: <%= distance_of_time_in_words_to_now(@contest.deadline) %></p>
 <p>Description: <%= @contest.description %></p>
