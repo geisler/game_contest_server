@@ -23,6 +23,6 @@
         <% else %>
             <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, false %>
         <% end %>
-        <%= label_tag "tournament[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %><br />
+      <%= label_tag "tournament[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %><!--<br />-->
     <% end %>
 </div>

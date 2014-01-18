@@ -1,8 +1,8 @@
 class Tournament < ActiveRecord::Base
     belongs_to :contest
-    has_many :player_tournaments, inverse_of: :tournament , :dependent => :destroy
-    has_many :players, through: :player_tournaments 
-    has_many :matches, as: :manager , :dependent => :destroy
+    has_many :player_tournaments, inverse_of: :tournament , dependent: :destroy
+    has_many :players, through: :player_tournaments
+    has_many :matches, as: :manager , dependent: :destroy
 
 
   validates :contest,             presence: true
@@ -28,6 +28,6 @@ class Tournament < ActiveRecord::Base
             self.player_tournaments.build(player: Player.find(p))
         end
     end
-    
+
 
 end

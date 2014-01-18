@@ -95,7 +95,9 @@ describe "PlayersPages" do
     it { should have_field('Name', with: player.name) }
     it { should have_field('Description', with: player.description) }
     it { should have_unchecked_field('download') }
+    it { should_not have_checked_field('download') }
     it { should have_checked_field('compete') }
+    it { should_not have_unchecked_field('compete') }
 
     describe "with invalid information" do
       before do
