@@ -236,9 +236,31 @@ describe 'TournamentsPages' do
       end
 
     end # valid information
-
-
   end # edit
+
+  describe "destroy", type: :request do
+    let!(:tournament) { FactoryGirl.create(:tournament, contest: contest) }
+
+    before do
+      login creator, avoid_capybara: true
+    end
+
+    describe "redirects properly" do
+      before { delete tournament_path(tournament) }
+
+      specify { expect(response).to redirect_to(tournaments_path) }
+    end
+
+    it "produces a delete message" do
+      delete tournament_path(tournament)
+      get response.location
+      response.body.should have_alert(:success)
+    end
+
+    it "removes a tournament from the system" do
+      expect { delete tournament_path(tournament) }.to change(Tournament, :count).by(-1)
+    end
+  end
 end
 
 
