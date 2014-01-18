@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 #checkers_helper.py
 #Alex Sjoberg
@@ -17,7 +17,8 @@ import checkers_player
 #imports
 from optparse import OptionParser
 import socket
-from random import choice
+import pickle
+
 
 #Parsing command line arguments
 #Usage: client.py --name [name] -p [port]"
@@ -34,13 +35,12 @@ ref_port = options.port
 player_name  = options.name
 
 ref_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ref_ip = socket.gethostbyname(referee_hostname)
+ref_ip = socket.gethostbyname(ref_hostname)
 ref_socket.connect((ref_ip,ref_port))
-
-
-while True;
-    ref_message = ref_socket.recv(4096)
-    reply = reply.split("|")
-    
-
-
+ref_socket.send(player_name.encode())
+while True:
+    try:
+        CB,player = pickle.loads(ref_socket.recv(4096))
+        ref_socket.send(pickle.dumps(checkers_player.automatedMove(CB,player)))
+    except EOFError:
+        break        

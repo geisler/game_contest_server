@@ -15,13 +15,17 @@ class MockPlayer
     end
 end
 
-p1 = MockPlayer.new("./checkers_player.py","first")
-p2 = MockPlayer.new("./checkers_player.py", "second")
+p1 = MockPlayer.new("./checkers_helper.py","first")
+p2 = MockPlayer.new("./checkers_helper.py", "second")
 ref = MockPlayer.new("./checkers_ref.py", "ref")
 
-match_wrapper = MatchWrapper.new(ref, 2, 5, [p1, p2])
+#p1 = MockPlayer.new("../spec/exec_environment/test_player.py","first")
+#p2 = MockPlayer.new("../spec/exec_environment/test_player.rb", "second")
+#ref = MockPlayer.new("../spec/exec_environment/test_referee.rb", "ref")
+
+match_wrapper = MatchWrapper.new(ref, 2, 60, [p1, p2])
 match_wrapper.run_match
 
-puts(match_wrapper.result)
+puts(match_wrapper.results)
 
 
