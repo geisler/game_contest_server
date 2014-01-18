@@ -9,7 +9,7 @@ describe 'TournamentsPages' do
   # Status shouldn't be in the form
   # let (:status) { 'waiting' }
   let (:now) { Time.current }
-  let (:tournament_type) { 'round robin' }
+  let (:tournament_type) { 'Round Robin' }
 
   subject { page }
 
@@ -23,7 +23,7 @@ describe 'TournamentsPages' do
 
     describe 'invalid information' do
       describe 'missing information' do
-        it 'should not create a contest' do
+        it 'should not create a tournament' do
           expect { click_button submit }.not_to change(Tournament, :count)
         end
 
@@ -46,7 +46,7 @@ describe 'TournamentsPages' do
           before do
             fill_in 'Name', with: name
             select_illegal_datetime('Start', date)
-            select 'Round Robin', from: 'Tournament type'
+            select tournament_type, from: 'Tournament type'
             click_button submit
           end
 
@@ -60,13 +60,44 @@ describe 'TournamentsPages' do
       before do
         fill_in 'Name', with: name
         select_datetime(now, 'Start')
-        select 'Round Robin', from: 'Tournament type'
+        select tournament_type, from: 'Tournament type'
       end
 
       it "should create a tournament" do
         expect { click_button submit }.to change(Tournament, :count).by(1)
       end
 
+      describe 'redirects properly', type: :request do
+        before do
+          login creator, avoid_capybara: true
+          post contest_tournaments_path(contest),
+            tournament: { name: name,
+              start: now.strftime("%F %T"),
+              tournament_type: tournament_type.downcase
+          }
+        end
+
+        specify { expect(response).to redirect_to(tournament_path(assigns(:tournament))) }
+      end # redirects
+
+      describe "after submission" do
+        let (:tournament) { Tournament.find_by(name: name) }
+
+        before { click_button submit }
+
+        specify { expect(tournament.contest.user).to eq(creator) }
+
+        it { should have_alert(:success, text: 'Tournament created') }
+        it { should have_content(/less than a minute|1 minute/) }
+        it { should have_content(name) }
+        it { should have_content(tournament.status) }
+        it { should have_link(tournament.contest.name,
+                              href: contest_path(tournament.contest) ) }
+        it { should have_link(tournament.referee.name,
+                              href: referee_path(tournament.referee) ) }
+        it { should have_content("Players") }
+
+      end
     end # valid info
   end # create
 end
