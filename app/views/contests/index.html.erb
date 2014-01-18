@@ -12,7 +12,7 @@
     <%if @contests.blank?%>
     <%="There are no contests available!"%>
     <%else%>
-      <il><%= render @contests %></il>
+      <ul><%= render @contests %></ul>
       <%= will_paginate%>
     <%end%>
 </div>

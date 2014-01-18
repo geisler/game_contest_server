@@ -15,7 +15,15 @@ class Tournament < ActiveRecord::Base
   def referee
     contest.referee
   end
-
+  
+  def self.search(search)
+    if search
+      where('name LIKE ?', "%#{search}%")
+    else
+      all
+    end
+  end
+  
   extend FriendlyId
   friendly_id :name, use: :slugged
   after_validation :move_friendly_id_error_to_name
