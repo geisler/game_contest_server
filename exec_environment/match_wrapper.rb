@@ -1,11 +1,12 @@
 #! /usr/bin/env ruby
 
-#match_wrapper.rbI
+#match_wrapper.rb
 #Alex Sjoberg
 #1/09/14
 
 
 #TODO allow ref to specifiy a unique port for each player
+# NOTE for testing arbitrary players and ref with the matchwrapper without having to worry about tournaments/daemons/etc, see wrapper_test.rb
 
 #Imports
 require 'socket'
@@ -83,10 +84,11 @@ class MatchWrapper
     end
     
     #Reaping Children!!!!!
+    ## TODO make sure children are always being reaped no matter what errors occur anywhere in the program. Currently this doesn't seem to be the case
     def reap_children
         @child_list.each do |pid|
             Process.kill('SIGKILL', pid)
         end
-        #TODO - reap children that crash!
     end 
 end
+

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 EMPTY=0
 INCs=[-1,1]
@@ -8,9 +8,7 @@ VISIBLE=True
 from copy import *
 from math import *
 import random
-import game_contest_server_checkers
 
-print "here"
 def getPossibles(CB,player):
     possibles={}
     if player=="black":
@@ -317,3 +315,4 @@ def centroid(CB,opposingPlayer):
     return centroidR,centroidC
             
     
+import "../checkers_helper"

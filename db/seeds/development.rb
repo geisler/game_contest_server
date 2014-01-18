@@ -34,7 +34,7 @@ referee = Referee.create!(
     name: "Guess W!",
     rules_url: "http://www.google.com",
     players_per_game: 2,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_referee.rb").to_s
+    file_location: Rails.root.join( "examples" , "test_referee.rb").to_s
 )
 
 contest = Contest.create!(
@@ -52,7 +52,7 @@ player1 = Player.create!(
     name: "Phil",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join( "examples" , "test_player.rb").to_s
 )
 player2 = Player.create!(
     user: student,
@@ -61,7 +61,7 @@ player2 = Player.create!(
     name: "Justin",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+    file_location: Rails.root.join( "examples" , "test_player.py").to_s
 )
 player3 = Player.create!(
     user: student,
@@ -70,7 +70,7 @@ player3 = Player.create!(
     name: "Alex",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join("examples" , "test_player.rb").to_s
 )
 player4 = Player.create!(
     user: student,
@@ -79,7 +79,7 @@ player4 = Player.create!(
     name: "Doug",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join("examples" , "test_player.rb").to_s
 )
 player5 = Player.create!(
     user: student,
@@ -88,7 +88,7 @@ player5 = Player.create!(
     name: "David",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+    file_location: Rails.root.join("examples"  , "test_player.py").to_s
 )
 player6 = Player.create!(
     user: student,
@@ -97,7 +97,7 @@ player6 = Player.create!(
     name: "Nathan",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.py").to_s
+    file_location: Rails.root.join("examples" , "test_player.py").to_s
 )
 player7 = Player.create!(
     user: student,
@@ -106,7 +106,7 @@ player7 = Player.create!(
     name: "Juan",
     downloadable: false,
     playable: false,
-    file_location: Rails.root.join("spec" , "exec_environment" , "test_player.rb").to_s
+    file_location: Rails.root.join( "examples" , "test_player.rb").to_s
 )
 
 tournament = Tournament.create!(
@@ -134,5 +134,4 @@ player4_tournament2 = PlayerTournament.create!(player: player4, tournament: tour
 player5_tournament2 = PlayerTournament.create!(player: player5, tournament: tournament2)
 player6_tournament2 = PlayerTournament.create!(player: player6, tournament: tournament2)
 player7_tournament2 = PlayerTournament.create!(player: player7, tournament: tournament2)
-
 

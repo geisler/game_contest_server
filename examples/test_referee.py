@@ -1,14 +1,17 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 #test_player.py
 #Douglas Brown
 #1/15/2014
-#
 
 #imports
 from optparse import OptionParser
 import socket
 import sys
+
+
+#NOTE currently not a complete example of a referee as it does not communicate with match_wrapper properly.
+# It does provide a good example of python socket communication though.
 
 #Parsing command line arguments
 #Usage: client.py -p [port] --num [num]"

@@ -1,11 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 
 import cTurtle
 import math
 import random
-import P1
-import P2
+from ref_helper import *
 
 EMPTY=0
 INCs=[-1,1]
