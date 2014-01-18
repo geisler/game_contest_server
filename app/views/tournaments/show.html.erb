@@ -1,7 +1,11 @@
 <h1>Tournament</h1>
+
+<% if current_user==@tournament.contest.user and current_user.contest_creator %>
+  <%= link_to 'edit', edit_tournament_path(@tournament) %>
+<% end %>
+<br/>
 <p>Name: <%= @tournament.name %></p>
 <p>Start: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
 <p>Tournament Type: <%= @tournament.tournament_type %></p>
 <p>Contest: <%= link_to @tournament.contest.name, @tournament.contest %></p>
 <p>Players: <%= render @tournament.players %></p>
-

@@ -1,1 +1,1 @@
-<li><%= link_to tournament.name, tournament %> | <%= link_to 'delete', tournament, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+<li><%= link_to tournament.name, tournament %> <% if current_user == tournament.contest.user and current_user.contest_creator %> | <%= link_to 'edit', edit_tournament_path(tournament) %> <% end %> | <%= link_to 'delete', tournament, method: :delete, data: { confirm: 'Are you sure?' } %></li>

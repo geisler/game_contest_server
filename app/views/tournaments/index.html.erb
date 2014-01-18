@@ -1,2 +1,19 @@
 <h1>List of Tournaments</h1>
-<%= render @tournaments %>
+<!--<%= render @tournaments %>-->
+
+<h3><%= pluralize(@tournaments.length, 'tournament', 'tournament') %></h3>
+
+<div id= "pagination">
+  <%if @tournaments.blank?%>
+    <h3><%="There are no tournaments available!"%></h3>
+  <% else %>
+     <% @tournament.each do |contest| %>
+        <li><%= link_to tournament.name, tournament %>
+          <% if current_user==tournament.contest.user and current_user.contest_creator %>
+            | <%= link_to 'edit', edit_tournament_path(tournament) %>
+          <% end %>
+        </li>
+    <% end %>
+  <% end %>
+  <%= will_paginate%>
+</div>
