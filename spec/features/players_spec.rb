@@ -280,7 +280,7 @@ describe "PlayersPages" do
       visit contest_players_path(contest)
     end
 
-    it { should have_content('10 players') }
+    it { should have_content('10 Players') }
     it { should have_selector('div.pagination') }
     it { should have_link('2', href: "/contests/#{slug}/players?page=2") }
     it { should have_link('3', href: "/contests/#{slug}/players?page=3") }
@@ -299,7 +299,7 @@ describe "PlayersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("0 players") }
+    it { should have_content("0 Players") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
@@ -327,7 +327,7 @@ describe "PlayersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("10 players") }
+    it { should have_content("10 Players") }
     it { should have_link('2') }
     it { should_not have_link('3') }
     # it { should_not have_link('3', href: "/contests?utf8=✓&direction=&sort=&search=te&commit=Search") }
@@ -354,7 +354,7 @@ describe "PlayersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("1 player") }
+    it { should have_content("1 Player") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
   end
 
@@ -370,7 +370,7 @@ describe "PlayersPages" do
 
     it 'should return results' do
       should have_content('searchtest')
-      should have_content('1 player')
+      should have_content('1 Player')
     end
   end
 

@@ -120,8 +120,8 @@ describe "UsersPages" do
           should_not have_link('delete', href: referee_path(ref))
         end
       end
-      it { should have_link('New Referee', href: new_referee_path) }
-      it { should have_content('5 referees') }
+
+      it { should have_content('5 Referees') }
 
       describe "logged in" do
         before do
@@ -207,7 +207,7 @@ describe "UsersPages" do
 
 
 
-  describe 'search_parcial' do
+  describe 'search_partial' do
     let(:submit) {"Search"}
     before do
       FactoryGirl.create(:user, username: "searchtest1")

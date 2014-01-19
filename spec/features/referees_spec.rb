@@ -213,7 +213,7 @@ describe "RefereePages" do
 
       visit referees_path
     end
-    it { should have_content('10 referees') }
+    it { should have_content('10 Referees') }
     it { should have_selector('div.pagination') }
     it { should have_link('2', href: "/referees?page=2" ) }
     it { should have_link('3', href: "/referees?page=3") }
@@ -232,7 +232,7 @@ describe "RefereePages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("0 referees") }
+    it { should have_content("0 Referees") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
@@ -240,7 +240,7 @@ describe "RefereePages" do
 
 
 
-  describe 'search_parcial' do
+  describe 'search_partial' do
     let(:submit) {"Search"}
     before do
       FactoryGirl.create(:referee, name: "searchtest1")
@@ -264,7 +264,7 @@ describe "RefereePages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("10 referees") }
+    it { should have_content("10 Referees") }
     it { should have_link('Next →') }#, href: "/?commit=Search&amp;direction=&amp;page=2&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93" ) }
     it { should have_link('2') }
     it { should_not have_link('3') }
@@ -291,7 +291,7 @@ describe "RefereePages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("1 referee") }
+    it { should have_content("1 Referee") }
     it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) }
   end
 
@@ -307,7 +307,7 @@ describe "RefereePages" do
 
     it 'should return results' do
       should have_content('searchtest')
-      should have_content('1 referee')
+      should have_content('1 Referee')
 
    end
    end

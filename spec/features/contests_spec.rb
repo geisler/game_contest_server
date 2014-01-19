@@ -230,7 +230,7 @@ describe "ContestsPages" do
 
 
 
-   describe 'search_parcial' do
+   describe 'search_partial' do
     let(:submit) {"Search"}
     before do
       FactoryGirl.create(:contest, name: "searchtest1")
