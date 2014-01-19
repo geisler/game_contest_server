@@ -17,7 +17,7 @@
 <div class="form-group">
     <%= f.label :deadline %>
     <div class="form-group">
-        <%= f.datetime_select :deadline, { start_year: Time.now.year, use_short_month: true, 
+        <%= f.datetime_select :deadline, { start_year: Time.now.year, use_short_month: true,
             minute_step: 5, order: [:month, :day, :year], with_css_classes: true,
             datetime_separator: " at " } %>
     </div>

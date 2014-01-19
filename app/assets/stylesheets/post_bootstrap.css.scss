@@ -1,32 +1,32 @@
 /*
-This file is for changing Bootstrap default variables. 
-It is imported into js_color_scheme AFTER Bootsrap is 
+This file is for changing Bootstrap default variables.
+It is imported into js_color_scheme AFTER Bootsrap is
 loaded, so the classes are not overridden.
 */
 
 
 body {
-// Keeps the bottom of the page separate from the 
+// Keeps the bottom of the page separate from the
 // edge of the browser.
     padding-bottom: 20px;
 }
 
 
 // This changes alerts to have no rounded corners.
-// NOTE: This is cancelled out below for alerts in 
+// NOTE: This is cancelled out below for alerts in
 //       containers, e.g. form error alerts.
 .alert {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
-    
+
     margin: 0 0 0 0;
-    
+
     text-align: center;
 }
 
 
-// Resetting to .alert defaults 
+// Resetting to .alert defaults
 // if alert is in a container
 .container {
     .alert {
@@ -42,7 +42,7 @@ body {
 
 .field_with_errors {
 //  Stops datetime_select in form_for from moving to
-//  new line when it's an error field 
+//  new line when it's an error field
     display: inline;
 }
 

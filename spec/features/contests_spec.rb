@@ -34,7 +34,7 @@ describe "ContestsPages" do
 
       illegal_dates = [{month: 'Feb', day: '30'},
         {month: 'Feb', day: '31'},
-        {year: '2018', month: 'Feb', day: '29'},
+        {year: '2015', month: 'Feb', day: '29'},
         {month: 'Apr', day: '31'},
         {month: 'Jun', day: '31'},
         {month: 'Sep', day: '31'},
@@ -42,13 +42,14 @@ describe "ContestsPages" do
       illegal_dates.each do |date|
         describe "illegal date (#{date.to_s})" do
           before do
-            select_datetime(now, 'Deadline')
+            select_illegal_datetime('Deadline', date)
             fill_in 'Description', with: description
             fill_in 'Name', with: name
             select referee.name, from: 'Referee'
             click_button submit
           end
 
+          it { should have_alert(:danger) }
         end
       end
     end
@@ -315,7 +316,14 @@ describe "ContestsPages" do
     it { should have_link(contest.user.username, user_path(contest.user)) }
     it { should have_content(contest.referee.name) }
     it { should have_link(contest.referee.name, referee_path(contest.referee)) }
-    # add Players that use this contest
+
+    it "lists all the players in the contest" do
+      Player.where(contest: contest).each do |player|
+        should have_selector('li', text: player.name)
+        should have_link(t.name, player_path(player))
+      end
+    end
+
     it { should have_link('New Player',
       href: new_contest_player_path(contest)) }
   end

@@ -1,4 +1,4 @@
-<h1>Tournament</h1>
+<h1>Tournament information</h1>
 
 <% if current_user==@tournament.contest.user and current_user.contest_creator %>
   <%= link_to 'edit', edit_tournament_path(@tournament) %>
@@ -6,6 +6,14 @@
 <br/>
 <p>Name: <%= @tournament.name %></p>
 <p>Start: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
-<p>Tournament Type: <%= @tournament.tournament_type %></p>
+<p>Status: <%= @tournament.status %></p>
+<p>Tournament type: <%= @tournament.tournament_type %></p>
 <p>Contest: <%= link_to @tournament.contest.name, @tournament.contest %></p>
+<<<<<<< HEAD
 <p>Players: <%= render @tournament.players %></p>
+=======
+<p>Contest owner: <%= link_to @tournament.contest.user.username, @tournament.contest.user %></p>
+<p>Referee: <%= link_to @tournament.referee.name, @tournament.referee %></p>
+<p>Players: <%= render @tournament.players %></p>
+
+>>>>>>> tournament-testing

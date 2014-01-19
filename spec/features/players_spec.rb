@@ -95,7 +95,9 @@ describe "PlayersPages" do
     it { should have_field('Name', with: player.name) }
     it { should have_field('Description', with: player.description) }
     it { should have_unchecked_field('download') }
+    it { should_not have_checked_field('download') }
     it { should have_checked_field('compete') }
+    it { should_not have_unchecked_field('compete') }
 
     describe "with invalid information" do
       before do
@@ -121,10 +123,12 @@ describe "PlayersPages" do
     end
 
     describe "with forbidden attributes", type: :request do
-      let (:bad_path) { '/path/to/file' }
+      let (:bad_path) { Rails.root.join('code',
+                                        'players',
+                                        'test').to_s }
       before do
         login user, avoid_capybara: true
-        patch player_path(player), player: { file_location: bad_path  }
+        patch player_path(player), player: { file_location: bad_path }
       end
 
       specify { expect(player.reload.file_location).not_to eq(bad_path) }
@@ -268,22 +272,24 @@ describe "PlayersPages" do
   end
 
   describe "pagination" do
+    let (:slug) { contest.slug }
+
     before do
-      30.times { FactoryGirl.create(:player, contest: contest); @slug = contest.slug }
+      30.times { FactoryGirl.create(:player, contest: contest) }
 
       visit contest_players_path(contest)
     end
 
     it { should have_content('10 players') }
     it { should have_selector('div.pagination') }
-    #it { should have_link('2', href: "/contests/1/players?page=2" ) }
-    it { should have_link('2', href: "/contests/#{@slug}/players?page=2") }
-    it { should have_link('3', href: "/contests/#{@slug}/players?page=3") }
-    it { should_not have_link('4', href: "/contests/#{@slug}/players?page=4") }
+    it { should have_link('2', href: "/contests/#{slug}/players?page=2") }
+    it { should have_link('3', href: "/contests/#{slug}/players?page=3") }
+    it { should_not have_link('4', href: "/contests/#{slug}/players?page=4") }
   end
 
   describe 'search_error'do
     let(:submit) {"Search"}
+
     before do
       FactoryGirl.create(:player, name: "searchtest1", contest: contest)
       FactoryGirl.create(:player, name: "peter1", contest: contest)
@@ -327,6 +333,7 @@ describe "PlayersPages" do
     # it { should_not have_link('3', href: "/contests?utf8=✓&direction=&sort=&search=te&commit=Search") }
   end
 
+  # Ummm. What is this? TODO
   describe 'search_pagination' do
     let(:submit) {"Search"}
     before do

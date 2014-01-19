@@ -37,7 +37,7 @@ def select_illegal_datetime(field, bad_values)
     if bad_values[type]
       select_value = bad_values[type]
       if type = :hour || :type == :min
-	select_value = select_value.to_s.rjust(2, '0')
+        select_value = select_value.to_s.rjust(2, '0')
       end
 
       select select_value, from: select_id

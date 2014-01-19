@@ -29,7 +29,7 @@ describe Match do
   end
 
   describe "valid status" do
-    valid_statuses = %w[waiting started completed]
+    valid_statuses = %w[unassigned waiting started completed]
     valid_statuses.each do |status|
       it "is valid" do
         match.status = status
@@ -40,9 +40,9 @@ describe Match do
 
   describe "invalid status" do
     invalid_statuses = %w[
-      Waiting Started Completed Pending
-      wait start complete pend
-      w s c p
+      Unassigned Waiting Started Completed Pending
+      unassign wait start complete pend
+      u w s c p
       before during after
       ]
     invalid_statuses.each do |status|
@@ -147,16 +147,34 @@ describe Match do
   end
 
   describe "too few players" do
-    before do
-      match.players.clear
-      (match.manager.referee.players_per_game - 1).times do
-        player = FactoryGirl.create(:player, contest: match.manager.contest)
-        player.tournaments << match.manager
-        match.players << player
-      end
-    end
+    failures = %w( waiting started completed )
+    failures.each do |status|
+      describe "status #{status}" do
+        before do
+          match.status = status
+          match.players.clear
+          (match.manager.referee.players_per_game - 1).times do
+            player = FactoryGirl.create(:player, contest: match.manager.contest)
+            player.tournaments << match.manager
+            match.players << player
+          end
+        end
+        it { should_not be_valid }
+      end # status #{}
+    end # loop
 
-    it { should_not be_valid }
+    describe "status unassigned" do
+      before do
+        match.status = 'unassigned'
+        match.players.clear
+        (match.manager.referee.players_per_game - 1).times do
+          player = FactoryGirl.create(:player, contest: match.manager.contest)
+          player.tournaments << match.manager
+          match.players << player
+        end
+      end
+      it { should be_valid }
+    end # waiting
   end
 
   describe "exactly right players" do
@@ -190,7 +208,7 @@ describe Match do
     before do
       ref = FactoryGirl.create(:referee, players_per_game: 2)
       contest = FactoryGirl.create(:contest, referee: ref)
-      tournament = FactoryGirl.create(:tournament, contest: contest)    
+      tournament = FactoryGirl.create(:tournament, contest: contest)
       match.manager = tournament
       match.player.clear
       match.manager.referee.players_per_game do
@@ -203,7 +221,7 @@ describe Match do
 
   # This is a kinda confusing test.
   # It makes players that are in the same contest
-  # but not in the same tournament try to play in the same 
+  # but not in the same tournament try to play in the same
   # match in a tournament, which should not be allowed.
   describe "players are in the same contest, but are not in same tournament" do
     before do
