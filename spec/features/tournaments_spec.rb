@@ -263,6 +263,11 @@ describe 'TournamentsPages' do
     it { should have_content(distance_of_time_in_words_to_now(tournament.start)) }
     it { should have_content(tournament.tournament_type) }
 
+=begin
+    # Edit
+    it { should have_link("Edit", edit_tournament_path(tournament)) }
+=end
+
     # Contest stuff
     it { should have_content(tournament.contest.user.username) }
     it { should have_link(tournament.contest.user.username, user_path(tournament.contest.user)) }
