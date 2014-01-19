@@ -59,7 +59,9 @@ class TournamentsController < ApplicationController
   private
 
   def acceptable_params
-    params.require(:tournament).permit(:name , :start, :status, :tournament_type, player_ids: @contest.players.try(:ids))
+    # Status should not be acceptable.
+    # The backend should set it.
+    params.require(:tournament).permit(:name , :start, :tournament_type, player_ids: @contest.players.try(:ids))
   end
 
   def ensure_contest_owner

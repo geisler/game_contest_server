@@ -316,7 +316,14 @@ describe "ContestsPages" do
     it { should have_link(contest.user.username, user_path(contest.user)) }
     it { should have_content(contest.referee.name) }
     it { should have_link(contest.referee.name, referee_path(contest.referee)) }
-    # add Players that use this contest
+
+    it "lists all the players in the contest" do
+      Player.where(contest: contest).each do |player|
+        should have_selector('li', text: player.name)
+        should have_link(t.name, player_path(player))
+      end
+    end
+
     it { should have_link('New Player',
       href: new_contest_player_path(contest)) }
   end

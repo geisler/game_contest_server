@@ -123,10 +123,12 @@ describe "PlayersPages" do
     end
 
     describe "with forbidden attributes", type: :request do
-      let (:bad_path) { '/path/to/file' }
+      let (:bad_path) { Rails.root.join('code',
+                                        'players',
+                                        'test').to_s }
       before do
         login user, avoid_capybara: true
-        patch player_path(player), player: { file_location: bad_path  }
+        patch player_path(player), player: { file_location: bad_path }
       end
 
       specify { expect(player.reload.file_location).not_to eq(bad_path) }

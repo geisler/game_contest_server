@@ -80,6 +80,7 @@ describe "UsersPages" do
       it "lists all the players for the user" do
         Player.all.each do |player|
           should have_selector('li', text: player.name)
+          should have_link(player.name, player_path(player))
           should_not have_link('delete', href: player_path(player))
         end
       end
@@ -154,24 +155,24 @@ describe "UsersPages" do
       end
     end
   end
-  
+
   describe "pagination" do
     before(:all) { 30.times { FactoryGirl.create(:user) } }
     after(:all)  { User.delete_all }
-    
+
     before(:each) { visit users_path }
-    
+
     it { should have_content('10 users') }
     it { should have_selector('div.pagination') }
     it { should have_link('2', href: "/?page=2" ) }
     it { should have_link('3', href: "/?page=3") }
-    it { should_not have_link('4', href: "/?page=4") }     
+    it { should_not have_link('4', href: "/?page=4") }
   end
- 
-  
+
+
   describe 'searchError' do
     let(:submit) {"Search"}
-    
+
     before do
       FactoryGirl.create(:user, username: "searchtest")
       visit users_path
@@ -182,30 +183,30 @@ describe "UsersPages" do
     it 'should return results' do
       should have_content(' ')
       should have_alert(:info)
-      
+
    end
    end
-  
+
   describe 'search_error'do
     let(:submit) {"Search"}
     before do
       FactoryGirl.create(:user, username: "searchtest1")
       FactoryGirl.create(:user, username: "peter1")
       FactoryGirl.create(:user, username: "searchtest0")
-      
+
       visit users_path
       fill_in 'search', with:':'
       click_button submit
     end
     after(:all)  { User.delete_all }
     it { should have_content("0 user") }
-    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
-  
-  
-  
-  
+
+
+
+
   describe 'search_parcial' do
     let(:submit) {"Search"}
     before do
@@ -236,7 +237,7 @@ describe "UsersPages" do
     it { should_not have_link('3') }
     #it { should_not have_link('3', href: "/?commit=Search&amp;direction=&amp;page=3&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93") }
   end
-  
+
   describe 'search_pagination' do
     let(:submit) {"Search"}
     before do
@@ -258,12 +259,12 @@ describe "UsersPages" do
     end
     after(:all)  { User.delete_all }
     it { should have_content("1 user") }
-    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) } 
+    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) }
   end
-  
+
   describe 'search' do
     let(:submit) {"Search"}
-    
+
     before do
       FactoryGirl.create(:user, username: "searchtest")
       visit users_path
@@ -274,11 +275,11 @@ describe "UsersPages" do
     it 'should return results' do
       should have_content('searchtest')
       should have_content('1 user')
-      
+
    end
    end
-      
-      
+
+
   describe "Edit users" do
     let (:user) { FactoryGirl.create(:user) }
     let!(:orig_username) { user.username }
@@ -319,14 +320,27 @@ describe "UsersPages" do
     end
 
     describe "with forbidden attributes", type: :request do
-      before do
-        login user, avoid_capybara: true
-        patch user_path(user), user: { admin: true,
-                                       password: user.password,
-                                       password_confirmation: user.password }
+      describe 'admin' do
+        before do
+          login user, avoid_capybara: true
+          patch user_path(user), user: { admin: true,
+                                         password: user.password,
+                                         password_confirmation: user.password }
+        end
+
+        specify { expect(user.reload).not_to be_admin }
       end
 
-      specify { expect(user.reload).not_to be_admin }
+      describe 'contest_creator' do
+        before do
+          login user, avoid_capybara: true
+          patch user_path(user), user: { contest_creator: true,
+                                         password: user.password,
+                                         password_confirmation: user.password }
+        end
+
+        specify { expect(user.reload).not_to be_contest_creator }
+      end
     end
 
     describe "with valid information" do
