@@ -1,25 +1,27 @@
 <h1>List of Tournaments</h1>
-<%= form_tag contest_tournaments_path, :method => 'get', :id => "tournaments_search" do %>
-  <%= hidden_field_tag :direction, params[:direction] %>
-  <%= hidden_field_tag :sort, params[:sort] %>
-  <p>
-    <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :description => nil %>
-  </p>
+<%= form_tag contest_tournaments_path, method: :get, id: :tournaments_search do %>
+    <%= hidden_field_tag :direction, params[:direction] %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+    <p>
+        <%= text_field_tag :search, params[:search] %>
+        <%= submit_tag "Search", description: nil %>
+    </p>
 <% end %>
-<h3><%= pluralize(@tournaments.length, 'tournament', 'tournament') %></h3>
 
-<div id= "pagination">
-  <%if @tournaments.blank?%>
-    <h3><%="There are no tournaments available!"%></h3>
-  <% else %>
-     <% @tournaments.each do |tournament| %>
-        <li><%= link_to tournament.name, tournament %>
-          <% if current_user==tournament.contest.user and current_user.contest_creator %>
-            | <%= link_to 'edit', edit_tournament_path(tournament) %>
-          <% end %>
-        </li>
+<h3><%= pluralize(@tournaments.length, 'tournament') %></h3>
+
+<div id="pagination">
+    <% if @tournaments.blank? %>
+        <h3><%= "There are no tournaments available!" %></h3>
+    <% else %>
+        <% @tournaments.each do |tournament| %>
+            <li><%= link_to tournament.name, tournament %>
+                <% if current_user == tournament.contest.user and current_user.contest_creator %>
+                    | <%= link_to 'edit', edit_tournament_path(tournament) %>
+                <% end %>
+            </li>
+        <% end %>
     <% end %>
-  <% end %>
-  <%= will_paginate%>
+
+    <%= will_paginate %>
 </div>

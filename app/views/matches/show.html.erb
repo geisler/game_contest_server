@@ -1,18 +1,22 @@
 <h1>Match <%= @match.id %> for <%= @match.manager.name %></h1>
 <p>Status: <%= @match.status %></p>
+
 <% if @match.completed? %>
     <p>
-	Completed: <%= distance_of_time_in_words_to_now(@match.completion) %>
+    Completed: <%= distance_of_time_in_words_to_now(@match.completion) %>
     </p>
 <% end %>
+
 <p>
     Earliest start time:
     <%= distance_of_time_in_words_to_now(@match.earliest_start) %>
 </p>
+
 <p>Referee: <%= @match.manager.referee.name %></p>
+
 <h2><%= pluralize(@match.manager.referee.players_per_game, 'Player') %></h2>
 <ol>
     <%= render partial: 'player_matches/player_links',
-	collection: @match.player_matches,
-	as: 'player_match' %>
+      collection: @match.player_matches,
+      as: 'player_match' %>
 </ol>

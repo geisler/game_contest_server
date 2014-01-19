@@ -1,25 +1,27 @@
 <h1>List of Players for <%= @contest.name %></h1>
-<%= form_tag contest_players_path, :method => 'get', :id => "players_search" do %>
-  <%= hidden_field_tag :direction, params[:direction] %>
-  <%= hidden_field_tag :sort, params[:sort] %>
-  <p>
-    <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :name => nil %>
-  </p>
-  <%end%>
-  <h3><%= pluralize(@players.length, 'player', 'players') %></h3>
+<%= form_tag contest_players_path, method: :get, id: :players_search do %>
+    <%= hidden_field_tag :direction, params[:direction] %>
+    <%= hidden_field_tag :sort, params[:sort] %>
+    <p>
+        <%= text_field_tag :search, params[:search] %>
+        <%= submit_tag "Search", name: nil %>
+    </p>
+<%end%>
 
-  <div id= "pagination">
-    <%if @players.blank?%>
-    <%="There are no players available!"%>
-    <%else%>
-      <% @players.each do |player| %>
-        <li><%= link_to player.name, player %>
-          <% if current_user==player.user and player.user_id and player.user %>
-            | <%= link_to 'edit', edit_player_path(player) %>
-          <% end %>
-        </li>
+<h3><%= pluralize(@players.length, 'Player') %></h3>
+
+<div id= "pagination">
+    <% if @players.blank? %>
+        <%= "There are no players available!" %>
+    <% else %>
+        <% @players.each do |player| %>
+            <li><%= link_to player.name, player %>
+                <% if current_user == player.user and player.user_id and player.user %>
+                    | <%= link_to 'edit', edit_player_path(player) %>
+                <% end %>
+            </li>
+        <% end %>
     <% end %>
-  <% end %>
-  <%= will_paginate%>
+
+    <%= will_paginate %>
 </div>

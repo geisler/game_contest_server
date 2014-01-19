@@ -19,12 +19,10 @@
 
         <% flash.each do |level, message| %>
             <div class="alert alert-<%= level %>"><%= message %></div>
-        <% end %>  
+        <% end %>
+
         <div class="container">
-
-
             <%= yield %>
-
         </div>
 
     </body>

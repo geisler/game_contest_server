@@ -6,13 +6,13 @@
 require 'clockwork'
 module Clockwork
 
-    handler do |job|
-        Process.spawn(job)
-    end
+  handler do |job|
+    Process.spawn(job)
+  end
 
-    #Every 10 seconds check the databse for tournaments that are waiting to be run
-    every(10.seconds, 'exec_environment/check_for_tournaments.rb')
-    #and check for matches that need to be run
-    every(10.seconds, 'exec_environment/check_for_matches.rb')
+  #Every 10 seconds check the databse for tournaments that are waiting to be run
+  every(10.seconds, 'exec_environment/check_for_tournaments.rb')
+  #and check for matches that need to be run
+  every(10.seconds, 'exec_environment/check_for_matches.rb')
 
 end

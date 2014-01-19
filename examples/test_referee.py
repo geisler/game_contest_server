@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 
-#test_player.py
-#Douglas Brown
-#1/15/2014
+# test_player.py
+# Douglas Brown
+# 1/15/2014
 
 #imports
 from optparse import OptionParser
@@ -18,8 +18,8 @@ import sys
 #Parsing command line arguments
 #Usage: client.py -p [port] --num [num]"
 parser = OptionParser()
-parser.add_option("-p","--port",action="store",type="int",dest="port")
-parser.add_option("-n","--num",action="store",type="int",dest="num")
+parser.add_option("-p", "--port", action="store", type="int", dest="port")
+parser.add_option("-n", "--num", action="store", type="int", dest="num")
 (options, args) = parser.parse_args()
 #print "port"
 #print options.port
@@ -28,7 +28,7 @@ parser.add_option("-n","--num",action="store",type="int",dest="num")
 
 
 HOST = ''   # Symbolic name meaning all available interfaces
-PORT = options.port 
+PORT = options.port
 NUM = options.num
 
 
@@ -44,14 +44,14 @@ def run():
         name = conn.recv(1024)
         names.append(name.strip())
         #print "Player "+str(i)+" is named "+name
-        
+
     #print "Running game"
     run_game()
     #End Game
     #print "Game over"
     for i in range(NUM):
         connections[i].close()
-        #print 'Closed connection ' + addresses[i][0] + ':' + str(addresses[i][1])    
+        #print 'Closed connection ' + addresses[i][0] + ':' + str(addresses[i][1])
     s.close()
 
 def run_game():
@@ -62,7 +62,7 @@ def run_game():
 
 def move(conn,playernum):
     #print names[playernum]+"'s turn"
-    conn.send('move\n') 
+    conn.send('move\n')
     while True:
         reply = conn.recv(1024).strip()
         if reply != "":
@@ -74,10 +74,10 @@ def move(conn,playernum):
         return True
     else:
         return False
-        
+
 def check_win(reply):
     return reply == 'w'
-    
+
 def inform_players_of_win(playernum):
     #print names[playernum]+" wins!"
     for i in range(NUM):

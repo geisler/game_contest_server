@@ -52,12 +52,12 @@ class PlayersController < ApplicationController
 
   private
 
-    def acceptable_params
-      params.require(:player).permit(:name, :description, :downloadable, :playable, :upload)
-    end
+  def acceptable_params
+    params.require(:player).permit(:name, :description, :downloadable, :playable, :upload)
+  end
 
-    def ensure_player_owner
-      @player = Player.friendly.find(params[:id])
-      ensure_correct_user(@player.user_id)
-    end
+  def ensure_player_owner
+    @player = Player.friendly.find(params[:id])
+    ensure_correct_user(@player.user_id)
+  end
 end

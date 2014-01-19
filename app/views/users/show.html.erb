@@ -4,31 +4,27 @@
 <h2>Players</h2>
 <ul>
     <% @user.players.each do |player| %>
-	<li>
-	    <%= link_to player.name, player %>
-	    <% if current_user?(@user) %>
-		| <%= link_to 'delete', player_path(player), method: :delete %>
-	    <% end %>
-	</li>
+        <li>
+            <%= link_to player.name, player %>
+            <% if current_user?(@user) %>
+                | <%= link_to 'delete', player_path(player), method: :delete %>
+            <% end %>
+        </li>
     <% end %>
 </ul>
+
 <p><%= pluralize(@user.players.count, 'player') %></p>
 
-<%# link_to 'New Player', new_player_path %>
-
 <% if @user.contest_creator %>
-    <h2>Referees</h2>
+    <h2><%= pluralize(@user.referees.count, 'Referee') %></h2>
     <ul>
-	<% @user.referees.each do |ref| %>
-	    <li>
-		<%= link_to ref.name, ref %>
-		<% if current_user?(@user) %>
-		    | <%= link_to 'delete', referee_path(ref), method: :delete %>
-		<% end %>
-	    </li>
-	<% end %>
+        <% @user.referees.each do |ref| %>
+            <li>
+                <%= link_to ref.name, ref %>
+                <% if current_user?(@user) %>
+                    | <%= link_to 'delete', referee_path(ref), method: :delete %>
+                <% end %>
+            </li>
+        <% end %>
     </ul>
-    <p><%= pluralize(@user.referees.count, 'referee') %></p>
-
-    <%= link_to 'New Referee', new_referee_path %>
 <% end %>

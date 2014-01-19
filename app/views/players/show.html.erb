@@ -1,24 +1,27 @@
 <h1>Player information</h1>
 
-<% if current_user==@player.user and @player.user_id and @player.user %>
-<%= link_to 'edit', edit_player_path(@player) %>
+<% if current_user == @player.user %>
+    <%= link_to 'edit', edit_player_path(@player) %>
 <% end %>
 
 <p>Name: <%= @player.name %></p>
 <p>Description: <%= @player.description %></p>
+
 <% if @player.playable %>
     <p>Player is available for matches.</p>
 <% end %>
+
 <% if @player.downloadable %>
     <p>Player can be downloaded.</p><!-- need link here -->
 <% end %>
+
 <p>Contest: <%= link_to @player.contest.name, @player.contest %></p>
 <p>Created by: <%= link_to @player.user.username, @player.user %></p>
 
 <h2><%= pluralize(@player.matches.count, 'Match') %></h2>
 <ol>
     <%= render partial: 'player_matches/match_links',
-	collection: @player.player_matches,
-	as: 'player_match' %>
+      collection: @player.player_matches,
+      as: 'player_match' %>
 </ol>
 <p>Record: <%= @player.player_matches.wins.count %>-<%= @player.player_matches.losses.count %></p>

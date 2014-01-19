@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
-    if @users.length ==0
+    if @users.length == 0
       flash.now[:info] = "There were no users that matched your search. Please try again!"
     end
   end

@@ -1,7 +1,7 @@
 <h1>Referee information</h1>
 
-<% if current_user==@referee.user and @referee.user_id and current_user.contest_creator %>
-<%= link_to 'edit', edit_referee_path(@referee) %>
+<% if current_user == @referee.user and current_user.contest_creator %>
+    <%= link_to 'edit', edit_referee_path(@referee) %>
 <% end %>
 
 <p>Name: <%= @referee.name %></p>
@@ -12,6 +12,6 @@
 <h2>Contests</h2>
 <ul>
     <% @referee.contests.each do |contest| %>
-	<li><%= link_to contest.name, contest %></li>
+        <li><%= link_to contest.name, contest %></li>
     <% end %>
 </ul>

@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 
-#test_player.py
-#Douglas Brown
-#1/15/2014
+# test_player.py
+# Douglas Brown
+# 1/15/2014
 #
 
 # Guess W! player written in python. Can interact properly with test_referee.rb
@@ -15,8 +15,8 @@ from random import choice
 #Parsing command line arguments
 #Usage: client.py --name [name] -p [port]"
 parser = OptionParser()
-parser.add_option("-p","--port",action="store",type="int",dest="port")
-parser.add_option("-n","--name" ,action="store",type="string",dest="name")
+parser.add_option("-p", "--port", action="store", type="int", dest="port")
+parser.add_option("-n", "--name", action="store", type="string", dest="name")
 (options, args) = parser.parse_args()
 #print ("port")
 #print (options.port)
@@ -36,7 +36,7 @@ s.connect((ip,PORT)) #Connect to server
 #print ('Socket Connected to ' + HOST + ' on ip ' + ip)
 
 message = str(NAME)+"\n"
-s.send(message.encode())   
+s.send(message.encode())
 
 #Now receive data
 while True:

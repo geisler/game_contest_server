@@ -11,12 +11,12 @@ Jan 2014
 
 I. Daemon
 
-    We are using the clockwork ruby gem, which essentially creates cron jobs to run our scripts 
+    We are using the clockwork ruby gem, which essentially creates cron jobs to run our scripts
 at a given interval. We have a script in etc/initd called game_contest_server.sh which starts clockwork
 daemon upon server start. Currently it runs the process from Alex Sjoberg's user directory (/home/asjoberg). The clock.rb file in the top level directory of the project contains the jobs and intervals to be run
 by clcokwork.
 
-    To start clockwork deamon manually you can use the following...
+    To start clockwork daemon manually you can use the following...
         - Background
             - clockworkd -d . start ./clock.rb --log
             - "-d" flag specifys the directory you would like to run it from
@@ -26,7 +26,7 @@ by clcokwork.
             - to stop use control c
 
 II. Program Flow
-    
+
     Using clockwork as describe above the frontend to backend flow is as follows.
         1. Clockwork daemon is running scripts that check the database for tournament and matches
             - if a tournament is found that needs to be run, tournament_runner.rb will create database
@@ -34,10 +34,10 @@ II. Program Flow
             - if a match is found that needs to be run, match_runnner.rb will use match_wrapper.rb to run
             the match and enter the results into the database.
         2. Match_Wrapper.rb starts a referee telling it which port to communicate to match_wrapper on.
-        The referee then responds with the port that it would like the players to communicate on. 
+        The referee then responds with the port that it would like the players to communicate on.
         Match_wrapper then starts the players telling them the port to communicate to the referee on and
         also passes the players name which they will communicate to the referee so that it can accurately
-        report results to be stored in the database. 
+        report results to be stored in the database.
 
 III. Referees
     (example can be found in examples/test_referee.rb)
@@ -51,7 +51,7 @@ III. Referees
         5. Send us the game result for each player in the form... "PlayerName|Result|Score" , with each
         player result being sent seperatley.
             - an example would be... Bob|Win|5
-    NOTE: 
+    NOTE:
         1. When communicating with the match_wrapper(or any ruby program) ensure that you put a newline
     ("\n") at the end of each message. This is becasue ruby uses newline to signal the end of input.
         2. Referees MUST include shebang (#!) so that the shell can run them
@@ -75,13 +75,13 @@ V. Libary Imports
 
 VI. Future Work
     - Finish python checkers helper library
-    - Individual challenge both frontend and backend 
+    - Individual challenge both frontend and backend
     - Allowing games to be played that are more than 2 players
         - the match_wrapper should already support this, the biggest changes will take place in
         the match_runner
     - Allow for multiple rounds per match (currently this must be done in the referee)
     - Allow brackets to be customized from the frontend (currently randomly created)
-    - Complie players when uploaded (currently they must be executable)
+    - Compile players when uploaded (currently they must be executable)
     - Test uploaded players and referees to ensure they interact with match_wrapper correctly
     - Logging and recording games for playback
     - Visually displaying games as they are played
@@ -91,9 +91,10 @@ VI. Future Work
         whether the previous one has finished or not. Could cause serious performance issues
     - Much more robust unit testing of the backend.
     - Create Matches page with pagination and search
+    - Add download player functionality
 
 VII. Known Bugs
     - Round Robin tournaments are currently never set to completed. Need a way to check that all matches are completed and set tournament status
-    - Children are not being reaped properly in many cases in match_wrapper.rb 
+    - Children are not being reaped properly in many cases in match_wrapper.rb
     - Occasionally when running lots of games, the db will be locked and we will fail to write the results
     - Checkers needs a max number of moves or too many games time out

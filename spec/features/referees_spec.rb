@@ -206,7 +206,7 @@ describe "RefereePages" do
       expect { delete referee_path(referee) }.to change(Referee, :count).by(-1)
     end
   end
-  
+
   describe "pagination" do
     before do
       30.times { FactoryGirl.create(:referee) }
@@ -219,27 +219,27 @@ describe "RefereePages" do
     it { should have_link('3', href: "/referees?page=3") }
     it { should_not have_link('4', href: "/referees?page=4") }
   end
-  
+
   describe 'search_error'do
     let(:submit) {"Search"}
     before do
       FactoryGirl.create(:referee, name: "searchtest1")
       FactoryGirl.create(:referee, name: "peter1")
       FactoryGirl.create(:referee, name: "searchtest2")
-      
+
       visit referees_path
       fill_in 'search', with:':'
       click_button submit
     end
     after(:all)  { User.delete_all }
     it { should have_content("0 referees") }
-    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) } 
+    it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
-  
-  
-  
-  
+
+
+
+
   describe 'search_parcial' do
     let(:submit) {"Search"}
     before do
@@ -270,7 +270,7 @@ describe "RefereePages" do
     it { should_not have_link('3') }
     #it { should_not have_link('3', href: "/?commit=Search&amp;direction=&amp;page=3&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93") }
   end
-  
+
   describe 'search_pagination' do
     let(:submit) {"Search"}
     before do
@@ -292,12 +292,12 @@ describe "RefereePages" do
     end
     after(:all)  { User.delete_all }
     it { should have_content("1 referee") }
-    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) } 
+    it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) }
   end
-  
+
   describe 'search' do
     let(:submit) {"Search"}
-    
+
     before do
       FactoryGirl.create(:referee, name: "searchtest")
       visit referees_path
@@ -308,10 +308,10 @@ describe "RefereePages" do
     it 'should return results' do
       should have_content('searchtest')
       should have_content('1 referee')
-      
+
    end
    end
-  
+
   describe "show" do
     let (:referee) { FactoryGirl.create(:referee) }
 
