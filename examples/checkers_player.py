@@ -313,4 +313,7 @@ def centroid(CB,opposingPlayer):
     centroidR=sumR//count
     centroidC=sumC//count
     return centroidR,centroidC
+
+import checkers_helper
+checker_helper.init(automatedMove)
     

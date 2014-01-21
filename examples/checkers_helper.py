@@ -7,17 +7,19 @@
 #When started, sends name to port provided
 
 
-#TODO need to be able to have access to students code in order to call their functrion
-# could do this though passing the file location in as command line argument via match wrapper
-# or just having student copy and paste this code into their file
-
-import checkers_player
 
 
 #imports
 from optparse import OptionParser
 import socket
 import pickle
+
+
+automatedMove = None
+
+def init(playerFunction):
+    global automatedMove
+    automatedMove = playerFunction
 
 
 #Parsing command line arguments
