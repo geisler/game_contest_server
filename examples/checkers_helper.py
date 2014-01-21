@@ -21,6 +21,20 @@ def init(playerFunction):
     global automatedMove
     automatedMove = playerFunction
 
+    ref_hostname = 'localhost'
+    ref_port = options.port
+    player_name  = options.name
+
+    ref_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ref_ip = socket.gethostbyname(ref_hostname)
+    ref_socket.connect((ref_ip,ref_port))
+    ref_socket.send(player_name.encode())
+    while True:
+        try:
+            CB,player = pickle.loads(ref_socket.recv(4096))
+            ref_socket.send(pickle.dumps(automatedMove(CB,player)))
+        except EOFError:
+            break        
 
 #Parsing command line arguments
 #Usage: client.py --name [name] -p [port]"
@@ -32,17 +46,3 @@ parser.add_option("-n","--name" ,action="store",type="string",dest="name")
 
 #To be run on import
 
-ref_hostname = 'localhost'
-ref_port = options.port
-player_name  = options.name
-
-ref_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ref_ip = socket.gethostbyname(ref_hostname)
-ref_socket.connect((ref_ip,ref_port))
-ref_socket.send(player_name.encode())
-while True:
-    try:
-        CB,player = pickle.loads(ref_socket.recv(4096))
-        ref_socket.send(pickle.dumps(checkers_player.automatedMove(CB,player)))
-    except EOFError:
-        break        

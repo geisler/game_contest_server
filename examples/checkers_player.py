@@ -315,5 +315,5 @@ def centroid(CB,opposingPlayer):
     return centroidR,centroidC
 
 import checkers_helper
-checker_helper.init(automatedMove)
+checkers_helper.init(automatedMove)
     
