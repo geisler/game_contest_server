@@ -110,8 +110,10 @@ class TournamentRunner
     
     #Creates a match and the associated player_matches
     def create_match(*match_participants)
-        match = create_raw_match()
+        match = create_raw_match("unassigned")
         create_player_matches(match,match_participants)
+        match.status = "waiting"
+        match.save!
         return match
     end 
     #Creates a match
