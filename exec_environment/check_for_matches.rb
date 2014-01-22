@@ -12,7 +12,11 @@ require './config/environment'
 match = Match.where("earliest_start < ? and status = ?", Time.now.utc, "waiting").first
 if not match.nil? then
     match.status = "started"
-    match.save!
-    puts "  Daemon spawning match #"+match.id.to_s
-    Process.spawn("rails runner exec_environment/match_runner.rb -m #{match.id}")
+    begin
+        match.save!
+        puts "  Daemon spawning match #"+match.id.to_s
+        Process.spawn("rails runner exec_environment/match_runner.rb -m #{match.id}")
+    rescue
+        puts "Database was locked. Will retry next time."
+    end
 end
