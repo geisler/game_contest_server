@@ -3,7 +3,9 @@ class Contest < ActiveRecord::Base
   belongs_to :referee
   has_many :tournaments
   has_many :players
-
+  has_many :matches, as: :manager
+  accepts_nested_attributes_for :matches
+  
   validates :referee,       presence: true
   validates :user,          presence: true
 

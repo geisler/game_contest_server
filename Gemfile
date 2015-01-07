@@ -68,6 +68,7 @@ gem 'kaminari'
 #for backend job scheduling
 gem 'daemons'
 gem 'clockwork'
+gem 'eventmachine', github: 'eventmachine/eventmachine'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
