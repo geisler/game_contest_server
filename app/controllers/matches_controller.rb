@@ -1,4 +1,9 @@
 class MatchesController < ApplicationController
+  before_action :ensure_user_logged_in, except: [:index, :show]
+  def new
+  end
+
+
   def show
     @match = Match.find(params[:id])
   end
