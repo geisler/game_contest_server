@@ -2,8 +2,9 @@ class MatchesController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
  
  def new
-    @match = Match.new
-  end
+   @contest = Contest.friendly.find(params[:contest_id])
+   @matches = @contest.matches 
+ end
 
 
   def show
