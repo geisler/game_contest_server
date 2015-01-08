@@ -1,1 +1,28 @@
+<div class="form-group">
+    <p><strong>My Player</strong></p>
+        <select name="player_id">
+        <% if current_user %>
+            <%= current_user.players.each do |player| %>
+                <% if player.contest_id == @contest.id%>
+                    <option value="<%= player.id %>"><%= player.name %></option>
+                <%end%>
+            <%end%>
+        <%end%>
+        </select>
+    <br/>
+</div>
+
+<!-- shows players not made by current user entered in contest-->
+<div class="form-group">
+    <p><strong>Challenge Player(s)</strong></p>
+    <% @contest.players.each do |p| %>
+        <%if current_user%>
+            <%if current_user.id != p.user_id %>
+                    <%= check_box_tag "contest[player_ids][#{p.id}]", 1, false %>
+                    <%= label_tag "contest[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
+            <%end%>
+        <%end%>
+        <br />
+    <% end %>
+</div>
 

@@ -1,6 +1,8 @@
 class MatchesController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
-  def new
+ 
+ def new
+    @match = Match.new
   end
 
 
