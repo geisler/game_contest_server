@@ -2,7 +2,7 @@ GameContestServer::Application.routes.draw do
   get "matches/show"
   get "matches/index"
   get "visual_tests/colorscheme", as: :colorscheme
-  root 'users#index'
+  root 'users#welcome'
 
   resources :users
   resources :referees
