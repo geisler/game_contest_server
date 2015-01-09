@@ -1,4 +1,4 @@
-<h1>Referee information</h1>
+<h1>Referee Information</h1>
 
 <% if current_user == @referee.user and current_user.contest_creator %>
     <%= link_to 'edit', edit_referee_path(@referee) %>

@@ -1,4 +1,4 @@
-<h1>Tournament information</h1>
+<h1>Tournament Information</h1>
 
 <% if current_user == @tournament.contest.user and current_user.contest_creator %>
     <%= link_to 'edit', edit_tournament_path(@tournament) %>
