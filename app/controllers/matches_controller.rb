@@ -13,16 +13,22 @@ class MatchesController < ApplicationController
   end 
 
 
-  def create
+  def create	
     @contest = Contest.friendly.find(params[:contest_id])
-    @match = @contest.matches.build(acceptable_params)
-    @match.status = "waiting"
-    if @match.save
-	flash[:success] = 'Match created.'
-	redirect_to @contest
+    contest = Contest.friendly.find(params[:contest_id])
+    @match = contest.matches.build
+    if params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
+	@match = @contest.matches.build(acceptable_params)
+    	@match.status = "waiting"
+    	    if @match.save
+		flash[:success] = 'Match created.'
+		redirect_to @contest
+    	    else
+		render 'new'
+            end
     else
-	flash.now[:danger] = 'Unable to create Challenge'
-	render 'new'
+	flash.now[:danger] = 'You need to select at least one of your own players.'
+	render action: 'new'
     end
   end
 

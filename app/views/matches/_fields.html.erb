@@ -11,12 +11,10 @@
 <div class="form-group">
     <p><strong>My Player</strong></p>
     <% current_user.players.each do |p| %>
-        <%if current_user%>
-            <%if current_user.id == p.user_id %>
-                    <%= radio_button_tag "match[player_ids][#{p.id}]", 1, false %>
-                    <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
-                    <br/>
-            <%end%>
+        <%if current_user.id == p.user_id %>
+                <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
+                <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
+                <br/>
         <%end%>
     <% end %>
 </div>
