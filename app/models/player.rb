@@ -24,7 +24,13 @@ class Player < ActiveRecord::Base
   end
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :slug_candidates, use: :slugged
+  def slug_candidates
+	[
+	  :name,
+	  [:name, :contest_id]
+	]
+  end
   after_validation :move_friendly_id_error_to_name
 
   def move_friendly_id_error_to_name

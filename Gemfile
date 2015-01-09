@@ -11,6 +11,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'timecop'
+  gem 'test-unit'
 end
 
 group :development, :test do
@@ -67,7 +68,7 @@ gem 'kaminari'
 #for backend job scheduling
 gem 'daemons'
 gem 'clockwork'
-
+gem 'eventmachine', github: 'eventmachine/eventmachine'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

@@ -55,6 +55,8 @@ class TournamentsController < ApplicationController
 
   def destroy
     @tournament = Tournament.friendly.find(params[:id])
+    @tournament.player_tournaments.each{|m|m="destroy"}
+    @tournament.matches.each{|m|m="destroy"}
     @tournament.destroy
     redirect_to contest_tournaments_path(@tournament.contest)
   end

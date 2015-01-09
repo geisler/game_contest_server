@@ -107,7 +107,7 @@ class TournamentRunner
             return child
         end        
     end
-    
+   
     #Creates a match and the associated player_matches
     def create_match(*match_participants)
         match = create_raw_match("unassigned")
