@@ -34,6 +34,14 @@ class Match < ActiveRecord::Base
     status == 'completed'
   end
 
+  def player_ids=(ids)
+    ids.each do |p, use|
+      self.player_matches.build(player: Player.find(p))
+    end
+  end
+
+
+
 
   def correct_number_of_players
     return if self.player_matches.nil? || self.manager.nil?
