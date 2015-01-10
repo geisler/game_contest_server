@@ -13,7 +13,7 @@
 
 <p>Contest owner: <%= link_to @tournament.contest.user.username, @tournament.contest.user %></p>
 <p>Referee: <%= link_to @tournament.referee.name, @tournament.referee %></p>
-<h2>Players</h2>
+<h2><%= pluralize(@tournament.players.count, 'Player') %></h2>
 <ul>
     <%= render @tournament.players %>
 </ul>
