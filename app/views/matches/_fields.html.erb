@@ -11,11 +11,13 @@
 <div class="form-group">
     <p><strong>My Player</strong></p>
     <% current_user.players.each do |p| %>
-        <%if current_user.id == p.user_id %>
+        <%if ((current_user.id) == (p.user_id) && (p.contest_id) == (@contest.id))%>
                 <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
                 <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
                 <br/>
-        <%end%>
+	<%else%>
+		<p>You have no players in this contest <p>
+	<%end%>
     <% end %>
 </div>
 
@@ -24,13 +26,11 @@
 <div class="form-group">
     <p><strong>Challenge Player(s)</strong></p>
     <% @contest.players.each do |p| %>
-        <%if current_user%>
-            <%if current_user.id != p.user_id %>
-                    <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
-                    <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
-                    <br/>
-	    <%end%>
-        <%end%>
+         <%if current_user.id != p.user_id %>
+                <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
+                <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
+                <br/>
+         <%end%>
     <% end %>
 </div>
 

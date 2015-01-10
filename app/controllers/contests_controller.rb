@@ -43,6 +43,7 @@ class ContestsController < ApplicationController
 
   def destroy
     @contest.destroy
+    flash[:success] = 'Contest delted.'
     redirect_to contests_path
   end
 

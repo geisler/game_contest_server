@@ -2,6 +2,7 @@
 
 <% if current_user == @referee.user and current_user.contest_creator %>
     <%= link_to 'edit', edit_referee_path(@referee) %>
+    | <%= link_to 'delete', @referee, method: :delete, data: { confirm: 'Make sure this referee is not being used before you delete it'} %>
 <% end %>
 
 <p>Name: <%= @referee.name %></p>

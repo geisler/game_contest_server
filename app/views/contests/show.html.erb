@@ -2,13 +2,18 @@
 
 <% if current_user==@contest.user and current_user.contest_creator %>
   <%= link_to 'edit', edit_contest_path(@contest) %>
+ | <%= link_to 'delete', @contest, method: :delete, data: { confirm: 'Are you sure?' } %>
 <% end %>
 <br/>
 
 <p>Name: <%= @contest.name %></p>
 <p>Deadline: <%= distance_of_time_in_words_to_now(@contest.deadline) %></p>
 <p>Description: <%= @contest.description %></p>
-<p>Managing referee: <%= link_to @contest.referee.name, @contest.referee %></p>
+<% if @contest.referee %>
+    <p>Managing referee: <%= link_to @contest.referee.name, @contest.referee %></p>
+<%else%>
+    <p> Referee cannot be found, edit for a new referee or delete contest.</p>
+<%end%>
 <p>Contest creator: <%= link_to @contest.user.username, @contest.user %></p
 <br/>
 
@@ -24,6 +29,7 @@
         <li>Create <%= link_to 'New Tournament', new_contest_tournament_path(@contest) %> for this contest.</li>
     <% end %>
     <li> <%= link_to ' Challenge other players.', new_contest_match_path(@contest)%>  </li>
+    	
 </ul>
 
 
