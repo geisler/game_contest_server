@@ -13,5 +13,8 @@
 
 <p>Contest owner: <%= link_to @tournament.contest.user.username, @tournament.contest.user %></p>
 <p>Referee: <%= link_to @tournament.referee.name, @tournament.referee %></p>
-<p>Players: <%= render @tournament.players %></p>
+<h2>Players</h2>
+<ul>
+    <%= render @tournament.players %>
+</ul>
 
