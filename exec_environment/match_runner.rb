@@ -9,7 +9,8 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/bhogan/Project/exec_environment/match_wrapper.rb' #NOTE this is hardcoded to be using the match_wrapper in asjoberg's directory right now
+#This line will need to be changed for every user! 
+require '/home/dmoore/Project/exec_environment/match_wrapper.rb' #NOTE this is hardcoded to be using the match_wrapper in asjoberg's directory right now
 require 'optparse'
 
 #This may be an alternative to running the file using 'rails runner'. These provide access to the rails environment

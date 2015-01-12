@@ -88,6 +88,7 @@ class MatchWrapper
     def reap_children
         @child_list.each do |pid|
             Process.kill('SIGKILL', pid)
+	    Process.wait pid
         end
     end 
 end
