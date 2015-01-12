@@ -26,6 +26,7 @@ class ContestsController < ApplicationController
   end
 
   def edit
+    @contest = Contest.friendly.find(params[:id])
   end
 
   def update
@@ -42,8 +43,11 @@ class ContestsController < ApplicationController
   end
 
   def destroy
+    @contest = Contest.friendly.find(params[:id])
+    @contest.tournaments.each{|t|t.destroy}
+    @contest.players.each{|t|t.destroy}
     @contest.destroy
-    flash[:success] = 'Contest delted.'
+    flash[:success] = 'Contest deleted.'
     redirect_to contests_path
   end
 

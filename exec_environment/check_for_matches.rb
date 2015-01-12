@@ -19,4 +19,7 @@ if not match.nil? then
     rescue
         puts "Database was locked. Will retry next time."
     end
+else
+    puts "Match is nil!"
+    puts match.id+' '+match.status
 end

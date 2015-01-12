@@ -15,8 +15,6 @@
                 <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
                 <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
                 <br/>
-	<%else%>
-		<p>You have no players in this contest <p>
 	<%end%>
     <% end %>
 </div>
