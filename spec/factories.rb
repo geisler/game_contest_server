@@ -77,7 +77,7 @@ FactoryGirl.define do
     end
 
     factory :challenge_match do
-      association :manager, factory: :referee
+      association :manager, factory: :contest
 
       before(:create) { |match| dummy_player = create(:player) }
     end
