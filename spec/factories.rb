@@ -72,7 +72,7 @@ FactoryGirl.define do
 
       before(:create) do |match, evaluator|
         dummy_player = create(:player, contest: match.manager.contest)
-        dummy_player.tournaments << match.manager
+	dummy_player.tournaments << match.manager
       end
     end
 
