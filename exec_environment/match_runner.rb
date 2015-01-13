@@ -79,7 +79,11 @@ class MatchRunner
             puts "   Match runner writing results match #"+@match_id.to_s
             results.each do |player_name, player_result|
                 #Print and save
-                player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+		if @match.manager_type.to_s == "Tournament"
+                	player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+                else
+			player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.id} AND name = '#{player_name}'").first
+		end
                 player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
                 player_match.result = player_result["result"]
                 player_match.score = player_result["score"]

@@ -61,7 +61,8 @@ class MatchesController < ApplicationController
 
   def destroy
     @match = Match.friendly.find(params[:id])
-    @match.player_matches.each{ |m| m="destroy"}
+    @match.player_matches.each{ |m| m.destroy}
+    @match.match_paths.each{ |m| m.destroy}
     @match.destory
     redirect_to contest_matches_path(@match.contest)
   end
