@@ -8,7 +8,7 @@ GameContestServer::Application.routes.draw do
   resources :referees
   shallow do
     resources :contests do
-      resources :matches
+      resources :matches, except: [:edit, :update]
       resources :players
       resources :tournaments do
         resources :players

@@ -47,7 +47,7 @@ class PlayersController < ApplicationController
 
   def destroy
     @player.destroy
-    redirect_to @user
+    redirect_to contest_players_path(@player.contest)
   end
 
   private

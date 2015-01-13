@@ -164,8 +164,8 @@ describe "UsersPages" do
 
     it { should have_content('10 Users') }
     it { should have_selector('div.pagination') }
-    it { should have_link('2', href: "/?page=2" ) }
-    it { should have_link('3', href: "/?page=3") }
+    it { should have_link('2', href: "/users?page=2" ) }
+    it { should have_link('3', href: "/users?page=3") }
     it { should_not have_link('4', href: "/?page=4") }
   end
 

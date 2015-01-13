@@ -326,6 +326,10 @@ describe "ContestsPages" do
 
     it { should have_link('New Player',
       href: new_contest_player_path(contest)) }
+
+    it { should have_link('Challenge other players.',
+      href: new_contest_match_path(contest)) }
+
   end
 
   describe "show all" do

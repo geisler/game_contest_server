@@ -100,13 +100,13 @@ describe 'TournamentsPages' do
 
         it { should have_alert(:success, text: 'Tournament created') }
         it { should have_content(/less than a minute|1 minute/) }
-        it { should have_content(name) }
+        it { should have_content(tournament.name) }
         it { should have_content(tournament.status) }
         it { should have_link(tournament.contest.name,
                               href: contest_path(tournament.contest)) }
         it { should have_link(tournament.referee.name,
                               href: referee_path(tournament.referee)) }
-        it { should have_content("Players") }
+        it { should have_content("Player") }
         it { should have_link(player1.name,
                               href: player_path(player1)) }
         it { should_not have_link(player2.name,
