@@ -37,7 +37,11 @@ class MatchRunner
        @match_id = match_id 
        @match = Match.find(match_id)
        @match_participants = @match.players
-       @referee = @match.manager.contest.referee
+       if @match.manager_type.to_s == "Contest"
+         @referee = @match.manager.referee
+       else
+	 @referee = @match.manager.contest.referee
+       end
        @number_of_players = @referee.players_per_game
        @max_match_time = 8.seconds
        @tournament = @match.manager
