@@ -41,23 +41,23 @@ class MatchesController < ApplicationController
     @matches = @tournament.matches
   end
 
-  #def edit
-    #@match = Match.friendly.find(params[:id])
-  #end
+#  def edit
+#    @match = Match.friendly.find(params[:id])
+#  end
 
 
-  #def update
-    #@match = Match.frendly.find(params[:id])
-    #@match.player_matches.each do |player_match|
-	#player_match.destroy
-    #end
-    #if @match.update (acceptable_params)
-	#flash[:success] = "Match updated."
-	#redirect_to @match
-    #else
-	#render 'edit'
-    #end
-  #end
+#  def update
+#    @match = Match.frendly.find(params[:id])
+#    @match.player_matches.each do |player_match|
+#	player_match.destroy
+#    end
+#    if @match.update (acceptable_params)
+#	flash[:success] = "Match updated."
+#	redirect_to @match
+#    else
+#	render 'edit'
+#    end
+#  end
 
   def destroy
     @match = Match.friendly.find(params[:id])

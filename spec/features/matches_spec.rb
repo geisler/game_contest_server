@@ -5,6 +5,88 @@ include ActionView::Helpers::DateHelper
 describe "MatchesPages" do
   subject { page }
 
+#Begin Devin's work
+#  describe "create" do
+#    let (:creator) { FactoryGirl.create(:contest_creator) }
+#    let (:contest) { FactoryGirl.create(:contest, user: creator) }
+#    let (:player1) { FactoryGirl.create(:player, contest: contest) }
+#    let (:player2) { FactoryGirl.create(:player, contest: contest) }
+#
+#    let (:now) { Time.current }
+#    let (:submit) { 'Challenge!' }  
+#
+#    before do
+#      login creator
+#      #I believe this is the page to create a challenge match
+#      visit new_contest_match_path(contest)
+#    end
+#
+#    describe "invalid information" do
+#      describe "missing information" do
+#        it "should not create a match" do
+#          expect { click_button submit }.not_to change(Match, :count)
+#        end
+#
+#        describe "after submission" do
+#          before { click_button submit }
+#
+#          it { should have_alert(:danger) }
+#        end
+#      end
+#    end # invalid info
+#
+#    describe "valid information" do
+#
+#      before do
+#        select_datetime(now, 'Start')
+#        check("#{player1.name} | #{player1.user.username}")
+#        check("#{player2.name} | #{player2.user.username}")
+#      end
+#
+#      it "should create a match" do
+#        expect { click_button submit }.to change(Match, :count).by(1)
+#      end    
+#
+#      describe 'redirects properly', type: :request do
+#        before do
+#          login creator, avoid_capybara: true
+#          post contest_matches_path(contest),
+#            match: { earliest_start: now.strftime("%F %T"),
+#              players: [player1, player2]
+#          }
+#        end
+#
+#        specify { expect(response).to redirect_to(contest_path(assigns(:contest))) }
+#      end # redirects
+
+#      describe "after submission" do
+        ###let (:match) { Match.find_by(name: name) }
+
+#        before { click_button submit }
+
+#        specify { expect(match.contest.user).to eq(creator) }
+
+#        it { should have_alert(:success, text: 'Match created.') }
+        ###it { should have_content(/less than a minute|1 minute/) }
+        ###it { should have_content(tournament.status) }
+        ###it { should have_link(tournament.contest.name,
+                              ###href: contest_path(tournament.contest)) }
+        ###it { should have_link(tournament.referee.name,
+                              ###href: referee_path(tournament.referee)) }
+        ###it { should have_content("Player") }
+        ###it { should have_link(player1.name,
+                              ###href: player_path(player1)) }
+        ###it { should_not have_link(player2.name,
+                              ###href: player_path(player2)) }
+
+#      end
+
+#    end #valid
+
+#  end #create
+
+#End Devin's work
+
   describe "show (tournament matches)" do
     let (:match) { FactoryGirl.create(:tournament_match) }
 
@@ -83,6 +165,7 @@ describe "MatchesPages" do
     it { should have_content(match.manager.referee.players_per_game) }
   end
 
+  ###NOTE Does this actually show all, given our addition of challenge functionality?
   describe "show all" do
     let (:tournament) { FactoryGirl.create(:tournament) }
 

@@ -6,6 +6,9 @@ describe Match do
     specify { expect(get(match_path(1))).to be_routable }
     specify { expect(get(matches_show_path)).to be_routable }
     specify { expect(get(matches_index_path)).to be_routable }
+    #Added with challenge functionality
+    specify { expect(get(contest_matches_path(1))).to be_routable }
+
   end
 
   describe "unavailable routes" do

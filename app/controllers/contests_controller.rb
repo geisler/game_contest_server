@@ -29,7 +29,7 @@ class ContestsController < ApplicationController
   end
 
   def update
-:w
+
     if @contest.update(acceptable_params)
       flash[:success] = 'Contest updated.'
       redirect_to @contest
