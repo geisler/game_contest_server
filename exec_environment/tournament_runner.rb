@@ -71,18 +71,30 @@ class TournamentRunner
                 return
         end
         puts " Tournament runner finished creating matches for tournament #"+@tournament_id.to_s
+	
     end
 
     #Runs a round robin tournament with each player playing every other player twice.
     #Currently only works with 2 player games #TODO make it work with more than 2 players
     def round_robin(players)
-        players.each do |player1|
-            players.each do |player2|
-                if player1 != player2 then
-                    create_match(player1, player2)
-                end
-            end
-        end
+
+#        players.each do |player1|
+#            players.each do |player2|
+#                if player1 != player2 then
+#                    create_match(player1, player2)
+#                end
+#            end
+#        end
+
+	players.each do |p1|
+	   players.each do |p2|
+	     if p1 != p2 then
+	          puts "creating match between "+p1.name+" and "+p2.name
+		  create_match(p1, p2)
+	     end
+	   end
+	end
+  
         #TODO need a way to check that all the matches are completed and set the tournament to completed in the db
         #@tournament.status = "completed"
         #@tournament.save!
@@ -112,8 +124,8 @@ class TournamentRunner
     def create_match(*match_participants)
         match = create_raw_match("unassigned")
         create_player_matches(match,match_participants)
-        match.status = "waiting"
-        match.save!
+	match.status = "waiting"
+	match.save!
         return match
     end 
     #Creates a match
