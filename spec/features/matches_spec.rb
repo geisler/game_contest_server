@@ -11,6 +11,8 @@ describe "MatchesPages" do
     let (:contest) { FactoryGirl.create(:contest, user: creator) }
     let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
     let! (:player2) { FactoryGirl.create(:player, contest: contest) }
+    let! (:player3) { FactoryGirl.create(:player, contest: contest) }
+    let! (:player4) { FactoryGirl.create(:player, contest: contest) }
 
     let (:now) { Time.current }
     let (:submit) { 'Challenge!' }  
@@ -43,10 +45,11 @@ describe "MatchesPages" do
       illegal_dates.each do |date|
         describe "illegal date (#{date.to_s})" do
           before do
-	    puts page.body
             select_illegal_datetime('Start', date)
 	    check("#{player1.name} | #{player1.user.username}")
 	    check("#{player2.name} | #{player2.user.username}")
+	    check("#{player3.name} | #{player3.user.username}")
+	    check("#{player4.name} | #{player4.user.username}")
             click_button submit
           end
 
@@ -55,29 +58,30 @@ describe "MatchesPages" do
       end # illegal date
     end # invalid info
 
-#    describe "valid information" do
-#
-#      before do
-#        puts page.body
-#        select_datetime(now, 'match_earliest_start')
-#        check("#{player1.name} | #{player1.user.username}")
-#        check("#{player2.name} | #{player2.user.username}")
-#      end
-#
-#      it "should create a match" do
-#        expect { click_button submit }.to change(Match, :count).by(1)
-#      end    
-#
+    describe "valid information" do
+
+      before do
+	select_datetime(now, 'Start')
+        check("#{player1.name} | #{player1.user.username}")
+        check("#{player2.name} | #{player2.user.username}")
+        check("#{player3.name} | #{player3.user.username}")
+        check("#{player4.name} | #{player4.user.username}")
+      end
+
+      it "should create a match" do
+        expect { click_button submit }.to change(Match, :count).by(1)
+      end    
+
 #      describe 'redirects properly', type: :request do
 #        before do
 #          login creator, avoid_capybara: true
 #          post contest_matches_path(contest),
 #            match: { earliest_start: now.strftime("%F %T"),
-#              player_ids: [player1.id, player2.id]
+#              player_ids: [player1.id, player2.id, player3.id, player4.id]
 #          }
 #        end
 #
-#        specify { expect(response).to redirect_to(contest_path(assigns(:match))) }
+#        specify { expect(response).to redirect_to(contest_path(assigns(:contest))) }
 #      end # redirects
 #
 #      describe "after submission" do
@@ -102,7 +106,7 @@ describe "MatchesPages" do
 #
 #      end
 #
-#    end #valid
+    end #valid
 
   end #create
 
