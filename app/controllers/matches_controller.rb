@@ -22,7 +22,7 @@ class MatchesController < ApplicationController
     	@match.status = "waiting"
     	    if @match.save
 		flash[:success] = 'Match created.'
-		redirect_to @contest
+		redirect_to @match
     	    else
 		render 'new'
             end

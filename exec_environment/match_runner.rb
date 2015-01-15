@@ -49,12 +49,12 @@ class MatchRunner
     
     #Uses a MatchWrapper to run a match between the given players and send the results to the database
     def run_match
-        if (@number_of_players != @match_participants.count() && @match.manager_type.to_s == "Contest")
+        if @number_of_players != @match_participants.count()
             puts "   Match runner skipping match #"+@match_id.to_s+
                  " ("+@match_participants.count().to_s+"/"+@number_of_players.to_s+" in player_matches)"
             return
         end
-        match_wrapper = MatchWrapper.new(@referee,@match_participants.count(),@max_match_time,@match_participants)
+        match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,@match_participants)
         puts "   Match runner running match #"+@match_id.to_s
         match_wrapper.run_match
         self.send_results_to_db(match_wrapper.results)
@@ -98,8 +98,22 @@ class MatchRunner
                 print "\n"
             end
             puts "   Match runner finished match #"+@match_id.to_s
+  	    match = Match.find_by_sql("SELECT * FROM Matches WHERE id = #{@match_id}").first
+	    match.status = "completed"
+	    match.completion = Time.now
+	    match.save!
+	    if match.manager_type.to_s == "Tournament"
+	    	tournament = Tournament.find_by_sql("SELECT * FROM Tournaments WHERE id = #{match.manager_id}").first
+	    	tournament.matches.each do |m|
+		    if m.status == "started"
+			return
+		    end
+		end
+		tournament.status = "completed"
+		tournament.save!
+	    end 
         end
-
+	
     end
     
     #Prints a name, result, and score
@@ -121,7 +135,7 @@ class MatchRunner
         )
         print "=> Match #"+match.id.to_s
         #Change status of match if necessary
-        if match.players.count == @match_participants.count()
+        if match.players.count == @number_of_players
             match.status = "waiting"
         end
         match.save!

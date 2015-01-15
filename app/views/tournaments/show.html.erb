@@ -17,4 +17,7 @@
 <ul>
     <%= render @tournament.players %>
 </ul>
-
+<h2><%= pluralize(@tournament.matches.count, 'Match')%></h2>
+<ul>
+    <%= render @tournament.matches %>
+</ul>
