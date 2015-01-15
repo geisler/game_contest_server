@@ -1,4 +1,6 @@
-<h1>Match <%= @match.id %> for <%= @match.manager.name %></h1>
+<h1>Match Information</h1>
+
+<p>Match <%= @match.id %> for <%= link_to @match.manager.name, @match.manager %></p>
 <p>Status: <%= @match.status %></p>
 
 <% if @match.completed? %>

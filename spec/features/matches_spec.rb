@@ -13,6 +13,7 @@ describe "MatchesPages" do
     let! (:player2) { FactoryGirl.create(:player, contest: contest) }
     let! (:player3) { FactoryGirl.create(:player, contest: contest) }
     let! (:player4) { FactoryGirl.create(:player, contest: contest) }
+    let! (:player5) { FactoryGirl.create(:player, contest: contest) }
 
     let (:now) { Time.current }
     let (:submit) { 'Challenge!' }  
@@ -56,6 +57,22 @@ describe "MatchesPages" do
           it { should have_alert(:danger) }
         end
       end # illegal date
+      
+      # Test that one of the current user's players are chosen
+      describe "didn't select a current user's player" do
+        before do
+	  select_datetime(now, 'Start')
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          check("#{player5.name} | #{player5.user.username}")
+	  click_button submit
+	end
+	
+	it { should have_alert(:danger) }
+
+      end # no current user's player	
+
     end # invalid info
 
     describe "valid information" do
@@ -72,40 +89,43 @@ describe "MatchesPages" do
         expect { click_button submit }.to change(Match, :count).by(1)
       end    
 
-#      describe 'redirects properly', type: :request do
-#        before do
-#          login creator, avoid_capybara: true
-#          post contest_matches_path(contest),
-#            match: { earliest_start: now.strftime("%F %T"),
-#              player_ids: [player1.id, player2.id, player3.id, player4.id]
-#          }
-#        end
-#
-#        specify { expect(response).to redirect_to(contest_path(assigns(:contest))) }
-#      end # redirects
-#
-#      describe "after submission" do
-#       let (:match) { Match.find_by(name: name) }
-#
-#        before { click_button submit }
-#
-#        specify { expect(match.contest.user).to eq(creator) }
-#
-#        it { should have_alert(:success, text: 'Match created.') }
-#        ###it { should have_content(/less than a minute|1 minute/) }
-#        ###it { should have_content(tournament.status) }
-#        ###it { should have_link(tournament.contest.name,
-#                              ###href: contest_path(tournament.contest)) }
-#        ###it { should have_link(tournament.referee.name,
-#                              ###href: referee_path(tournament.referee)) }
-#        ###it { should have_content("Player") }
-#        ###it { should have_link(player1.name,
-#                              ###href: player_path(player1)) }
-#        ###it { should_not have_link(player2.name,
-#                              ###href: player_path(player2)) }
-#
-#      end
-#
+      describe 'redirects properly', type: :request do
+        before do
+          login creator, avoid_capybara: true
+          post contest_matches_path(contest),
+            match: { earliest_start: now.strftime("%F %T"),
+            player_ids: {player1.id => "1", player2.id => "1", player3.id => "1", player4.id => "1"} }
+        end
+
+        specify { expect(response).to redirect_to(match_path(assigns(:match))) }
+	specify { expect(assigns(:match).manager).to eq(contest) }	
+
+      end # redirects
+
+      describe "after submission" do
+        before { click_button submit }
+
+	it { should have_content('Match Information') }
+        it { should have_alert(:success, text: 'Match created.') }
+        it { should have_content(/less than a minute|1 minute/) }
+        it { should have_content('waiting') }
+        it { should have_link(contest.name,
+                              href: contest_path(contest)) }
+        it { should have_content(contest.referee.name) }
+        it { should have_content("4 Players") }
+        it { should have_link(player1.name,
+                              href: player_path(player1)) }
+        it { should have_link(player2.name,
+                              href: player_path(player2)) }
+        it { should have_link(player3.name,
+                              href: player_path(player3)) }
+        it { should have_link(player4.name,
+                              href: player_path(player4)) }
+        it { should_not have_link(player5.name,
+                              href: player_path(player5)) }
+
+      end
+
     end #valid
 
   end #create
