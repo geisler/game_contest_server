@@ -9,7 +9,7 @@ class Match < ActiveRecord::Base
 
   validates :manager,           presence: true
   validates :status,            presence: true, inclusion: %w[unassigned waiting started completed]
-  validates :earliest_start,    presence: true, unless: :started?
+  validates :earliest_start,    presence: true, timeliness: { type: :datetime, allow_nil: false }, unless: :started?
   validates :completion,
     timeliness: { type: :datetime, on_or_before: :now },
     if: :completed?
@@ -45,13 +45,11 @@ class Match < ActiveRecord::Base
 
   def correct_number_of_players
     return if self.player_matches.nil? || self.manager.nil?
-     if self.manager_type == "Contest"
       errors.add(:players, "number of players must equal " +
                  self.manager.referee.players_per_game.to_s +
                  " you have " + self.player_matches.length.to_s +
                  " players") unless self.player_matches.length ==
                                     self.manager.referee.players_per_game
-     end
   end
 
   def tournament_match?
