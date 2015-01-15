@@ -18,7 +18,7 @@ class MatchesController < ApplicationController
     @contest = Contest.friendly.find(params[:contest_id])
     contest = Contest.friendly.find(params[:contest_id])
     @match = @contest.matches.build(acceptable_params)
-     if params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
+     if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
     	@match.status = "waiting"
     	    if @match.save
 		flash[:success] = 'Match created.'

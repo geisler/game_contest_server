@@ -6,84 +6,109 @@ describe "MatchesPages" do
   subject { page }
 
 #Begin Devin's work
-#  describe "create" do
-#    let (:creator) { FactoryGirl.create(:contest_creator) }
-#    let (:contest) { FactoryGirl.create(:contest, user: creator) }
-#    let (:player1) { FactoryGirl.create(:player, contest: contest) }
-#    let (:player2) { FactoryGirl.create(:player, contest: contest) }
-#
-#    let (:now) { Time.current }
-#    let (:submit) { 'Challenge!' }  
-#
-#    before do
-#      login creator
-#      #I believe this is the page to create a challenge match
-#      visit new_contest_match_path(contest)
-#    end
-#
-#    describe "invalid information" do
-#      describe "missing information" do
-#        it "should not create a match" do
-#          expect { click_button submit }.not_to change(Match, :count)
-#        end
-#
-#        describe "after submission" do
-#          before { click_button submit }
-#
-#          it { should have_alert(:danger) }
-#        end
-#      end
-#    end # invalid info
-#
-#    describe "valid information" do
-#
-#      before do
-#        select_datetime(now, 'Start')
-#        check("#{player1.name} | #{player1.user.username}")
-#        check("#{player2.name} | #{player2.user.username}")
-#      end
-#
-#      it "should create a match" do
-#        expect { click_button submit }.to change(Match, :count).by(1)
-#      end    
-#
+  describe "create" do
+    let (:creator) { FactoryGirl.create(:contest_creator) }
+    let (:contest) { FactoryGirl.create(:contest, user: creator) }
+    let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
+    let! (:player2) { FactoryGirl.create(:player, contest: contest) }
+    let! (:player3) { FactoryGirl.create(:player, contest: contest) }
+    let! (:player4) { FactoryGirl.create(:player, contest: contest) }
+
+    let (:now) { Time.current }
+    let (:submit) { 'Challenge!' }  
+
+    before do
+      login creator
+      visit new_contest_match_path(contest)
+    end
+
+    describe "invalid information" do
+      describe "missing information" do
+        it "should not create a match" do
+          expect { click_button submit }.not_to change(Match, :count)
+        end
+
+        describe "after submission" do
+          before { click_button submit }
+
+          it { should have_alert(:danger) }
+        end
+      end # missing info
+
+      illegal_dates = [{month: 'Feb', day: '30'},
+        {month: 'Feb', day: '31'},
+        {year: '2015', month: 'Feb', day: '29'},
+        {month: 'Apr', day: '31'},
+        {month: 'Jun', day: '31'},
+        {month: 'Sep', day: '31'},
+        {month: 'Nov', day: '31'}]
+      illegal_dates.each do |date|
+        describe "illegal date (#{date.to_s})" do
+          before do
+            select_illegal_datetime('Start', date)
+	    check("#{player1.name} | #{player1.user.username}")
+	    check("#{player2.name} | #{player2.user.username}")
+	    check("#{player3.name} | #{player3.user.username}")
+	    check("#{player4.name} | #{player4.user.username}")
+            click_button submit
+          end
+
+          it { should have_alert(:danger) }
+        end
+      end # illegal date
+    end # invalid info
+
+    describe "valid information" do
+
+      before do
+	select_datetime(now, 'Start')
+        check("#{player1.name} | #{player1.user.username}")
+        check("#{player2.name} | #{player2.user.username}")
+        check("#{player3.name} | #{player3.user.username}")
+        check("#{player4.name} | #{player4.user.username}")
+      end
+
+      it "should create a match" do
+        expect { click_button submit }.to change(Match, :count).by(1)
+      end    
+
 #      describe 'redirects properly', type: :request do
 #        before do
 #          login creator, avoid_capybara: true
 #          post contest_matches_path(contest),
 #            match: { earliest_start: now.strftime("%F %T"),
-#              players: [player1, player2]
+#              player_ids: [player1.id, player2.id, player3.id, player4.id]
 #          }
 #        end
 #
 #        specify { expect(response).to redirect_to(contest_path(assigns(:contest))) }
 #      end # redirects
-
+#
 #      describe "after submission" do
-        ###let (:match) { Match.find_by(name: name) }
-
+#       let (:match) { Match.find_by(name: name) }
+#
 #        before { click_button submit }
-
+#
 #        specify { expect(match.contest.user).to eq(creator) }
-
+#
 #        it { should have_alert(:success, text: 'Match created.') }
-        ###it { should have_content(/less than a minute|1 minute/) }
-        ###it { should have_content(tournament.status) }
-        ###it { should have_link(tournament.contest.name,
-                              ###href: contest_path(tournament.contest)) }
-        ###it { should have_link(tournament.referee.name,
-                              ###href: referee_path(tournament.referee)) }
-        ###it { should have_content("Player") }
-        ###it { should have_link(player1.name,
-                              ###href: player_path(player1)) }
-        ###it { should_not have_link(player2.name,
-                              ###href: player_path(player2)) }
-
+#        ###it { should have_content(/less than a minute|1 minute/) }
+#        ###it { should have_content(tournament.status) }
+#        ###it { should have_link(tournament.contest.name,
+#                              ###href: contest_path(tournament.contest)) }
+#        ###it { should have_link(tournament.referee.name,
+#                              ###href: referee_path(tournament.referee)) }
+#        ###it { should have_content("Player") }
+#        ###it { should have_link(player1.name,
+#                              ###href: player_path(player1)) }
+#        ###it { should_not have_link(player2.name,
+#                              ###href: player_path(player2)) }
+#
 #      end
+#
+    end #valid
 
-#    end #valid
-
-#  end #create
+  end #create
 
 #End Devin's work
 
