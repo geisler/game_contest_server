@@ -1,6 +1,11 @@
 <% if !player_match.nil? %>
+	<% @tmp = [] %>
+	<% player_match.match.players.each do |p|%>
+		<% @tmp << p.name %>
+	<% end %>
+
 <li>
-	<%= link_to player_match.match.manager_type+' '+player_match.match.earliest_start.month.to_s+'-'+player_match.match.earliest_start.day.to_s+'-'+player_match.match.earliest_start.year.to_s, match_path(player_match.match) %>
+	<%= link_to @tmp.to_sentence, match_path(player_match.match) %>
 	<% if player_match.result.nil? %>
 		( waiting )
 	<% else %>
