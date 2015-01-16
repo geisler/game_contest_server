@@ -27,7 +27,7 @@ group :development do
   gem 'guard-livereload', require: false
 end
 
-gem 'bcrypt-ruby', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 gem 'active_link_to'
 gem 'validates_timeliness', github: 'geisler/validates_timeliness', branch: 'support_for_rails4'
 gem 'friendly_id', '~> 5.0.0'

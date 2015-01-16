@@ -45,8 +45,6 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.9)
-    bcrypt-ruby (3.1.9)
-      bcrypt (= 3.1.9)
     bootstrap-sass (3.3.1.0)
       sass (~> 3.2)
     builder (3.2.2)
@@ -223,7 +221,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  bcrypt-ruby (~> 3.1.7)
+  bcrypt (~> 3.1.7)
   bootstrap-sass (~> 3.3.1)
   capybara
   childprocess
