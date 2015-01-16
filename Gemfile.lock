@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/eventmachine/eventmachine.git
-  revision: 487305151d1f5441b597400fa8d062361e2d86b2
-  specs:
-    eventmachine (1.0.4)
-
-GIT
   remote: git://github.com/geisler/validates_timeliness.git
   revision: c386e3daec051e27766ec097c9405309f63edab8
   branch: support_for_rails4
@@ -44,8 +38,6 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.9)
-    bcrypt-ruby (3.1.9)
-      bcrypt (= 3.1.9)
     bootstrap-sass (3.3.1.0)
       sass (~> 3.2)
     builder (3.2.2)
@@ -75,6 +67,7 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.5.3)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (2.0.2)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
@@ -99,10 +92,6 @@ GEM
     guard-rspec (4.2.4)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
-    guard-spork (1.5.1)
-      childprocess (>= 0.2.3)
-      guard (>= 1.1)
-      spork (>= 0.8.4)
     hike (1.2.3)
     http_parser.rb (0.5.3)
     i18n (0.7.0)
@@ -186,10 +175,9 @@ GEM
       json (~> 1.8)
       rdoc (~> 4.0, < 5.0)
     slop (3.4.7)
-    spork (1.0.0rc4)
-    spork-rails (4.0.0)
-      rails (>= 3.0.0, < 5)
-      spork (>= 1.0rc0)
+    spring (1.2.0)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -222,20 +210,19 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  bcrypt-ruby (~> 3.1.7)
+  bcrypt (~> 3.1.7)
   bootstrap-sass (~> 3.3.1)
   capybara
   childprocess
   clockwork
   coffee-rails (~> 4.0.0)
   daemons
-  eventmachine!
+  eventmachine
   factory_girl_rails
   faker (= 1.1.2)
   friendly_id (~> 5.0.0)
   guard-livereload
   guard-rspec
-  guard-spork
   jbuilder (~> 1.2)
   jquery-rails
   kaminari
@@ -244,7 +231,8 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc
-  spork-rails
+  spring
+  spring-commands-rspec
   sqlite3
   timecop
   turbolinks

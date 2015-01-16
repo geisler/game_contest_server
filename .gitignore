@@ -28,5 +28,8 @@
 *.lock
 *__pycache__*
 
+# Ignore bundled gems
+/vendor/cache
+
 # Be sure to keep around this file if it matched earlier
 !.gitkeep

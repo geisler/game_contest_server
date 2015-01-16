@@ -18,8 +18,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
 
-  gem 'spork-rails'
-  gem 'guard-spork'
+#  gem 'spork-rails'
+#  gem 'guard-spork'
   gem 'childprocess'
 end
 
@@ -27,7 +27,10 @@ group :development do
   gem 'guard-livereload', require: false
 end
 
-gem 'bcrypt-ruby', '~> 3.1.7'
+gem 'spring'
+gem 'spring-commands-rspec'
+
+gem 'bcrypt', '~> 3.1.7'
 gem 'active_link_to'
 gem 'validates_timeliness', github: 'geisler/validates_timeliness', branch: 'support_for_rails4'
 gem 'friendly_id', '~> 5.0.0'
@@ -68,7 +71,7 @@ gem 'kaminari'
 #for backend job scheduling
 gem 'daemons'
 gem 'clockwork'
-gem 'eventmachine', github: 'eventmachine/eventmachine'
+gem 'eventmachine'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
