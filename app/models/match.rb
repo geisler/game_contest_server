@@ -1,4 +1,7 @@
 class Match < ActiveRecord::Base
+
+  attr_accessor :max_match
+
   belongs_to :manager, polymorphic: true
   has_many :player_matches , inverse_of: :match , dependent: :destroy
   has_many :players, through: :player_matches
@@ -16,7 +19,6 @@ class Match < ActiveRecord::Base
 
   validate :correct_number_of_players, unless: :unassigned?
   validate :players_allowed_to_play, if: :tournament_match?
-
 
   def unassigned?
     status == 'unassigned'
@@ -39,8 +41,6 @@ class Match < ActiveRecord::Base
       self.player_matches.build(player: Player.find(p))
     end
   end
-
-
 
 
   def correct_number_of_players

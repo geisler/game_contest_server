@@ -1,7 +1,7 @@
 class MatchesController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
   before_action :ensure_contest_creator, only: [:edit, :update, :destroy]
- 
+
  def new
    contest = Contest.friendly.find(params[:contest_id])
    @contest = Contest.friendly.find(params[:contest_id])
@@ -17,16 +17,21 @@ class MatchesController < ApplicationController
   def create	
     @contest = Contest.friendly.find(params[:contest_id])
     contest = Contest.friendly.find(params[:contest_id])
-    @match = @contest.matches.build(acceptable_params)
-     if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
-    	@match.status = "waiting"
-    	    if @match.save
-		flash[:success] = 'Match created.'
-		redirect_to @match
-    	    else
-		render 'new'
-            end
-    else
+    max_match = params[:match][:max_match]
+    if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
+        max_match.to_i.times do 
+            @match = @contest.matches.build(acceptable_params)
+    	    @match.status = "waiting"
+    	        if @match.save
+		    flash[:success] = 'Match created.'
+		else
+		    flash.now[:danger] = 'Match not saved'
+		    render 'new'
+		    return
+		end
+	end
+	redirect_to @contest
+    else 	
 	flash.now[:danger] = 'You need to select at least one of your own players.'
 	render action: 'new'
     end

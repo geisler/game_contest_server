@@ -78,7 +78,7 @@ class TournamentRunner
     #Currently only works with 2 player games 
     def round_robin(players)
 	players.each do |p|
-	    players.switch!
+	    players.shuffle!
 	    create_match(players)
 	end
     end
@@ -102,7 +102,6 @@ class TournamentRunner
             return child
         end        
     end
-   
     #Creates a match and the associated player_matches
     def create_match(match_participants)
         match = create_raw_match("unassigned")
