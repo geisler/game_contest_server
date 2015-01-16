@@ -71,7 +71,7 @@ class MatchesController < ApplicationController
   private
 
   def acceptable_params
-    params.require(:match).permit(:earliest_start, player_ids: @contest.players.try(:ids))
+    params.require(:match).permit(:earliest_start, player_ids: @contest.players.try(:ids).map(&:to_s))
   end
 
 
