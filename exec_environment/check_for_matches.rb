@@ -6,8 +6,10 @@
 #
 # TODO Queueing all available matches instead of just spawning one each time. Maybe using Delayed Job?
 
-require './config/boot'
-require './config/environment'
+begin
+  load File.expand_path("../spring", __FILE__)
+rescue LoadError
+end
 
 match = Match.where("earliest_start < ? and status = ?", Time.now.utc, "waiting").first
 if not match.nil? then
@@ -15,7 +17,8 @@ if not match.nil? then
     begin
         match.save!
         puts "  Daemon spawning match #"+match.id.to_s
-        Process.spawn("rails runner exec_environment/match_runner.rb -m #{match.id}")
+        pid = Process.spawn("rails runner exec_environment/match_runner.rb -m #{match.id}")
+	Process.wait pid
     rescue
         puts "Database was locked. Will retry next time."
     end

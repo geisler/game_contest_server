@@ -7,12 +7,13 @@ require 'clockwork'
 module Clockwork
 
   handler do |job|
-    Process.spawn(job)
+    pid = Process.spawn(job)
+    Process.wait(pid)
   end
 
   #Every 10 seconds check the databse for tournaments that are waiting to be run
-  every(10.seconds, 'exec_environment/check_for_tournaments.rb')
+  every(10.seconds, 'rails runner exec_environment/check_for_tournaments.rb')
   #and check for matches that need to be run
-  every(10.seconds, 'exec_environment/check_for_matches.rb')
+  every(10.seconds, 'rails runner exec_environment/check_for_matches.rb')
 
 end
