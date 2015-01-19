@@ -31,6 +31,7 @@ class PlayersController < ApplicationController
 
   def show
     @player = Player.friendly.find(params[:id])
+    @matches = PlayerMatch.search(@player, params[:search])
   end
 
   def edit

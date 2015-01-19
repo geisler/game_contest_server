@@ -7,6 +7,7 @@ describe "RefereePages" do
   let (:num_players) { '2' }
   let (:file_location) { Rails.root.join('spec', 'files', 'referee.test') }
   let (:server_location) { Rails.root.join('code', 'referees', 'test').to_s }
+  let (:max_match) { '5' }
 
   subject { page }
 
@@ -36,6 +37,7 @@ describe "RefereePages" do
       before do
         fill_in 'Name', with: name
         fill_in 'Rules', with: rules
+        fill_in 'Max match', with: max_match
         select num_players, from: 'Players'
         attach_file('Upload file', file_location)
       end
@@ -55,7 +57,8 @@ describe "RefereePages" do
           login creator, avoid_capybara: true
           post referees_path, referee: { name: name,
                                          rules_url: rules,
-                                         players_per_game: num_players,
+                                         max_match: max_match,
+					 players_per_game: num_players,
                                          upload: fixture_file_upload(file_location) }
         end
 
@@ -71,6 +74,7 @@ describe "RefereePages" do
 
         it { should have_alert(:success, text: 'Referee created') }
         it { should have_content(name) }
+        it { should have_content(max_match) }
         it { should have_link('Rules', href: rules) }
         it { should have_content(num_players) }
 
@@ -93,6 +97,7 @@ describe "RefereePages" do
 
     it { should have_field('Name', with: referee.name) }
     it { should have_field('Rules', with: referee.rules_url) }
+    #it { should have_field('Max match', with: referee.max_match) } to be added soon. Currently the edit page will repopulate with 100, instead of previously chosen value.
     it { should have_select('Players', selected: referee.players_per_game.to_s) }
 
     describe "with invalid information" do
@@ -134,6 +139,7 @@ describe "RefereePages" do
       before do
         fill_in 'Name', with: name
         fill_in 'Rules', with: "#{rules}/updated"
+        fill_in 'Max match', with: max_match
         select num_players, from: 'Players'
         attach_file('Upload file', file_location)
       end
@@ -144,6 +150,7 @@ describe "RefereePages" do
         it { should have_alert(:success) }
         specify { expect(referee.reload.name).to eq(name) }
         specify { expect(referee.reload.rules_url).to eq("#{rules}/updated") }
+	specify { expect(referee.reload.max_match.to_s).to eq(max_match) }
         specify { expect(referee.reload.players_per_game).to eq(num_players.to_i) }
 
         it "stores the contents of the file correctly" do
@@ -156,6 +163,7 @@ describe "RefereePages" do
           login creator, avoid_capybara: true
           patch referee_path(referee), referee: { name: name,
                                                   rules_url: "#{rules}/updated",
+						  max_match: max_match,
                                                   players_per_game: num_players,
                                                   upload: fixture_file_upload(file_location) }
         end
@@ -323,6 +331,7 @@ describe "RefereePages" do
 
     it { should have_content(referee.name) }
     it { should have_link('Rules', href: referee.rules_url) }
+    it { should have_content(referee.max_match) }
     it { should have_content(referee.players_per_game.to_s) }
     it { should_not have_content(referee.file_location) }
     it { should have_content(referee.user.username) }
