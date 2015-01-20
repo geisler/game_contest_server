@@ -18,7 +18,7 @@
 <p>Contest: <%= link_to @player.contest.name, @player.contest %></p>
 <p>Created by: <%= link_to @player.user.username, @player.user %></p>
 
-<h2><%= pluralize(@matches.count, 'Match') %></h2>
+<h2><%= pluralize(@playermatch.count, 'Match') %></h2>
 
 
 
@@ -31,13 +31,23 @@
     </p>
 
 
-
-    <ol>
+<div id="pagination">	
         <%= render partial: 'player_matches/match_links',
           collection: @matches,
           as: 'player_match' %>
-    </ol>
+    <%= will_paginate @matches %>
+</div>
 
 <%end%>
 
-<p>Record: <%= @player.player_matches.wins.count %>-<%= @player.player_matches.losses.count %></p>
+<% @win =0 %>
+<% @loss =0 %>
+<% @playermatch.each do |m| %>
+   <% if m.result == "Win" %>
+	<% @win += 1 %>
+   <% elsif m.result == "Loss" %>
+	<% @loss += 1 %>
+   <%end%>
+<%end%>
+
+<p>Record: <%= @win %>-<%= @loss %></p>
