@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.0'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '~> 2.4.4'
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'timecop'
@@ -15,8 +15,8 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'guard-rspec'
+  gem 'rspec-rails', '~> 3.1.0'
+  gem 'guard-rspec', '~> 4.5.0'
 
 #  gem 'spork-rails'
 #  gem 'guard-spork'
@@ -33,7 +33,7 @@ gem 'spring-commands-rspec'
 gem 'bcrypt', '~> 3.1.7'
 gem 'active_link_to'
 gem 'validates_timeliness', github: 'geisler/validates_timeliness', branch: 'support_for_rails4'
-gem 'friendly_id', '~> 5.0.0'
+gem 'friendly_id', '~> 5.1.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

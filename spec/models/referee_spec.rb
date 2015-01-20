@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Referee do
   let (:referee) { FactoryGirl.create(:referee) }

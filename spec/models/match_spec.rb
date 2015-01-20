@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Match do
   let (:match) { FactoryGirl.create(:tournament_match) }
