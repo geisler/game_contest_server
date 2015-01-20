@@ -34,6 +34,6 @@
 
 <div class="form-gorup">
     <p><strong>Number of Matches</strong></p>
-    <%= f.select :max_match, 1..@contest.referee.max_match, {},  class: 'form-control' %>
+    <%= f.select :match_limit, 1..@contest.referee.match_limit.to_i, {},  class: 'form-control' %>
     <br/>
 </div>

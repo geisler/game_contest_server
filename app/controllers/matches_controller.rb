@@ -17,9 +17,9 @@ class MatchesController < ApplicationController
   def create	
     @contest = Contest.friendly.find(params[:contest_id])
     contest = Contest.friendly.find(params[:contest_id])
-    max_match = params[:match][:max_match]
+    match_limit = params[:match][:match_limit]
     if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
-        max_match.to_i.times do 
+        match_limit.to_i.times do 
             @match = @contest.matches.build(acceptable_params)
     	    @match.status = "waiting"
     	        if @match.save
@@ -31,7 +31,8 @@ class MatchesController < ApplicationController
 		end
 	end
 	redirect_to @contest
-    else 	
+    else   	
+        @match = @contest.matches.build(acceptable_params)
 	flash.now[:danger] = 'You need to select at least one of your own players.'
 	render action: 'new'
     end

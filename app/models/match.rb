@@ -1,6 +1,6 @@
 class Match < ActiveRecord::Base
 
-  attr_accessor :max_match
+  attr_accessor :match_limit
 
   belongs_to :manager, polymorphic: true
   has_many :player_matches , inverse_of: :match , dependent: :destroy
