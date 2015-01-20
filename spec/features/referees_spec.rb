@@ -8,6 +8,9 @@ describe "RefereePages" do
   let (:file_location) { Rails.root.join('spec', 'files', 'referee.test') }
   let (:server_location) { Rails.root.join('code', 'referees', 'test').to_s }
   let (:match_limit) { '5' }
+  let (:match_limit_word) { 'DEVIN' }
+  let (:match_limit_negative) { '-5' }
+  let (:match_limit_zero) { '0' }
 
   subject { page }
 
@@ -24,14 +27,50 @@ describe "RefereePages" do
         it "should not create a referee" do
           expect { click_button submit }.not_to change(Referee, :count)
         end
+      end # missing info
 
-        describe "after submission" do
-          before { click_button submit }
-
-          it { should have_alert(:danger) }
+      describe "match limit must be a number" do
+	before do
+	  fill_in 'Name', with: name
+          fill_in 'Rules', with: rules
+          fill_in 'Match limit', with: match_limit_word
+          select num_players, from: 'Players'
+          attach_file('Upload file', file_location)
+	  click_button submit
         end
+	it { should have_alert(:danger) }
       end
-    end
+
+      describe "match limit must be positive" do
+        before do
+          fill_in 'Name', with: name
+          fill_in 'Rules', with: rules
+          fill_in 'Match limit', with: match_limit_negative
+          select num_players, from: 'Players'
+          attach_file('Upload file', file_location)
+	  click_button submit
+        end
+	it { should have_alert(:danger) }
+      end
+
+      describe "match limit must be nonzero" do
+        before do
+          fill_in 'Name', with: name
+          fill_in 'Rules', with: rules
+          fill_in 'Match limit', with: match_limit_zero
+          select num_players, from: 'Players'
+          attach_file('Upload file', file_location)
+	  click_button submit
+        end
+	it { should have_alert(:danger) }
+      end
+
+      describe "after submission" do
+        before { click_button submit }
+
+        it { should have_alert(:danger) }
+      end
+    end # invalid info
 
     describe "valid information" do
       before do
@@ -97,7 +136,10 @@ describe "RefereePages" do
 
     it { should have_field('Name', with: referee.name) }
     it { should have_field('Rules', with: referee.rules_url) }
-    #it { should have_field('Max match', with: referee.match_limit) } to be added soon. Currently the edit page will repopulate with 100, instead of previously chosen value.
+
+    #it { should have_field('Max match', with: referee.match_limit) } to be added soon. 
+    #Currently the edit page will repopulate with 100, instead of previously chosen value.
+
     it { should have_select('Players', selected: referee.players_per_game.to_s) }
 
     describe "with invalid information" do

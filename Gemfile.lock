@@ -75,6 +75,7 @@ GEM
     coffee-script-source (1.6.3)
     daemons (1.1.9)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     em-websocket (0.5.0)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.5.3)
@@ -191,6 +192,11 @@ GEM
     sdoc (0.4.0)
       json (~> 1.8)
       rdoc (~> 4.0, < 5.0)
+    simplecov (0.9.1)
+      docile (~> 1.1.0)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
     slop (3.4.7)
     spork (1.0.0rc4)
     spork-rails (4.0.0)
@@ -254,6 +260,7 @@ DEPENDENCIES
   rubysl-test-unit
   sass-rails (~> 4.0.0)
   sdoc
+  simplecov
   spork-rails
   sqlite3
   timecop

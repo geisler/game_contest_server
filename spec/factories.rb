@@ -34,7 +34,7 @@ FactoryGirl.define do
     rules_url "http://example.com/path/to/rules"
     players_per_game 4
     user
-    match_limit 5
+    match_limit 150
   end
 
   factory :contest do

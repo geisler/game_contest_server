@@ -6,7 +6,7 @@ class Referee < ActiveRecord::Base
   has_many :contests
 
   validates :user,              presence: true
-  validates :match_limit,         presence: true #numericality: { only_integer: true, greater_than: 0 }
+  validates :match_limit,       presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :name,              presence: true, uniqueness: true
   validates :rules_url,         format: { with: URI.regexp }
   validates :players_per_game,  numericality: { only_integer: true, greater_than: 0, less_than: 11 }

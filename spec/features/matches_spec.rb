@@ -5,17 +5,20 @@ include ActionView::Helpers::DateHelper
 describe "MatchesPages" do
   subject { page }
 
-  describe "create" do
-    let (:creator) { FactoryGirl.create(:contest_creator) }
-    let (:contest) { FactoryGirl.create(:contest, user: creator) }
-    let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
-    let! (:player2) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player3) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player4) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player5) { FactoryGirl.create(:player, contest: contest) }
+  let (:creator) { FactoryGirl.create(:contest_creator) }
+  let (:contest) { FactoryGirl.create(:contest, user: creator) }
+  let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
+  let! (:player2) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player3) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player4) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player5) { FactoryGirl.create(:player, contest: contest) }
 
-    let (:now) { Time.current }
-    let (:submit) { 'Challenge!' }  
+  let (:now) { Time.current }
+  let (:submit) { 'Challenge!' }
+  let (:num_of_matches) { 3 }
+  let (:big_num_of_matches) { 100 }
+
+  describe "create" do
 
     before do
       login creator
@@ -50,6 +53,7 @@ describe "MatchesPages" do
 	    check("#{player2.name} | #{player2.user.username}")
 	    check("#{player3.name} | #{player3.user.username}")
 	    check("#{player4.name} | #{player4.user.username}")
+	    select num_of_matches, from: :match_match_limit
             click_button submit
           end
 
@@ -65,6 +69,7 @@ describe "MatchesPages" do
           check("#{player3.name} | #{player3.user.username}")
           check("#{player4.name} | #{player4.user.username}")
           check("#{player5.name} | #{player5.user.username}")
+	  select num_of_matches, from: :match_match_limit
 	  click_button submit
 	end
 	
@@ -76,17 +81,37 @@ describe "MatchesPages" do
 
     describe "valid information" do
 
-      before do
-	select_datetime(now, 'Start')
-        check("#{player1.name} | #{player1.user.username}")
-        check("#{player2.name} | #{player2.user.username}")
-        check("#{player3.name} | #{player3.user.username}")
-        check("#{player4.name} | #{player4.user.username}")
+      describe "create a few matches" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+	  select num_of_matches, from: :match_match_limit
+        end
+
+        it "should create 3 matches" do
+	  #Change by count of 3 because num_of_matches = 3.
+          expect { click_button submit }.to change(Match, :count).by(3)
+        end    
       end
 
-      it "should create a match" do
-        expect { click_button submit }.to change(Match, :count).by(1)
-      end    
+      describe "create many matches" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select big_num_of_matches, from: :match_match_limit
+        end
+
+        it "should create 100 matches" do
+          #Change by count of 100 because big_num_of_matches = 100.
+          expect { click_button submit }.to change(Match, :count).by(100)
+        end
+      end
 
       describe 'redirects properly', type: :request do
         before do
@@ -94,7 +119,7 @@ describe "MatchesPages" do
           post contest_matches_path(contest),
             match: { earliest_start: now.strftime("%F %T"),
             player_ids: {player1.id => "1", player2.id => "1", player3.id => "1", player4.id => "1"},
-	    match_limit: 5 }
+	    match_limit: 3 }
         end
 
         specify { expect(response).to redirect_to(contest_path(contest)) }
@@ -103,16 +128,30 @@ describe "MatchesPages" do
       end # redirects
 
       describe "after submission" do
+
+	before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select num_of_matches, from: :match_match_limit
+	end
+
         before { click_button submit }
 
-	#it { should have_content('Match Information') }
 	it { should have_content('Contest Information') }
         it { should have_alert(:success, text: 'Match created.') }
+        it { should have_content(contest.referee.name) }
+
+	#The following tests were removed when successful redirect was changed from
+	#the newly created match page to the contest page.
+
+	#it { should have_content('Match Information') }
         #it { should have_content(/less than a minute|1 minute/) }
         #it { should have_content('waiting') }
         #it { should have_link(contest.name,
         #                      href: contest_path(contest)) }
-        it { should have_content(contest.referee.name) }
         #it { should have_content("4 Players") }
         #it { should have_link(player1.name,
         #                      href: player_path(player1)) }
@@ -130,6 +169,23 @@ describe "MatchesPages" do
     end #valid
 
   end #create
+
+  describe "destroy", type: :request do
+    let!(:match) { FactoryGirl.create(:challenge_match) }
+
+    before do
+      login creator, avoid_capybara: true
+    end
+
+#    describe "redirects properly" do
+#      before { delete match_path(match) }
+#
+#      specify { expect(response).to redirect_to(contest_matches_path(match.manager)) }
+#    end
+
+
+  end # destroy
+
 
   describe "show (tournament matches)" do
     let (:match) { FactoryGirl.create(:tournament_match) }

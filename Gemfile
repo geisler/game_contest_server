@@ -12,6 +12,9 @@ group :test do
   gem 'libnotify'
   gem 'timecop'
   gem 'rubysl-test-unit'
+
+  gem 'simplecov', :require => false
+
 end
 
 group :development, :test do
