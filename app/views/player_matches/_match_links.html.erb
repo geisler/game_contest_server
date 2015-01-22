@@ -1,4 +1,18 @@
-<li>
-<%= link_to player_match.match_id, match_path(player_match.match) %>
-(<%= player_match.result %>)
-</li>
+<% if !player_match.nil? %>
+	<% @tmp = [] %>
+	<% player_match.match.players.each do |p|%>
+		<% @tmp << p.name %>
+	<% end %>
+
+    <li>
+	<%= link_to @tmp.to_sentence, match_path(player_match.match) %>
+	<% if player_match.result.nil? %>
+		(Waiting)
+	<% else %>
+	 	(<%= player_match.result %>)
+	<% end %>
+    </li>
+
+
+<% end %>
+

@@ -30,3 +30,5 @@
 
 # Be sure to keep around this file if it matched earlier
 !.gitkeep
+
+coverage

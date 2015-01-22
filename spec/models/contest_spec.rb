@@ -9,6 +9,7 @@ describe Contest do
   it { should respond_to(:referee) }
   it { should respond_to(:players) }
   it { should respond_to(:tournaments) }
+  it { should respond_to(:matches) }
   # Attributes
   it { should respond_to(:deadline) }
   it { should respond_to(:description) }

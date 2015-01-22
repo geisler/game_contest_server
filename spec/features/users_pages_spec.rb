@@ -85,7 +85,7 @@ describe "UsersPages" do
         end
       end
       #it { should have_link('New Player', href: new_player_path) }
-      it { should have_content('5 players') }
+      it { should have_content('5 Players') }
 
       it { should_not have_subheader(text: 'Referees') }
       it { should_not have_link('New Referee', href: new_referee_path) }
@@ -147,7 +147,7 @@ describe "UsersPages" do
       before(:each) { visit users_path }
 
       it { should have_content('List of Users') }
-      it { should have_content('10 users') }
+      it { should have_content('10 Users') }
 
       # fix up with pagination later...
       User.all.each do |user|
@@ -162,10 +162,10 @@ describe "UsersPages" do
 
     before(:each) { visit users_path }
 
-    it { should have_content('10 users') }
+    it { should have_content('10 Users') }
     it { should have_selector('div.pagination') }
-    it { should have_link('2', href: "/?page=2" ) }
-    it { should have_link('3', href: "/?page=3") }
+    it { should have_link('2', href: "/users?page=2" ) }
+    it { should have_link('3', href: "/users?page=3") }
     it { should_not have_link('4', href: "/?page=4") }
   end
 
@@ -199,7 +199,7 @@ describe "UsersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("0 user") }
+    it { should have_content("0 User") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
@@ -231,7 +231,7 @@ describe "UsersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("10 users") }
+    it { should have_content("10 Users") }
     it { should have_link('Next →') }#, href: "/?commit=Search&amp;direction=&amp;page=2&amp;search=te&amp;sort=&amp;utf8=%E2%9C%93" ) }
     it { should have_link('2') }
     it { should_not have_link('3') }
@@ -258,7 +258,7 @@ describe "UsersPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("1 user") }
+    it { should have_content("1 User") }
     it { should_not have_link('2', href: "/?commit=Search&direction=&page=2&search=searchtest4&sort=&utf8=✓" ) }
   end
 
@@ -274,7 +274,7 @@ describe "UsersPages" do
 
     it 'should return results' do
       should have_content('searchtest')
-      should have_content('1 user')
+      should have_content('1 User')
 
    end
    end
@@ -283,7 +283,7 @@ describe "UsersPages" do
   describe "Edit users" do
     let (:user) { FactoryGirl.create(:user) }
     let!(:orig_username) { user.username }
-    let (:submit) { 'Update account' }
+    let (:submit) { 'Update Account' }
 
     before do
       login user

@@ -1,11 +1,13 @@
-<h1>Referee information</h1>
+<h1>Referee Information</h1>
 
 <% if current_user == @referee.user and current_user.contest_creator %>
     <%= link_to 'edit', edit_referee_path(@referee) %>
+    | <%= link_to 'delete', @referee, method: :delete, data: { confirm: 'Make sure this referee is not being used before you delete it'} %>
 <% end %>
 
 <p>Name: <%= @referee.name %></p>
 <p><%= link_to 'Rules', @referee.rules_url %></p>
+<p>Match limit: <%= @referee.match_limit %></p>
 <p>Players per game: <%= @referee.players_per_game %></p>
 <p>Time per game: <% @referee.time_per_game %> </p>
 <p>Created by: <%= @referee.user.username %></p>

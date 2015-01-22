@@ -2,10 +2,10 @@ class PlayersController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
   before_action :ensure_player_owner, only: [:edit, :update, :destroy]
 
+  require 'will_paginate/array'
+
   def index
     @contest = Contest.friendly.find(params[:contest_id])
-    #@players = @contest.players
-    #@referees = Referee.all
     @players = Player.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
     if @players.length ==0
       flash.now[:info] = "There were no players that matched your search. Please try again!"
@@ -31,6 +31,8 @@ class PlayersController < ApplicationController
 
   def show
     @player = Player.friendly.find(params[:id])
+    @playermatch = PlayerMatch.search(@player, params[:search])
+    @matches = PlayerMatch.search(@player, params[:search]).paginate(:per_page =>10, :page => params[:page])
   end
 
   def edit

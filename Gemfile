@@ -11,7 +11,10 @@ group :test do
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'timecop'
-  gem 'test-unit'
+  gem 'rubysl-test-unit'
+
+  gem 'simplecov', :require => false
+
 end
 
 group :development, :test do

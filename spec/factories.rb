@@ -34,6 +34,7 @@ FactoryGirl.define do
     rules_url "http://example.com/path/to/rules"
     players_per_game 4
     user
+    match_limit 150
   end
 
   factory :contest do
@@ -72,12 +73,12 @@ FactoryGirl.define do
 
       before(:create) do |match, evaluator|
         dummy_player = create(:player, contest: match.manager.contest)
-        dummy_player.tournaments << match.manager
+	dummy_player.tournaments << match.manager
       end
     end
 
     factory :challenge_match do
-      association :manager, factory: :referee
+      association :manager, factory: :contest
 
       before(:create) { |match| dummy_player = create(:player) }
     end

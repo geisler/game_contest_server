@@ -121,8 +121,12 @@ ActiveRecord::Schema.define(version: 20150121152251) do
     t.string   "rules_url"
     t.integer  "players_per_game"
     t.integer  "user_id"
+<<<<<<< HEAD
     t.string   "compressed_file_location"
     t.integer  "time_per_game"
+=======
+    t.integer  "match_limit"
+>>>>>>> 51f8e8d4242a81744e5d2ee1e18cc8e24525ff5a
   end
 
   add_index "referees", ["name"], name: "index_referees_on_name", unique: true
