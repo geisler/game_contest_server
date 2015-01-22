@@ -7,8 +7,8 @@ class Match < ActiveRecord::Base
   has_many :players, through: :player_matches
 
   accepts_nested_attributes_for :player_matches
-  has_many :parent_matches, class_name: 'MatchPath', foreign_key: 'child_match_id'
-  has_many :child_matches, class_name: 'MatchPath', foreign_key: 'parent_match_id'
+  has_many :parent_matches, class_name: 'MatchPath', foreign_key: 'child_match_id', dependent: :destroy
+  has_many :child_matches, class_name: 'MatchPath', foreign_key: 'parent_match_id', dependent: :destroy
 
   validates :manager,           presence: true
   validates :status,            presence: true, inclusion: %w[unassigned waiting started completed]
@@ -68,5 +68,12 @@ class Match < ActiveRecord::Base
       end
     end
   end
+
+  def name
+    self.players.map(&:name).join("-")
+  end
+
+  extend FriendlyId
+  friendly_id :name, use: :slugged
 
 end
