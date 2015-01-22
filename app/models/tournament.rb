@@ -1,4 +1,7 @@
 class Tournament < ActiveRecord::Base
+
+  attr_accessor :match_limit
+
   belongs_to :contest
   has_many :player_tournaments, inverse_of: :tournament #, dependent: :destroy
   has_many :players, through: :player_tournaments

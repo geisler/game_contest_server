@@ -79,7 +79,9 @@ class TournamentRunner
     def round_robin(players)
 	players.each do |p|
 	    players.shuffle!
-	    create_match(players)
+	    params[:tournament][:match_limit].to_i.times do
+	      create_match(players)
+	    end
 	end
     end
     

@@ -61,6 +61,7 @@ class TournamentsController < ApplicationController
     redirect_to contest_tournaments_path(@tournament.contest)
   end
 
+
   private
 
   def acceptable_params

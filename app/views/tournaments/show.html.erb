@@ -6,7 +6,11 @@
 
 <br/>
 <p>Name: <%= @tournament.name %></p>
-<p>Start: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
+<% if @tournament.status == "completed" %>
+    <p>Finished: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
+<% else %>
+    <p>Start: <%= distance_of_time_in_words_to_now(@tournament.start) %></p>
+<% end %>
 <p>Status: <%= @tournament.status %></p>
 <p>Tournament type: <%= @tournament.tournament_type %></p>
 <p>Contest: <%= link_to @tournament.contest.name, @tournament.contest %></p>

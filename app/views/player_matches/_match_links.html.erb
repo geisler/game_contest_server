@@ -4,14 +4,14 @@
 		<% @tmp << p.name %>
 	<% end %>
 
-<li>
+    <li>
 	<%= link_to @tmp.to_sentence, match_path(player_match.match) %>
 	<% if player_match.result.nil? %>
-		( waiting )
+		(Waiting)
 	<% else %>
 	 	(<%= player_match.result %>)
 	<% end %>
-</li>
+    </li>
 
 
 <% end %>

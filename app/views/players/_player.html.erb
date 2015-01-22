@@ -1,1 +1,11 @@
-<li><%= link_to player.name, player %></li>
+<% @scores = PlayerMatch.find_by_sql("SELECT result FROM Player_Matches WHERE player_id = #{player.id} AND match_id IN (SELECT id FROM Matches WHERE manager_id = #{@tournament.id})") %>
+
+
+<% @win =0 %>
+<% @scores.each do |m| %>
+   <% if m.result == "Win" %>
+        <% @win += 1 %>
+   <%end%>
+<%end%>
+
+<li><%= link_to player.name, player %> (wins:<%=@win%>)</li>
