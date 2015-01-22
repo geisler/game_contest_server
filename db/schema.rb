@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20150121152251) do
-=======
-ActiveRecord::Schema.define(version: 20150110191929) do
->>>>>>> bug_fixes
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
