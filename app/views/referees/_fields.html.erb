@@ -14,6 +14,16 @@
 </div>
 
 <div class="form-group">
+    <%= f.label :time_per_game %>
+    <%= f.select :time_per_game, 1..15, {}, class: 'form-control' %>
+</div>
+
+<div class="form-group">
     <%= f.label :upload, 'Upload file' %>
     <%= f.file_field :upload %>
+</div>
+
+<div class="form-group">
+    <%= f.label :upload2, 'Upload more files' %>
+    <%= f.file_field :upload2 %>
 </div>

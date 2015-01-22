@@ -38,7 +38,7 @@ class MatchRunner
        @match_participants = @match.players
        @referee = @match.manager.contest.referee
        @number_of_players = @referee.players_per_game
-       @max_match_time = 8.seconds
+       @max_match_time = @referee.time_per_game
        @tournament = @match.manager
     end 
     

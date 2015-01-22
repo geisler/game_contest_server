@@ -52,7 +52,9 @@ class RefereesController < ApplicationController
     params.require(:referee).permit(:name,
                                     :rules_url,
                                     :players_per_game,
-                                    :upload)
+				    :time_per_game,
+                                    :upload,
+				    :upload2)
   end
 
   def ensure_referee_owner
