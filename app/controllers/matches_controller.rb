@@ -39,13 +39,18 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @match = Match.find(params[:id])
+    @match = Match.friendly.find(params[:id])
   end
 
   def index
-    @tournament = Tournament.friendly.find(params[:tournament_id])
-    @matches = @tournament.matches
-
+    if params[:tournament_id]
+      @manager = Tournament.friendly.find(params[:tournament_id])
+    elsif params[:contest_id]
+      @manager = Contest.friendly.find(params[:contest_id])
+    else
+      flash[:danger] = "Unable to find matches"
+      redirect_to root_path
+    end
   end
 
 #  def edit
@@ -67,11 +72,12 @@ class MatchesController < ApplicationController
 #  end
 
   def destroy
-    @match = Match.find(params[:id])
+    @match = Match.friendly.find(params[:id])
     @match.player_matches.each{ |m|m.destroy}
-    @match.match_paths.each{ |m|m.destroy}
-    @match.destory
-    redirect_to contest_matches_path(@match.contest)
+    @match.parent_matches.each{ |m|m.destroy}
+    @match.child_matches.each{ |m|m.destroy}
+    @match.destroy
+    redirect_to @match.manager
   end
 
 
@@ -80,8 +86,6 @@ class MatchesController < ApplicationController
   def acceptable_params
     params.require(:match).permit(:earliest_start, player_ids: @contest.players.try(:ids))
   end
-
-
 
 
 end

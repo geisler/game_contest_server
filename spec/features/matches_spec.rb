@@ -5,6 +5,7 @@ include ActionView::Helpers::DateHelper
 describe "MatchesPages" do
   subject { page }
 
+  let (:user) { FactoryGirl.create(:user) }
   let (:creator) { FactoryGirl.create(:contest_creator) }
   let (:contest) { FactoryGirl.create(:contest, user: creator) }
   let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
@@ -18,6 +19,7 @@ describe "MatchesPages" do
   let (:num_of_matches) { 3 }
   let (:big_num_of_matches) { 100 }
 
+# CREATE MATCHES
   describe "create" do
 
     before do
@@ -61,7 +63,7 @@ describe "MatchesPages" do
         end
       end # illegal date
       
-      # Test that one of the current user's players are chosen
+      # Test that one of the current user's players are chosen.
       describe "didn't select a current user's player" do
         before do
 	  select_datetime(now, 'Start')
@@ -76,6 +78,37 @@ describe "MatchesPages" do
 	it { should have_alert(:danger) }
 
       end # no current user's player	
+
+      #Test that enough players are chosen.
+      describe "didn't select enough players" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select num_of_matches, from: :match_match_limit
+	  click_button submit
+        end
+
+        it { should have_alert(:danger) }
+
+      end # not enough players
+
+      #Test that there aren't too many players chosen.
+      describe "selected too many players" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          check("#{player5.name} | #{player5.user.username}")
+          select num_of_matches, from: :match_match_limit
+          click_button submit
+        end
+
+        it { should have_alert(:danger) }
+
+      end # too many players
 
     end # invalid info
 
@@ -170,24 +203,61 @@ describe "MatchesPages" do
 
   end #create
 
+# DESTROY MATCHES
   describe "destroy", type: :request do
-    let!(:match) { FactoryGirl.create(:challenge_match) }
+    let!(:challenge_match) { FactoryGirl.create(:challenge_match) }
+    let!(:tournament_match) { FactoryGirl.create(:tournament_match) }
 
-    before do
-      login creator, avoid_capybara: true
-    end
+    describe "logged in as normal user" do
+      before do
+        login user, avoid_capybara: true
+      end
 
-#    describe "redirects properly" do
-#      before { delete match_path(match) }
-#
-#      specify { expect(response).to redirect_to(contest_matches_path(match.manager)) }
-#    end
+      it "should not let normal user destroy a challenge match" do
+        expect { delete match_path(challenge_match) }.not_to change(Match, :count)
+      end
 
+      it "should not let normal user destroy a tournament match" do
+        expect { delete match_path(tournament_match) }.not_to change(Match, :count)
+      end
+
+    end # logged in as normal user
+
+    describe "logged in as contest creator" do
+      before do
+        login creator, avoid_capybara: true
+      end
+
+      describe "challenge match redirects properly" do
+        before { delete match_path(challenge_match) }
+        specify { expect(response).to redirect_to(contest_path(challenge_match.manager)) }
+      end
+
+      describe "tournament match redirects properly" do
+        before { delete match_path(tournament_match) }
+        specify { expect(response).to redirect_to(tournament_path(tournament_match.manager)) }
+      end
+
+      it "produces a delete message" do
+        delete match_path(challenge_match)
+        get response.location
+        response.body.should have_alert(:success)
+      end
+
+      it "removes a match from the system (challenge match)" do
+        expect { delete match_path(challenge_match) }.to change(Match, :count).by(-1)
+      end
+
+      it "removes a match from the system (tournament match)" do
+        expect { delete match_path(tournament_match) }.to change(Match, :count).by(-1)
+      end
+
+    end # logged in as contest creator
 
   end # destroy
 
-
-  describe "show (tournament matches)" do
+#SHOW A TOURNAMENT MATCH
+  describe "show (tournament match)" do
     let (:match) { FactoryGirl.create(:tournament_match) }
 
     before { visit match_path(match) }
@@ -253,7 +323,8 @@ describe "MatchesPages" do
     end
   end
 
-  describe "show (challenge matches)" do
+#SHOW A CHALLENGE MATCH
+  describe "show (challenge match)" do
     let (:match) { FactoryGirl.create(:challenge_match) }
 
     before { visit match_path(match) }
@@ -265,8 +336,8 @@ describe "MatchesPages" do
     it { should have_content(match.manager.referee.players_per_game) }
   end
 
-  ###NOTE Does this actually show all, given our addition of challenge functionality?
-  describe "show all" do
+# SHOW ALL TOURNAMENT MATCHES
+  describe "show all tournament matches" do
     let (:tournament) { FactoryGirl.create(:tournament) }
 
     before do
@@ -274,12 +345,33 @@ describe "MatchesPages" do
 
       visit tournament_matches_path(tournament)
     end
-
-    it "lists all the matches for a contest in the system" do
+    
+    it "lists all the tournament matches for a contest in the system" do
       Match.where(manager: tournament).each do |m|
         should have_selector('li', text: m.id)
         should have_link(m.id, match_path(m))
       end
     end
   end
+
+# SHOW ALL CONTEST MATCHES
+  describe "show all contest matches" do
+    let (:contest) { FactoryGirl.create(:contest) }
+
+    before do
+      5.times { FactoryGirl.create(:challenge_match, manager: contest) }
+
+      visit contest_matches_path(contest)
+    end
+
+    it "lists all the challenge matches for a contest in the system" do
+      Match.where(manager: contest).each do |m|
+        should have_selector('li', text: m.id)
+        should have_link(m.id, match_path(m))
+      end
+    end
+  end
+
 end
+
+

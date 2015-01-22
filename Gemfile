@@ -11,7 +11,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'timecop'
-  gem 'rubysl-test-unit'
 
   gem 'simplecov', :require => false
 
@@ -24,6 +23,7 @@ group :development, :test do
   gem 'spork-rails'
   gem 'guard-spork'
   gem 'childprocess'
+  gem 'rubysl-test-unit'
 end
 
 group :development do

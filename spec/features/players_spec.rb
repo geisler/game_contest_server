@@ -242,7 +242,8 @@ describe "PlayersPages" do
 
       it { should have_subheader(text: 'Matches') }
       it { should have_content('Win', count: 7) }
-      it { should have_content('Loss', count: 4) }
+      #Should only have 3 losses displayed because the 4th is on the next page.
+      it { should have_content('Loss', count: 3) }
       it { should have_content('Record: 7-4') }
     end
 
