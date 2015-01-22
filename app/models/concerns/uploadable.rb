@@ -10,19 +10,15 @@ def upload=(uploaded_io)
    random_hex = SecureRandom.hex
    self.file_location = '' if self.file_location.nil?
    delete_code(self.file_location)
-   system("mkdir -p /home/pkramer/Project/code/#{self.class.to_s.downcase.pluralize}/development/#{random_hex}")
    self.file_location = store_file(uploaded_io, self.class.to_s.downcase.pluralize, random_hex)
+   uncompress(self.contest.referee.compressed_file_location, File.dirname(self.file_location)) if self.class == Player
 end
 
 def upload2=(uploaded_io)
     random_hex = SecureRandom.hex
     self.compressed_file_location = '' if self.compressed_file_location.nil?
     delete_code(self.compressed_file_location)
-    system("mkdir -p /home/pkramer/Project/code/environments/development/#{random_hex}")
     self.compressed_file_location = store_file(uploaded_io, 'environments', random_hex)
-    system("tar -xvf #{compressed_file_location} -C /home/pkramer/Project/code/environments/development/#{random_hex}") 
-#    system("tar -xvf #{uploaded_io}")
-    system("unzip #{self.compressed_file_location} -d /home/pkramer/Project/code/environments/development/#{random_hex}")
 end
 
 #def compressed_file_location_exists
@@ -45,17 +41,28 @@ end
   def store_file(uploaded_io, dir, random_hex)
     file_location = ''
     unless uploaded_io.nil?
-      file_location = Rails.root.join('code',
+      dir_location = Rails.root.join('code',
                                       dir,
 				      Rails.env,
-				      random_hex,
-				      self.name).to_s
+				      random_hex)
+      file_location = dir_location.join(self.name).to_s
+      dir_location = dir_location.to_s
+      system("mkdir #{dir_location}")
       IO.copy_stream(uploaded_io, file_location)
-      system("chmod +x #{file_location}")
-      system("dos2unix -q #{file_location}")
+      uncompress(file_location, dir_location)
    end
+		
+  file_location
+  end
 
-   file_location
+  def uncompress(src, dest)
+puts "tar -xvf #{src} -C #{dest}"
+    system("tar -xvf #{src} -C #{dest}") 
+puts "unzip #{src} -d #{dest}"
+    system("unzip #{src} -d #{dest}")
+    system("chmod +x #{dest}/*")
+    system("dos2unix -q #{dest}/*")
   end
 
  end
+

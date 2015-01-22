@@ -19,7 +19,8 @@ class PlayersController < ApplicationController
 
   def create
     contest = Contest.friendly.find(params[:contest_id])
-    @player = contest.players.build(acceptable_params)
+    @player = contest.players.build(acceptable_create_params)
+    @player.upload = params[:player][:upload]
     @player.user = current_user
     if @player.save
       flash[:success] = 'New Player created.'
@@ -39,7 +40,7 @@ class PlayersController < ApplicationController
   end
 
   def update
-    if @player.update(acceptable_params)
+    if @player.update(acceptable_update_params)
       flash[:success] = 'Player updated.'
       redirect_to @player
     else
@@ -54,8 +55,12 @@ class PlayersController < ApplicationController
 
   private
 
-  def acceptable_params
+  def acceptable_update_params
      params.require(:player).permit(:name, :description, :downloadable, :playable, :upload)
+  end
+
+  def acceptable_create_params
+     params.require(:player).permit(:name, :description, :downloadable, :playable)
   end
 
   def ensure_player_owner
