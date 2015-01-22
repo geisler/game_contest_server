@@ -78,6 +78,7 @@ describe "RefereePages" do
         fill_in 'Rules', with: rules
         fill_in 'Match limit', with: match_limit
         select num_players, from: 'Players'
+        check 'referee_rounds_capable'
         attach_file('Upload file', file_location)
       end
 
@@ -98,6 +99,7 @@ describe "RefereePages" do
                                          rules_url: rules,
                                          match_limit: match_limit,
 					 players_per_game: num_players,
+					 referee_rounds_capable: true,
                                          upload: fixture_file_upload(file_location) }
         end
 
@@ -115,7 +117,8 @@ describe "RefereePages" do
         it { should have_content(name) }
         it { should have_content(match_limit) }
         it { should have_link('Rules', href: rules) }
-        it { should have_content(num_players) }
+        it { should have_content("Capable of rounds: true") }
+	it { should have_content(num_players) }
 
         it "stores the contents of the file correctly" do
           expect_same_contents(referee.file_location, file_location)
@@ -146,6 +149,7 @@ describe "RefereePages" do
       before do
         fill_in 'Name', with: ''
         fill_in 'Rules', with: "#{rules}/updated"
+        fill_in 'Match limit', with: match_limit
         select num_players, from: 'Players'
         attach_file('Upload file', file_location)
       end
@@ -183,7 +187,8 @@ describe "RefereePages" do
         fill_in 'Rules', with: "#{rules}/updated"
         fill_in 'Match limit', with: match_limit
         select num_players, from: 'Players'
-        attach_file('Upload file', file_location)
+        check 'referee_rounds_capable'
+	attach_file('Upload file', file_location)
       end
 
       describe "changes the data" do
@@ -193,6 +198,7 @@ describe "RefereePages" do
         specify { expect(referee.reload.name).to eq(name) }
         specify { expect(referee.reload.rules_url).to eq("#{rules}/updated") }
 	specify { expect(referee.reload.match_limit.to_s).to eq(match_limit) }
+	specify { expect(referee.reload.rounds_capable).to eq(true) }
         specify { expect(referee.reload.players_per_game).to eq(num_players.to_i) }
 
         it "stores the contents of the file correctly" do
@@ -207,7 +213,8 @@ describe "RefereePages" do
                                                   rules_url: "#{rules}/updated",
 						  match_limit: match_limit,
                                                   players_per_game: num_players,
-                                                  upload: fixture_file_upload(file_location) }
+					 	  referee_rounds_capable: true,
+						  upload: fixture_file_upload(file_location) }
         end
 
         specify { expect(response).to redirect_to(referee_path(referee)) }
@@ -375,6 +382,7 @@ describe "RefereePages" do
     it { should have_link('Rules', href: referee.rules_url) }
     it { should have_content(referee.match_limit) }
     it { should have_content(referee.players_per_game.to_s) }
+    it { should have_content(referee.rounds_capable) }
     it { should_not have_content(referee.file_location) }
     it { should have_content(referee.user.username) }
     it "lists all the contests that use this referee" do
