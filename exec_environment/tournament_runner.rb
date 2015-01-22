@@ -38,7 +38,7 @@ class TournamentRunner
         @referee = @tournament.contest.referee
         @tournament_players = @tournament.players
         @number_of_players = @referee.players_per_game
-        @max_match_time = 30.seconds
+        @max_match_time = @referee.time_per_game
     end
 
 

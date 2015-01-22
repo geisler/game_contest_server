@@ -59,7 +59,9 @@ class RefereesController < ApplicationController
 				    :match_limit,
                                     :rounds_capable,
                                     :players_per_game,
-                                    :upload)
+				    :time_per_game,
+                                    :upload,
+				    :upload2)
   end
 
   def ensure_referee_owner

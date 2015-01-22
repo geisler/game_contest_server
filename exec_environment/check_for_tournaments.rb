@@ -14,5 +14,6 @@ if not tournament.nil? then
     tournament.status = "started"
     tournament.save
     puts "Daemon spawning tournament #"+tournament.id.to_s
-    Process.spawn("rails runner exec_environment/tournament_runner.rb -t #{tournament.id}")
+    pid = Process.spawn("rails runner exec_environment/tournament_runner.rb -t #{tournament.id}")
+    Process.wait pid
 end

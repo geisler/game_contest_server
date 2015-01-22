@@ -33,7 +33,7 @@ class MatchWrapper
     def run_match
         #Start referee process, giving it the port to talk to us on
         wrapper_server_port = @wrapper_server.addr[1]
-        @child_list.push(Process.spawn("#{@referee} -p #{wrapper_server_port} --num #{@number_of_players} & "))
+        @child_list.push(Process.spawn("cd #{File.dirname(@referee)}; make run port=#{wrapper_server_port} num_players=#{@number_of_players}"))
 
 
         #Wait for referee to tell wrapper_server what port to start players on
@@ -55,7 +55,12 @@ class MatchWrapper
         #Start players
         @players.each do |player|
             #Name must be given before port because it crashes for mysterious ("--name not found") reasons otherwise
-            @child_list.push(Process.spawn("#{player.file_location} --name '#{player.name}' -p #{@client_port} "))
+						if File.exist?("#{File.dirname(player.file_location)}/Makefile")
+              command="make contest name='#{player.name}' port=#{@client_port}"
+						else
+							command="#{player.file_location} -n '#{player.name}' -p #{@client_port}"
+						end
+            @child_list.push(Process.spawn("cd #{File.dirname(player.file_location)}; #{command}"))
         end
         
         begin
