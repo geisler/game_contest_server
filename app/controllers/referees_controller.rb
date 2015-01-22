@@ -57,6 +57,7 @@ class RefereesController < ApplicationController
     params.require(:referee).permit(:name,
                                     :rules_url,
 				    :match_limit,
+                                    :rounds_capable,
                                     :players_per_game,
                                     :upload)
   end

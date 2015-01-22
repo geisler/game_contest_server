@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119222512) do
+ActiveRecord::Schema.define(version: 20150122160201) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20150119222512) do
     t.integer  "players_per_game"
     t.integer  "user_id"
     t.integer  "match_limit"
+    t.boolean  "rounds_capable"
   end
 
   add_index "referees", ["name"], name: "index_referees_on_name", unique: true
