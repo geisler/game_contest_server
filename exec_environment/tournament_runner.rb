@@ -79,8 +79,8 @@ class TournamentRunner
     def round_robin(players)
 	players.each do |p|
 	    players.shuffle!
-	    params[:tournament][:match_limit].to_i.times do
-	      create_match(players)
+	    @tournament.rounds_per_match.times do
+		create_match(players)
 	    end
 	end
     end
@@ -90,7 +90,10 @@ class TournamentRunner
         count = players.count
         #puts " This many players: "+count.to_s
         if count == 2
-            return create_match([players[0],players[1]])
+	   @tournament.rounds_per_match.times do
+              create_match([players[0],players[1]])
+	   end
+	   return
         elsif count == 3
             child = create_raw_match("unassigned")
             create_player_matches(child,[players[0]])
@@ -102,7 +105,7 @@ class TournamentRunner
             create_match_path("Win",child,single_elimination(players[0..half-1]))
             create_match_path("Win",child,single_elimination(players[half..count]))            
             return child
-        end        
+        end
     end
     #Creates a match and the associated player_matches
     def create_match(match_participants)
