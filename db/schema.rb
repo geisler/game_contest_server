@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20150122160201) do
-=======
-ActiveRecord::Schema.define(version: 20150121161626) do
->>>>>>> 622f6197564b63f8d993f69e52a95090260250ef
+ActiveRecord::Schema.define(version: 20150122225259) do
 
   create_table "contests", force: true do |t|
     t.integer  "user_id"
@@ -66,6 +62,7 @@ ActiveRecord::Schema.define(version: 20150121161626) do
     t.datetime "earliest_start"
     t.string   "manager_type"
     t.string   "slug"
+    t.integer  "rounds"
   end
 
   add_index "matches", ["manager_id", "manager_type"], name: "index_matches_on_manager_id_and_manager_type"
@@ -145,6 +142,7 @@ ActiveRecord::Schema.define(version: 20150121161626) do
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rounds_per_match"
   end
 
   add_index "tournaments", ["slug"], name: "index_tournaments_on_slug", unique: true
