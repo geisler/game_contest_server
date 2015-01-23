@@ -33,6 +33,7 @@ FactoryGirl.define do
     sequence(:name) { |i| "Referee #{i}" }
     rules_url "http://example.com/path/to/rules"
     players_per_game 4
+    time_per_game 10
     user
     match_limit 150
   end

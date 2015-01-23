@@ -123,9 +123,9 @@ ActiveRecord::Schema.define(version: 20150122160201) do
     t.string   "rules_url"
     t.integer  "players_per_game"
     t.integer  "user_id"
-    t.string   "compressed_file_location"
     t.integer  "match_limit"
     t.boolean  "rounds_capable"
+    t.string   "compressed_file_location"
     t.integer  "time_per_game"
   end
 
