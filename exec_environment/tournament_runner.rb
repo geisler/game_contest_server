@@ -79,8 +79,12 @@ class TournamentRunner
     def round_robin(players)
 	players.each do |p|
 	    players.shuffle!
-	    @tournament.rounds_per_match.times do
-		create_match(players)
+	    if @tournament.referee.rounds_capable
+	        create_match(players, @tournament.rounds_per_match)
+	    else
+	        @tournament.rounds_per_match.times do
+		    create_match(players, 1)
+		end
 	    end
 	end
     end
@@ -91,16 +95,16 @@ class TournamentRunner
         #puts " This many players: "+count.to_s
         if count == 2
 	   @tournament.rounds_per_match.times do
-              create_match([players[0],players[1]])
+              create_match([players[0],players[1]], 1)
 	   end
 	   return
         elsif count == 3
-            child = create_raw_match("unassigned")
+            child = create_raw_match(1, "unassigned")
             create_player_matches(child,[players[0]])
-            create_match_path("Win",child,create_match([players[1],players[2]]))
+            create_match_path("Win",child,create_match([players[1],players[2]], 1))
             return child
         else
-            child = create_raw_match("unassigned")
+            child = create_raw_match(1, "unassigned")
             half = count/2
             create_match_path("Win",child,single_elimination(players[0..half-1]))
             create_match_path("Win",child,single_elimination(players[half..count]))            
@@ -108,20 +112,21 @@ class TournamentRunner
         end
     end
     #Creates a match and the associated player_matches
-    def create_match(match_participants)
-        match = create_raw_match("unassigned")
+    def create_match(match_participants, num_rounds)
+        match = create_raw_match(num_rounds, "unassigned")
         create_player_matches(match,match_participants)
 	match.status = "waiting"
 	match.save!
         return match
     end 
     #Creates a match
-    def create_raw_match(status = "waiting")
+    def create_raw_match(num_rounds, status = "waiting")
         match = Match.create!(
             manager: @tournament, 
             status: status,
             earliest_start: Time.now, 
             completion: Date.new,
+	    rounds: num_rounds,
         )
         puts " Tournament runner created match #"+match.id.to_s
         return match

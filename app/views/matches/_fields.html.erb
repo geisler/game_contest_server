@@ -1,10 +1,7 @@
 
 <div class="form-group">
-<<<<<<< HEAD
     <%= f.label :start %>
-=======
     <%= f.label :earliest_start, "Start" %>
->>>>>>> 51f8e8d4242a81744e5d2ee1e18cc8e24525ff5a
     <% Time.use_zone("America/Indianapolis") do %>
         <%= f.datetime_select :earliest_start, { start_year: Time.now.year, use_short_month: true, minute_step: 5, order: [:month, :day, :year], with_css_classes: true, datetime_separator: " at " } %>
     <% end %>
@@ -19,11 +16,6 @@
                 <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
                 <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
                 <br/>
-<<<<<<< HEAD
-	<%else%>
-		<p>You have no players in this contest <p>
-=======
->>>>>>> 51f8e8d4242a81744e5d2ee1e18cc8e24525ff5a
 	<%end%>
     <% end %>
 </div>
@@ -41,11 +33,8 @@
     <% end %>
 </div>
 
-<<<<<<< HEAD
-=======
 <div class="form-gorup">
     <p><strong>Number of Matches</strong></p>
     <%= f.select :match_limit, 1..@contest.referee.match_limit.to_i, {},  class: 'form-control' %>
     <br/>
 </div>
->>>>>>> 51f8e8d4242a81744e5d2ee1e18cc8e24525ff5a

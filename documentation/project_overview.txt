@@ -1,0 +1,12 @@
+The Computer Science and Engineering Game Contest Server has been an ongoing project since the Fall of 2013. It originated during Dr. Geisler’s Multi-tier Web Application Development course with basic tests, site design and interaction, and necessary database tables. The Game Contest Server was written using Ruby on Rails and is designed to be as general as possible to accommodate multiple types of games in a variety of languages.  
+
+The following is a broad overview of the system from a high-level perspective. This document is designed to help you understand the project from a business (non-technical) perspective.
+
+In entry level courses at the university, like COS 120 and COS 121, the class culminates in making an artificial intelligence player for a specific board game. In the past, Checkers and Battleships have been games of choice, but other games like Risk have been involved too. Students in these classes create their own “player” for the game.
+
+This site was created to host competitions between student’s players. Students are able to upload a player that can compete against other players in one of a few ways. The site allows for “contests”, and each contest will have one to many “tournaments” within it. This provides the basic format for players to compete. Generally, a professor will set up a contest for all the students in the course, and through a variety of tournaments, the best player will be determined. The contest and tournament format can only be created by the professor--from the student’s perspective, all that can be done is upload a player and watch for how it is used.
+
+There is now an additional way for players to compete against each other. A challenge feature has been added that allows students to set up individual challenge matches. A student will upload a player into a contest (as they normally would), but now they can see the other players in that contest and choose one or many players to challenge.
+
+Each match that is run is overseen by a “referee”. The referee facilitates the competition by connecting the players, communicating between the players, is the source of the game’s rules, and ultimately declares the winner and loser. 
+
