@@ -31,20 +31,22 @@ end
 shared_examples "redirects to root" do |options|
   options ||= {}
 
-  before { login login_user, avoid_capybara: true }
+  describe "requesting", type: :request do
+    before { login login_user, avoid_capybara: true }
 
-  unless options[:skip_browser]
-    describe "visit browser path", type: :request do
-      before { get path }
+    unless options[:skip_browser]
+      describe "visit browser path" do
+        before { get path }
 
-      specify { expect(response.body).not_to match(signature) }
+        specify { expect(response.body).not_to match(signature) }
+        it { errors_on_redirect(root_path, error_type) }
+      end
+    end
+
+    describe "visit HTTP path" do
+      before { send(method, http_path) }
+
       it { errors_on_redirect(root_path, error_type) }
     end
-  end
-
-  describe "visit HTTP path", type: :request do
-    before { send(method, http_path) }
-
-    it { errors_on_redirect(root_path, error_type) }
   end
 end

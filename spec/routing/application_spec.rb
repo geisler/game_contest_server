@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-feature "NamedRoutes" do
+describe "NamedRoutes" do
   describe "available routes" do
     specify { expect(get(root_path)).to be_routable }
 

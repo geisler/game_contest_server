@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe "RefereePages" do
   let (:creator) { FactoryGirl.create(:contest_creator) }
@@ -189,7 +189,7 @@ describe "RefereePages" do
         delete referee_path(referee)
       end.to change{ Dir.entries(server_location).size }.by(-1)
 
-      expect(File.exists?(referee.file_location)).to be_false
+      expect(File.exists?(referee.file_location)).to be_falsey
     end
 
     describe "redirects properly" do
