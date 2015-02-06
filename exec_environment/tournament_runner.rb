@@ -78,7 +78,7 @@ class TournamentRunner
     #Currently only works with 2 player games 
     def round_robin(players)
 	players.each do |p|
-	    players.switch!
+	    players.to_a.shuffle!
 	    create_match(players)
 	end
     end
