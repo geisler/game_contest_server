@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe User do
   let(:user) { FactoryGirl.create(:user) }
@@ -127,7 +127,7 @@ describe User do
       let(:authenticated_user) { candidate_user.authenticate('invalid') }
 
       it { should_not eq authenticated_user }
-      specify { expect(authenticated_user).to be_false }
+      specify { expect(authenticated_user).to be_falsey }
     end
   end
 

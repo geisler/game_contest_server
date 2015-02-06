@@ -71,21 +71,16 @@ class TournamentRunner
                 return
         end
         puts " Tournament runner finished creating matches for tournament #"+@tournament_id.to_s
+	
     end
 
     #Runs a round robin tournament with each player playing every other player twice.
-    #Currently only works with 2 player games #TODO make it work with more than 2 players
+    #Currently only works with 2 player games 
     def round_robin(players)
-        players.each do |player1|
-            players.each do |player2|
-                if player1 != player2 then
-                    create_match(player1, player2)
-                end
-            end
-        end
-        #TODO need a way to check that all the matches are completed and set the tournament to completed in the db
-        #@tournament.status = "completed"
-        #@tournament.save!
+	players.each do |p|
+	    players.to_a.shuffle!
+	    create_match(players)
+	end
     end
     
     #Runs a single elimination tournament (two players per match)
@@ -93,11 +88,11 @@ class TournamentRunner
         count = players.count
         #puts " This many players: "+count.to_s
         if count == 2
-            return create_match(players[0],players[1])
+            return create_match([players[0],players[1]])
         elsif count == 3
             child = create_raw_match("unassigned")
             create_player_matches(child,[players[0]])
-            create_match_path("Win",child,create_match(players[1],players[2]))
+            create_match_path("Win",child,create_match([players[1],players[2]]))
             return child
         else
             child = create_raw_match("unassigned")
@@ -107,13 +102,13 @@ class TournamentRunner
             return child
         end        
     end
-    
+   
     #Creates a match and the associated player_matches
-    def create_match(*match_participants)
+    def create_match(match_participants)
         match = create_raw_match("unassigned")
         create_player_matches(match,match_participants)
-        match.status = "waiting"
-        match.save!
+	match.status = "waiting"
+	match.save!
         return match
     end 
     #Creates a match

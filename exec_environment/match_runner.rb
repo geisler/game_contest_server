@@ -9,7 +9,8 @@
 require 'active_record'
 require 'active_support/time'
 require 'sqlite3'
-require '/home/jgeisler/classes/cos243/game_contest_server.git/exec_environment/match_wrapper.rb' #NOTE this is hardcoded to be using the match_wrapper in asjoberg's directory right now
+#This line will need to be changed for every user! 
+require './exec_environment/match_wrapper.rb' #NOTE this is hardcoded to be using the match_wrapper in asjoberg's directory right now
 require 'optparse'
 
 #This may be an alternative to running the file using 'rails runner'. These provide access to the rails environment
@@ -36,7 +37,11 @@ class MatchRunner
        @match_id = match_id 
        @match = Match.find(match_id)
        @match_participants = @match.players
-       @referee = @match.manager.contest.referee
+       if @match.manager_type.to_s == "Contest"
+         @referee = @match.manager.referee
+       else
+	 @referee = @match.manager.contest.referee
+       end
        @number_of_players = @referee.players_per_game
        @max_match_time = 8.seconds
        @tournament = @match.manager
@@ -74,7 +79,11 @@ class MatchRunner
             puts "   Match runner writing results match #"+@match_id.to_s
             results.each do |player_name, player_result|
                 #Print and save
-                player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+		if @match.manager_type.to_s == "Tournament"
+                	player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+                else
+			player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.id} AND name = '#{player_name}'").first
+		end
                 player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
                 player_match.result = player_result["result"]
                 player_match.score = player_result["score"]
@@ -89,8 +98,22 @@ class MatchRunner
                 print "\n"
             end
             puts "   Match runner finished match #"+@match_id.to_s
+  	    match = Match.find_by_sql("SELECT * FROM Matches WHERE id = #{@match_id}").first
+	    match.status = "completed"
+	    match.completion = Time.now
+	    match.save!
+	    if match.manager_type.to_s == "Tournament"
+	    	tournament = Tournament.find_by_sql("SELECT * FROM Tournaments WHERE id = #{match.manager_id}").first
+	    	tournament.matches.each do |m|
+		    if m.status == "started"
+			return
+		    end
+		end
+		tournament.status = "completed"
+		tournament.save!
+	    end 
         end
-
+	
     end
     
     #Prints a name, result, and score

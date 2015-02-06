@@ -1,0 +1,34 @@
+
+<div class="form-group">
+    <%= f.label :earliest_start, "Start" %>
+    <% Time.use_zone("America/Indianapolis") do %>
+        <%= f.datetime_select :earliest_start, { start_year: Time.now.year, use_short_month: true, minute_step: 5, order: [:month, :day, :year], with_css_classes: true, datetime_separator: " at " } %>
+    <% end %>
+</div>
+
+
+
+<div class="form-group">
+    <p><strong>My Player</strong></p>
+    <% current_user.players.each do |p| %>
+        <%if ((current_user.id) == (p.user_id) && (p.contest_id) == (@contest.id))%>
+                <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
+                <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
+                <br/>
+	<%end%>
+    <% end %>
+</div>
+
+
+<!-- shows players not made by current user entered in contest-->
+<div class="form-group">
+    <p><strong>Challenge Player(s)</strong></p>
+    <% @contest.players.each do |p| %>
+         <%if current_user.id != p.user_id %>
+                <%= check_box_tag "match[player_ids][#{p.id}]", 1, false %>
+                <%= label_tag "match[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
+                <br/>
+         <%end%>
+    <% end %>
+</div>
+

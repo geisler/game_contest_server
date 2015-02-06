@@ -53,7 +53,7 @@ class PlayersController < ApplicationController
   private
 
   def acceptable_params
-    params.require(:player).permit(:name, :description, :downloadable, :playable, :upload)
+     params.require(:player).permit(:name, :description, :downloadable, :playable, :upload)
   end
 
   def ensure_player_owner

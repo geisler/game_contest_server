@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 include ActionView::Helpers::DateHelper
 
@@ -205,7 +205,7 @@ describe "ContestsPages" do
 
     visit contests_path
     end
-    it { should have_content('10 contests') }
+    it { should have_content('10 Contests') }
     it { should have_selector('div.pagination') }
     it { should have_link('2', href: "/contests?page=2" ) }
     it { should have_link('3', href: "/contests?page=3") }
@@ -223,7 +223,7 @@ describe "ContestsPages" do
       click_button submit
     end
       after(:all)  { User.delete_all }
-    it { should have_content("0 contests") }
+    it { should have_content("0 Contests") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
     it {should have_alert(:info) }
   end
@@ -254,7 +254,7 @@ describe "ContestsPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-     it { should have_content("10 contests") }
+     it { should have_content("10 Contests") }
     it { should have_link('2') }
     it { should_not have_link('3') }
    # it { should_not have_link('3', href: "/contests?utf8=✓&direction=&sort=&search=te&commit=Search") }
@@ -280,7 +280,7 @@ describe "ContestsPages" do
       click_button submit
     end
     after(:all)  { User.delete_all }
-    it { should have_content("1 contest") }
+    it { should have_content("1 Contest") }
     it { should_not have_link('2') }#, href: "/contests?utf8=✓&direction=&sort=&search=searchtest4&commit=Search" ) }
   end
 
@@ -296,7 +296,7 @@ describe "ContestsPages" do
 
     it 'should return results' do
       should have_content('searchtest')
-      should have_content('1 contest')
+      should have_content('1 Contest')
 
    end
    end
@@ -326,6 +326,10 @@ describe "ContestsPages" do
 
     it { should have_link('New Player',
       href: new_contest_player_path(contest)) }
+
+    it { should have_link('Challenge other players.',
+      href: new_contest_match_path(contest)) }
+
   end
 
   describe "show all" do

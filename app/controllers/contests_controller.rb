@@ -29,6 +29,7 @@ class ContestsController < ApplicationController
   end
 
   def update
+
     if @contest.update(acceptable_params)
       flash[:success] = 'Contest updated.'
       redirect_to @contest
@@ -42,7 +43,11 @@ class ContestsController < ApplicationController
   end
 
   def destroy
+    @contest.tournaments.each{|t|t.destroy}
+    @contest.matches.each{|m|m.destroy}
+    @contest.players.each{|p|p.destroy}
     @contest.destroy
+    flash[:success] = 'Contest deleted.'
     redirect_to contests_path
   end
 

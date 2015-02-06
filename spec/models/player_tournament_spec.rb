@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PlayerTournament do
   let (:player_tournament) { FactoryGirl.create(:player_tournament) }

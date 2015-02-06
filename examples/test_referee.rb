@@ -60,7 +60,7 @@ class TestReferee
     end
     @players[new_player_name] = new_connection
 
-  end
+  end 
 
   #Report results of the game back to the wrapper as a single string of the form:
   #   [player_name]|[result]|[player_score]

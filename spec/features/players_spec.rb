@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "PlayersPages" do
   let (:user) { FactoryGirl.create(:user) }
@@ -184,7 +184,7 @@ describe "PlayersPages" do
         delete player_path(player)
       end.to change{ Dir.entries(server_location).size }.by(-1)
 
-      expect(File.exists?(player.file_location)).to be_false
+      expect(File.exists?(player.file_location)).to be_falsey
     end
 
     describe "redirects properly" do

@@ -4,8 +4,6 @@
         <%= link_to 'Game Contest Server', root_path, class: 'navbar-brand' %>
     </div>
     <ul class="nav navbar-nav navbar-left">
-        <%= active_link_to 'Home', root_path,
-                   wrap_tag: :li, active: :exclusive %>
         <%= active_link_to 'Users', users_path,
                    wrap_tag: :li, active: :exclusive %>
         <%= active_link_to 'Contests', contests_path,

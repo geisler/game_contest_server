@@ -1,7 +1,7 @@
 <h1><%= @user.username %></h1>
 <p>Email: <%= @user.email %></p>
 
-<h2>Players</h2>
+<h2><%= pluralize(@user.players.count, 'Player') %></h2>
 <ul>
     <% @user.players.each do |player| %>
         <li>
@@ -13,7 +13,6 @@
     <% end %>
 </ul>
 
-<p><%= pluralize(@user.players.count, 'player') %></p>
 
 <% if @user.contest_creator %>
     <h2><%= pluralize(@user.referees.count, 'Referee') %></h2>

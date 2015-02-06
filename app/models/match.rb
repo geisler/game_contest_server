@@ -9,7 +9,7 @@ class Match < ActiveRecord::Base
 
   validates :manager,           presence: true
   validates :status,            presence: true, inclusion: %w[unassigned waiting started completed]
-  validates :earliest_start,    presence: true, unless: :started?
+  validates :earliest_start,    presence: true, timeliness: { type: :datetime, allow_nil: false }, unless: :started?
   validates :completion,
     timeliness: { type: :datetime, on_or_before: :now },
     if: :completed?
@@ -33,6 +33,14 @@ class Match < ActiveRecord::Base
   def completed?
     status == 'completed'
   end
+
+  def player_ids=(ids)
+    ids.each do |p, use|
+      self.player_matches.build(player: Player.find(p))
+    end
+  end
+
+
 
 
   def correct_number_of_players

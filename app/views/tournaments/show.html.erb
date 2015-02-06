@@ -1,4 +1,4 @@
-<h1>Tournament information</h1>
+<h1>Tournament Information</h1>
 
 <% if current_user == @tournament.contest.user and current_user.contest_creator %>
     <%= link_to 'edit', edit_tournament_path(@tournament) %>
@@ -13,5 +13,11 @@
 
 <p>Contest owner: <%= link_to @tournament.contest.user.username, @tournament.contest.user %></p>
 <p>Referee: <%= link_to @tournament.referee.name, @tournament.referee %></p>
-<p>Players: <%= render @tournament.players %></p>
-
+<h2><%= pluralize(@tournament.players.count, 'Player') %></h2>
+<ul>
+    <%= render @tournament.players %>
+</ul>
+<h2><%= pluralize(@tournament.matches.count, 'Match')%></h2>
+<ul>
+    <%= render @tournament.matches %>
+</ul>

@@ -41,9 +41,14 @@ class RefereesController < ApplicationController
   end
 
   def destroy
-    @referee.destroy
-    flash[:success] = 'Referee deleted.'
-    redirect_to referees_path
+    if ! Contest.exists?(:referee_id => @referee.id) 
+      @referee.destroy
+      flash[:success] = 'Referee deleted.'
+      redirect_to referees_path
+   else
+      flash[:danger] = 'This referee is currently being used in a contest'
+      render 'show'
+   end
   end
 
   private
@@ -59,4 +64,6 @@ class RefereesController < ApplicationController
     @referee = Referee.friendly.find(params[:id])
     ensure_correct_user(@referee.user_id)
   end
+
+
 end

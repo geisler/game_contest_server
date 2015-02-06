@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PlayerMatch do
   let (:player_match) { FactoryGirl.create(:player_match) }

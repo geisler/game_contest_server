@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "AuthenticationPages" do
   subject { page }
@@ -13,7 +13,7 @@ describe "AuthenticationPages" do
       it { should have_alert(:danger, text: 'Invalid') }
 
       describe "visiting another page" do
-        before { click_link 'Home' }
+        before { click_link 'Users' }
 
         it { should_not have_alert(:danger) }
       end
@@ -291,7 +291,7 @@ describe "AuthorizationPages" do
   describe "authenticated admin user" do
     let(:admin) { FactoryGirl.create(:admin) }
 
-    describe "delete action (self)", type: :request do
+    describe "delete action (self)" do
       it_behaves_like "redirects to root", skip_browser: true do
         let (:login_user) { admin }
         let (:error_type) { :danger }
@@ -301,6 +301,7 @@ describe "AuthorizationPages" do
     end
 
     pending "edit action (other admin)" do
+      fail
     end
 
   end

@@ -55,6 +55,8 @@ class TournamentsController < ApplicationController
 
   def destroy
     @tournament = Tournament.friendly.find(params[:id])
+    @tournament.player_tournaments.each{|m|m.destroy}
+    @tournament.matches.each{|m|m.destroy}
     @tournament.destroy
     redirect_to contest_tournaments_path(@tournament.contest)
   end
@@ -64,7 +66,7 @@ class TournamentsController < ApplicationController
   def acceptable_params
     # Status should not be acceptable.
     # The backend should set it.
-    params.require(:tournament).permit(:name , :start, :tournament_type, player_ids: @contest.players.try(:ids))
+    params.require(:tournament).permit(:name , :start, :tournament_type, player_ids: @contest.players.try(:ids).map(&:to_s))
   end
 
   def ensure_contest_owner

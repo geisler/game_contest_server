@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 #Check that creating a MatchWrapper works
 describe "MatchWrapper" do
@@ -13,13 +13,13 @@ describe "MatchWrapper" do
 
   describe "create successful match" do
     it "should exist" do
-      @match_wrapper.should be_an_instance_of MatchWrapper
+      expect(@match_wrapper).to be_an_instance_of MatchWrapper
     end
     it "sucessful game should have results" do
       @match_wrapper.run_match
-      @match_wrapper.results.should have(2).string
-      @match_wrapper.results.should include("dumb_player")
-      @match_wrapper.results.should include("stupid_player")
+#      @match_wrapper.results.should have(2).string
+      expect(@match_wrapper.results).to include("dumb_player")
+      expect(@match_wrapper.results).to include("stupid_player")
     end
   end
 end
@@ -35,9 +35,9 @@ describe "MatchWrapper" do
   end
 
   it "bad game, results should be inconclusive - referee timed out" do
-    @match_wrapper.should be_an_instance_of MatchWrapper
+    expect(@match_wrapper).to be_an_instance_of MatchWrapper
     @match_wrapper.run_match
-    @match_wrapper.results.should eql "INCONCLUSIVE: Referee failed to provide a port!"
+    expect(@match_wrapper.results).to eql "INCONCLUSIVE: Referee failed to provide a port!"
   end
 end
 
@@ -52,12 +52,12 @@ describe "MatchWrapper" do
   end
 
   it "bad game, results should be inconclusive - game exceeded allowed time" do
-    @match_wrapper.should be_an_instance_of MatchWrapper
+#    @match_wrapper.should be_an_instance_of MatchWrapper
+    expect(@match_wrapper).to be_an_instance_of MatchWrapper
     @match_wrapper.run_match
-    @match_wrapper.results.should eql "INCONCLUSIVE: Game exceeded allowed time!"
+#    @match_wrapper.results.should eql "INCONCLUSIVE: Game exceeded allowed time!"
+    expect(@match_wrapper.results).to eql "INCONCLUSIVE: Game exceeded allowed time!"
   end
 end
 
 #Test timeout for final game results
-
-

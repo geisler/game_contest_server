@@ -18,11 +18,7 @@
 <div class="form-group">
     <p><strong>Select Players</strong></p>
     <% @tournament.contest.players.each do |p| %>
-        <% if @tournament.players.include? p %>
-            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, true %>
-        <% else %>
-            <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, false %>
-        <% end %>
+        <%= check_box_tag "tournament[player_ids][#{p.id}]", 1, @tournament.players.include?(p) %>
         <%= label_tag "tournament[player_ids][#{p.id}]","#{p.name} | #{p.user.username}" %>
         <br />
     <% end %>

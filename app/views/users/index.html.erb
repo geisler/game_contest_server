@@ -7,9 +7,9 @@
         <%= submit_tag "Search", username: nil %>
     </p>
 
-    <h3><%= pluralize(@users.length, 'user') %></h3>
+    <h3><%= pluralize(@users.length, 'User') %></h3>
     <div id= "pagination">
-        <li><%= render @users %></li>
+        <%= render @users %>
     </div>
 
     <%= will_paginate %>

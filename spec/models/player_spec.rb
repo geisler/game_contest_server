@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Player do
   let (:player) { FactoryGirl.create(:player) }

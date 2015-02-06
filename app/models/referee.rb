@@ -4,7 +4,6 @@ class Referee < ActiveRecord::Base
   #  belongs_to :programming_language
   belongs_to :user
   has_many :contests
-  has_many :matches, as: :manager
 
   validates :user,              presence: true
 
@@ -16,10 +15,6 @@ class Referee < ActiveRecord::Base
 
   include Uploadable
 
-  # Used for match.manager.referee when manager is a referee
-  def referee
-    self
-  end
 
   def self.search(search)
     if search
