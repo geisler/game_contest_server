@@ -8,7 +8,7 @@ describe "MatchWrapper" do
     @player1 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'dumb_player', file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_player.rb').to_s )
     @player2 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'stupid_player', file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_player.rb').to_s )
     @referee = FactoryGirl.create(:player, name: "referee", file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_referee.rb').to_s )
-    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2])
+    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2], 1)
   end
 
   describe "create successful match" do
@@ -31,7 +31,7 @@ describe "MatchWrapper" do
     @player1 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'dumb_player', file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_player.rb').to_s )
     @player2 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'stupid_player', file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_player.rb').to_s )
     @referee = FactoryGirl.create(:player, name: "referee", file_location: Rails.root.join('spec', 'exec_environment', '../files/dumb_referee.rb').to_s )
-    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2])
+    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2], 1)
   end
 
   it "bad game, results should be inconclusive - referee timed out" do
@@ -48,7 +48,7 @@ describe "MatchWrapper" do
     @player1 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'dumb_player', file_location: Rails.root.join('spec', 'exec_environment', '../files/dumb_player.rb').to_s )
     @player2 = FactoryGirl.create(:player, user: @user, contest: @contest, name: 'stupid_player', file_location: Rails.root.join('spec', 'exec_environment', '../files/dumb_player.rb').to_s )
     @referee = FactoryGirl.create(:player, name: "referee", file_location: Rails.root.join('spec', 'exec_environment', '../../examples/test_referee.rb').to_s )
-    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2])
+    @match_wrapper = MatchWrapper.new(@referee , 2, 5, [@player1, @player2], 1)
   end
 
   it "bad game, results should be inconclusive - game exceeded allowed time" do
