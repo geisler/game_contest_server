@@ -7,18 +7,22 @@ module Uploadable
   end
 
 def upload=(uploaded_io)
-   random_hex = SecureRandom.hex
-   self.file_location = '' if self.file_location.nil?
-   delete_code(self.file_location)
-   self.file_location = store_file(uploaded_io, self.class.to_s.downcase.pluralize, random_hex)
-   uncompress(self.contest.referee.compressed_file_location, File.dirname(self.file_location)) if self.class == Player
+    unless self.name.blank?
+      random_hex = SecureRandom.hex
+      self.file_location = '' if self.file_location.nil?
+      delete_code(self.file_location)
+      self.file_location = store_file(uploaded_io, self.class.to_s.downcase.pluralize, random_hex)
+      uncompress(self.contest.referee.compressed_file_location, File.dirname(self.file_location)) if self.class == Player
+    end
 end
 
 def upload2=(uploaded_io)
-    random_hex = SecureRandom.hex
-    self.compressed_file_location = '' if self.compressed_file_location.nil?
-    delete_code(self.compressed_file_location)
-    self.compressed_file_location = store_file(uploaded_io, 'environments', random_hex)
+    unless self.name.blank?
+      random_hex = SecureRandom.hex
+      self.compressed_file_location = '' if self.compressed_file_location.nil?
+      delete_code(self.compressed_file_location)
+      self.compressed_file_location = store_file(uploaded_io, 'environments', random_hex)
+    end
 end
 
 #def compressed_file_location_exists
