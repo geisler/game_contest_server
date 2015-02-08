@@ -30,6 +30,14 @@ FactoryGirl.define do
       FileUtils.touch(location)
       location
     end
+    sequence(:compressed_file_location) do |i|
+      location = Rails.root.join('code',
+                                 'environments',
+                                 'test',
+                                 "FactoryGirl-fake-code-#{i}").to_s
+      FileUtils.touch(location)
+      location
+    end
     sequence(:name) { |i| "Referee #{i}" }
     rules_url "http://example.com/path/to/rules"
     players_per_game 4
@@ -51,6 +59,7 @@ FactoryGirl.define do
     sequence(:name) { |i| "Tournament #{i}" }
     start Time.current
     tournament_type "round robin"
+    rounds_per_match 1
     status "waiting"
   end
 
