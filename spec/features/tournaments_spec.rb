@@ -69,7 +69,7 @@ describe 'TournamentsPages' do
         select_datetime(now, 'Start')
         select tournament_type, from: 'Tournament type'
         check("#{player1.name} | #{player1.user.username}")
-
+	select 1, from: 'Number of Matches per Combination'
 
       end
 
@@ -84,7 +84,8 @@ describe 'TournamentsPages' do
             tournament: { name: name,
               start: now.strftime("%F %T"),
               tournament_type: tournament_type.downcase,
-              players: [player1]
+              players: [player1],
+	      rounds_per_match: 1
           }
         end
 
