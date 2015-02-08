@@ -1,0 +1,1 @@
+PLAYER = test_player
