@@ -57,7 +57,7 @@ class TestReferee
     #NOTE if players are taking a long time to respond here, other pending connections may time out
     new_player_name = nil
     while new_player_name.nil? do
-      new_player_name = new_connection.gets
+      new_player_name = new_connection.gets.strip
     end
     @players[new_player_name] = new_connection
 
@@ -73,7 +73,7 @@ class TestReferee
         result = "Loss"
       end
       score = rand(1...5) #meaningless
-      result_string = player_name.strip + "|" + result + "|" + score.to_s
+      result_string = player_name + "|" + result + "|" + score.to_s
       @wrapper_connection.puts(result_string)
     end
     return
@@ -107,6 +107,7 @@ class TestReferee
 
   #Sends a notification to our players that the game is over
   def inform_players_of_win(winner_name)
+    puts winner_name + ' wins!'
     @players.each do |player_name,socket|
       socket.puts(winner_name + ' wins!' )
       socket.close

@@ -48,9 +48,5 @@ while True:
         s.send(blah.encode())
         #print ("Sent "+blah)
     elif "wins" in reply:
+        print(reply.strip())
         break
-
-
-
-
-
