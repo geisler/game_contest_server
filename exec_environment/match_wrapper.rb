@@ -38,7 +38,6 @@ class MatchWrapper
 	else
 		command="#{@referee} -p #{wrapper_server_port} -n  #{@number_of_players} -r #{@num_rounds}"
 	end
-        puts command
         @child_list.push(Process.spawn("cd #{File.dirname(@referee)}; #{command}"))
 
 
@@ -67,7 +66,6 @@ class MatchWrapper
 						else
 							command="#{player.file_location} -n '#{name}' -p #{@client_port}"
 						end
-		puts command 
            @child_list.push(Process.spawn("cd #{File.dirname(player.file_location)}; #{command}"))
         end
         

@@ -56,10 +56,8 @@ end
   end
 
   def uncompress(src, dest)
-puts "tar -xvf #{src} -C #{dest}"
-    system("tar -xvf #{src} -C #{dest}") 
-puts "unzip #{src} -d #{dest}"
-    system("unzip #{src} -d #{dest}")
+    system("tar -xvf #{src} -C #{dest} > /dev/null 2>&1") 
+    system("unzip #{src} -d #{dest} > /dev/null 2>&1")
     system("chmod +x #{dest}/*")
     system("dos2unix -q #{dest}/*")
   end
