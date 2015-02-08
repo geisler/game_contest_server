@@ -2,7 +2,7 @@ module Uploadable
   extend ActiveSupport::Concern
 
   included do
-    before_destroy :delete_code
+    before_destroy :delete_code_locations
     validate :file_location_exists
   end
 
@@ -33,6 +33,11 @@ end
  end
 
   private
+
+  def delete_code_locations
+    delete_code(self.file_location)
+    delete_code(self.compressed_file_location) if self.attributes.include? :compressed_file_location
+  end
 
   def delete_code(location)
     File.delete(location) if File.exists?(location)
