@@ -11,4 +11,5 @@ OptionParser.new do |opts|
 
     opts.on('-p' , '--port [PORT]' , 'Port for client to connect to') { |v| $options[:port] = v}
     opts.on('-n' , '--num [NUM]' , 'Number of players we will pass the referee') { |v| $options[:num] = v.to_i}
+    opts.on('-r' , '--rounds [ROUNDS]' , 'Number of rounds we will pass the referee') { |v| $options[:rounds] = v.to_i}
 end.parse!
