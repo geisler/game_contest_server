@@ -1,28 +1,8 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+Welcome to the Game Contest Server! 
 
-* Ruby version
+The first thing you need to know: everything you should read is in the README folder.  In there we have different documentation on the overall site, testing, features, practices, and future work.  There is also a README.txt file from the previous J-Term 2014 group where they describe the clockwork deamon, program flow, referees, players, and future work.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+You got this.  Rock this J-Term.

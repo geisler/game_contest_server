@@ -6,8 +6,15 @@
 <% end %>
 
 <p>Name: <%= @referee.name %></p>
+
 <p><%= link_to 'Rules', @referee.rules_url %></p>
+
+<p>Match limit: <%= @referee.match_limit %></p>
+
+<p>Capable of rounds: <%= @referee.rounds_capable? %></p>
+
 <p>Players per game: <%= @referee.players_per_game %></p>
+<p>Time per game: <% @referee.time_per_game %> </p>
 <p>Created by: <%= @referee.user.username %></p>
 
 <h2>Contests</h2>

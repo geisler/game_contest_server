@@ -5,18 +5,22 @@ include ActionView::Helpers::DateHelper
 describe "MatchesPages" do
   subject { page }
 
-#Begin Devin's work
-  describe "create" do
-    let (:creator) { FactoryGirl.create(:contest_creator) }
-    let (:contest) { FactoryGirl.create(:contest, user: creator) }
-    let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
-    let! (:player2) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player3) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player4) { FactoryGirl.create(:player, contest: contest) }
-    let! (:player5) { FactoryGirl.create(:player, contest: contest) }
+  let (:user) { FactoryGirl.create(:user) }
+  let (:creator) { FactoryGirl.create(:contest_creator) }
+  let (:contest) { FactoryGirl.create(:contest, user: creator) }
+  let! (:player1) { FactoryGirl.create(:player, contest: contest, user: creator) }
+  let! (:player2) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player3) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player4) { FactoryGirl.create(:player, contest: contest) }
+  let! (:player5) { FactoryGirl.create(:player, contest: contest) }
 
-    let (:now) { Time.current }
-    let (:submit) { 'Challenge!' }  
+  let (:now) { Time.current }
+  let (:submit) { 'Challenge!' }
+  let (:num_of_matches) { 3 }
+  let (:big_num_of_matches) { 100 }
+
+# CREATE MATCHES
+  describe "create" do
 
     before do
       login creator
@@ -51,6 +55,7 @@ describe "MatchesPages" do
 	    check("#{player2.name} | #{player2.user.username}")
 	    check("#{player3.name} | #{player3.user.username}")
 	    check("#{player4.name} | #{player4.user.username}")
+	    select num_of_matches, from: :match_match_limit
             click_button submit
           end
 
@@ -58,7 +63,7 @@ describe "MatchesPages" do
         end
       end # illegal date
       
-      # Test that one of the current user's players are chosen
+      # Test that one of the current user's players are chosen.
       describe "didn't select a current user's player" do
         before do
 	  select_datetime(now, 'Start')
@@ -66,6 +71,7 @@ describe "MatchesPages" do
           check("#{player3.name} | #{player3.user.username}")
           check("#{player4.name} | #{player4.user.username}")
           check("#{player5.name} | #{player5.user.username}")
+	  select num_of_matches, from: :match_match_limit
 	  click_button submit
 	end
 	
@@ -73,56 +79,123 @@ describe "MatchesPages" do
 
       end # no current user's player	
 
+      #Test that enough players are chosen.
+      describe "didn't select enough players" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select num_of_matches, from: :match_match_limit
+	  click_button submit
+        end
+
+        it { should have_alert(:danger) }
+
+      end # not enough players
+
+      #Test that there aren't too many players chosen.
+      describe "selected too many players" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          check("#{player5.name} | #{player5.user.username}")
+          select num_of_matches, from: :match_match_limit
+          click_button submit
+        end
+
+        it { should have_alert(:danger) }
+
+      end # too many players
+
     end # invalid info
 
     describe "valid information" do
 
-      before do
-	select_datetime(now, 'Start')
-        check("#{player1.name} | #{player1.user.username}")
-        check("#{player2.name} | #{player2.user.username}")
-        check("#{player3.name} | #{player3.user.username}")
-        check("#{player4.name} | #{player4.user.username}")
+      describe "create a few matches" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+	  select num_of_matches, from: :match_match_limit
+        end
+
+        it "should create 3 matches" do
+	  #Change by count of 3 because num_of_matches = 3.
+          expect { click_button submit }.to change(Match, :count).by(3)
+        end    
       end
 
-      it "should create a match" do
-        expect { click_button submit }.to change(Match, :count).by(1)
-      end    
+      describe "create many matches" do
+        before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select big_num_of_matches, from: :match_match_limit
+        end
+
+        it "should create 100 matches" do
+          #Change by count of 100 because big_num_of_matches = 100.
+          expect { click_button submit }.to change(Match, :count).by(100)
+        end
+      end
 
       describe 'redirects properly', type: :request do
         before do
           login creator, avoid_capybara: true
           post contest_matches_path(contest),
             match: { earliest_start: now.strftime("%F %T"),
-            player_ids: {player1.id => "1", player2.id => "1", player3.id => "1", player4.id => "1"} }
+            player_ids: {player1.id => "1", player2.id => "1", player3.id => "1", player4.id => "1"},
+	    match_limit: 3 }
         end
 
-        specify { expect(response).to redirect_to(match_path(assigns(:match))) }
+        specify { expect(response).to redirect_to(contest_path(contest)) }
 	specify { expect(assigns(:match).manager).to eq(contest) }	
 
       end # redirects
 
       describe "after submission" do
+
+	before do
+          select_datetime(now, 'Start')
+          check("#{player1.name} | #{player1.user.username}")
+          check("#{player2.name} | #{player2.user.username}")
+          check("#{player3.name} | #{player3.user.username}")
+          check("#{player4.name} | #{player4.user.username}")
+          select num_of_matches, from: :match_match_limit
+	end
+
         before { click_button submit }
 
-	it { should have_content('Match Information') }
+	it { should have_content('Contest Information') }
         it { should have_alert(:success, text: 'Match created.') }
-        it { should have_content(/less than a minute|1 minute/) }
-        it { should have_content('waiting') }
-        it { should have_link(contest.name,
-                              href: contest_path(contest)) }
         it { should have_content(contest.referee.name) }
-        it { should have_content("4 Players") }
-        it { should have_link(player1.name,
-                              href: player_path(player1)) }
-        it { should have_link(player2.name,
-                              href: player_path(player2)) }
-        it { should have_link(player3.name,
-                              href: player_path(player3)) }
-        it { should have_link(player4.name,
-                              href: player_path(player4)) }
-        it { should_not have_link(player5.name,
-                              href: player_path(player5)) }
+
+	#The following tests were removed when successful redirect was changed from
+	#the newly created match page to the contest page.
+
+	#it { should have_content('Match Information') }
+        #it { should have_content(/less than a minute|1 minute/) }
+        #it { should have_content('waiting') }
+        #it { should have_link(contest.name,
+        #                      href: contest_path(contest)) }
+        #it { should have_content("4 Players") }
+        #it { should have_link(player1.name,
+        #                      href: player_path(player1)) }
+        #it { should have_link(player2.name,
+        #                      href: player_path(player2)) }
+        #it { should have_link(player3.name,
+        #                      href: player_path(player3)) }
+        #it { should have_link(player4.name,
+        #                      href: player_path(player4)) }
+        #it { should_not have_link(player5.name,
+        #                      href: player_path(player5)) }
 
       end
 
@@ -130,9 +203,61 @@ describe "MatchesPages" do
 
   end #create
 
-#End Devin's work
+# DESTROY MATCHES
+  describe "destroy", type: :request do
+    let!(:challenge_match) { FactoryGirl.create(:challenge_match) }
+    let!(:tournament_match) { FactoryGirl.create(:tournament_match) }
 
-  describe "show (tournament matches)" do
+    describe "logged in as normal user" do
+      before do
+        login user, avoid_capybara: true
+      end
+
+      it "should not let normal user destroy a challenge match" do
+        expect { delete match_path(challenge_match) }.not_to change(Match, :count)
+      end
+
+      it "should not let normal user destroy a tournament match" do
+        expect { delete match_path(tournament_match) }.not_to change(Match, :count)
+      end
+
+    end # logged in as normal user
+
+    describe "logged in as contest creator" do
+      before do
+        login creator, avoid_capybara: true
+      end
+
+      describe "challenge match redirects properly" do
+        before { delete match_path(challenge_match) }
+        specify { expect(response).to redirect_to(contest_path(challenge_match.manager)) }
+      end
+
+      describe "tournament match redirects properly" do
+        before { delete match_path(tournament_match) }
+        specify { expect(response).to redirect_to(tournament_path(tournament_match.manager)) }
+      end
+
+      it "produces a delete message" do
+        delete match_path(challenge_match)
+        get response.location
+        response.body.should have_alert(:success)
+      end
+
+      it "removes a match from the system (challenge match)" do
+        expect { delete match_path(challenge_match) }.to change(Match, :count).by(-1)
+      end
+
+      it "removes a match from the system (tournament match)" do
+        expect { delete match_path(tournament_match) }.to change(Match, :count).by(-1)
+      end
+
+    end # logged in as contest creator
+
+  end # destroy
+
+#SHOW A TOURNAMENT MATCH
+  describe "show (tournament match)" do
     let (:match) { FactoryGirl.create(:tournament_match) }
 
     before { visit match_path(match) }
@@ -198,7 +323,8 @@ describe "MatchesPages" do
     end
   end
 
-  describe "show (challenge matches)" do
+#SHOW A CHALLENGE MATCH
+  describe "show (challenge match)" do
     let (:match) { FactoryGirl.create(:challenge_match) }
 
     before { visit match_path(match) }
@@ -210,8 +336,8 @@ describe "MatchesPages" do
     it { should have_content(match.manager.referee.players_per_game) }
   end
 
-  ###NOTE Does this actually show all, given our addition of challenge functionality?
-  describe "show all" do
+# SHOW ALL TOURNAMENT MATCHES
+  describe "show all tournament matches" do
     let (:tournament) { FactoryGirl.create(:tournament) }
 
     before do
@@ -219,12 +345,33 @@ describe "MatchesPages" do
 
       visit tournament_matches_path(tournament)
     end
-
-    it "lists all the matches for a contest in the system" do
+    
+    it "lists all the tournament matches for a contest in the system" do
       Match.where(manager: tournament).each do |m|
         should have_selector('li', text: m.id)
         should have_link(m.id, match_path(m))
       end
     end
   end
+
+# SHOW ALL CONTEST MATCHES
+  describe "show all contest matches" do
+    let (:contest) { FactoryGirl.create(:contest) }
+
+    before do
+      5.times { FactoryGirl.create(:challenge_match, manager: contest) }
+
+      visit contest_matches_path(contest)
+    end
+
+    it "lists all the challenge matches for a contest in the system" do
+      Match.where(manager: contest).each do |m|
+        should have_selector('li', text: m.id)
+        should have_link(m.id, match_path(m))
+      end
+    end
+  end
+
 end
+
+

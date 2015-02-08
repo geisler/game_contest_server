@@ -1,0 +1,15 @@
+Visually display games
+-At the moment, there’s no way to represent matches visually. The professors have expressed their interest in seeing games being played out.This will be very helpful for students because, in many cases, seeing a “loss” is not helpful information. It would be much better to see the game so you can understand why you lost. Visual playback will allow students to where where their logic can improve.
+
+Create more diverse tournaments
+-Currently, only round robin and single elimination tournaments are available. There is potential for a much wider variety of tournaments to be supported. One idea would be mimicking a “regular season” of a sport. Consider soccer--team plays all the other teams many times and are awarded points based on the result (3 for a win, 1 for a tie, 0 for a loss). We could allow players to have a “regular season” that culminates in a ranked list of point values. From there, the top x amount of players could participate in playoffs. This is one idea of many possibilities.
+
+Test players and referees on upload
+-There are times that players and referees are not written correctly and have run-time errors. We want to test these players and referees before they are involved in a match. If we ensure that each object is able to perform its job, there will not be any more “error” results of matches.
+
+Continued development of the test suite
+-See the testing document for more information. In sum, testing is essential and it ensure the application performs as expected. A robust test suite will result in a robust application--we must continue working on this piece of the project.
+--We need to improve testing for the fixed bugs reported in the 2014 documentation.
+--We need to improve testing the results of matches.
+--We need to improve testing the rounds functionality.
+

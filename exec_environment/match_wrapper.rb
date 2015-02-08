@@ -18,7 +18,7 @@ class MatchWrapper
     attr_accessor :results
 
     #Constructor, sets socket for communication to referee and starts referee and players
-    def initialize(referee,number_of_players,max_match_time,players)  
+    def initialize(referee,number_of_players,max_match_time,players,rounds)  
         #Sets port for referee to talk to wrapper_server  
         @wrapper_server = TCPServer.new(0)
         @players = players
@@ -27,13 +27,19 @@ class MatchWrapper
         @number_of_players = number_of_players
         @max_match_time = max_match_time
         @results = {}
-
+	@num_rounds = rounds
     end
 
     def run_match
         #Start referee process, giving it the port to talk to us on
         wrapper_server_port = @wrapper_server.addr[1]
-        @child_list.push(Process.spawn("#{@referee} -p #{wrapper_server_port} --num #{@number_of_players} & "))
+	if File.exists?("#{File.dirname(@referee)}/Makefile")
+		command="make run port=#{wrapper_server_port} num_players=#{@number_of_players} num_rounds=#{@num_rounds}"
+	else
+		command="#{@referee} -p #{wrapper_server_port} -n  #{@number_of_players} -r #{@num_rounds}"
+	end
+        puts command
+        @child_list.push(Process.spawn("cd #{File.dirname(@referee)}; #{command}"))
 
 
         #Wait for referee to tell wrapper_server what port to start players on
@@ -55,7 +61,14 @@ class MatchWrapper
         #Start players
         @players.each do |player|
             #Name must be given before port because it crashes for mysterious ("--name not found") reasons otherwise
-            @child_list.push(Process.spawn("#{player.file_location} --name '#{player.name}' -p #{@client_port} "))
+				name = player.name.gsub("'"){'\'"\'"\''}
+				if File.exist?("#{File.dirname(player.file_location)}/Makefile")
+              command="make contest name='#{name}' port=#{@client_port}"
+						else
+							command="#{player.file_location} -n '#{name}' -p #{@client_port}"
+						end
+		puts command 
+           @child_list.push(Process.spawn("cd #{File.dirname(player.file_location)}; #{command}"))
         end
         
         begin

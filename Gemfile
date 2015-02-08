@@ -8,10 +8,11 @@ gem 'sqlite3'
 
 group :test do
   gem 'capybara', '~> 2.4.4'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.4.1'
   gem 'libnotify'
   gem 'timecop'
-  gem 'test-unit'
+
+  gem 'simplecov', :require => false
 end
 
 group :development, :test do
@@ -21,6 +22,8 @@ group :development, :test do
 #  gem 'spork-rails'
 #  gem 'guard-spork'
   gem 'childprocess'
+#  gem 'rubysl-test-unit'
+  gem 'test-unit'
 end
 
 group :development do

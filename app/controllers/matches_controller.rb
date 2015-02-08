@@ -1,7 +1,7 @@
 class MatchesController < ApplicationController
   before_action :ensure_user_logged_in, except: [:index, :show]
   before_action :ensure_contest_creator, only: [:edit, :update, :destroy]
- 
+
  def new
    contest = Contest.friendly.find(params[:contest_id])
    @contest = Contest.friendly.find(params[:contest_id])
@@ -17,28 +17,40 @@ class MatchesController < ApplicationController
   def create	
     @contest = Contest.friendly.find(params[:contest_id])
     contest = Contest.friendly.find(params[:contest_id])
-    @match = @contest.matches.build(acceptable_params)
-     if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
-    	@match.status = "waiting"
-    	    if @match.save
-		flash[:success] = 'Match created.'
-		redirect_to @match
-    	    else
-		render 'new'
-            end
-    else
+    match_limit = params[:match][:match_limit]
+    if params[:match][:player_ids] && params[:match][:player_ids].any? { |player_id, use| Player.find(player_id).user_id == current_user.id}
+        match_limit.to_i.times do 
+            @match = @contest.matches.build(acceptable_params)
+    	    @match.status = "waiting"
+    	        if @match.save
+		    flash[:success] = 'Match created.'
+		else
+		    flash.now[:danger] = 'Match not saved'
+		    render 'new'
+		    return
+		end
+	end
+	redirect_to @contest
+    else   	
+        @match = @contest.matches.build(acceptable_params)
 	flash.now[:danger] = 'You need to select at least one of your own players.'
 	render action: 'new'
     end
   end
 
   def show
-    @match = Match.find(params[:id])
+    @match = Match.friendly.find(params[:id])
   end
 
   def index
-    @tournament = Tournament.friendly.find(params[:tournament_id])
-    @matches = @tournament.matches
+    if params[:tournament_id]
+      @manager = Tournament.friendly.find(params[:tournament_id])
+    elsif params[:contest_id]
+      @manager = Contest.friendly.find(params[:contest_id])
+    else
+      flash[:danger] = "Unable to find matches"
+      redirect_to root_path
+    end
   end
 
 #  def edit
@@ -61,10 +73,11 @@ class MatchesController < ApplicationController
 
   def destroy
     @match = Match.friendly.find(params[:id])
-    @match.player_matches.each{ |m| m.destroy}
-    @match.match_paths.each{ |m| m.destroy}
-    @match.destory
-    redirect_to contest_matches_path(@match.contest)
+    @match.player_matches.each{ |m|m.destroy}
+    @match.parent_matches.each{ |m|m.destroy}
+    @match.child_matches.each{ |m|m.destroy}
+    @match.destroy
+    redirect_to @match.manager
   end
 
 
@@ -73,8 +86,6 @@ class MatchesController < ApplicationController
   def acceptable_params
     params.require(:match).permit(:earliest_start, player_ids: @contest.players.try(:ids).map(&:to_s))
   end
-
-
 
 
 end

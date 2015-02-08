@@ -43,8 +43,9 @@ class MatchRunner
 	 @referee = @match.manager.contest.referee
        end
        @number_of_players = @referee.players_per_game
-       @max_match_time = 8.seconds
+       @max_match_time = @referee.time_per_game
        @tournament = @match.manager
+       @num_rounds = @match.rounds
     end 
     
     #Uses a MatchWrapper to run a match between the given players and send the results to the database
@@ -54,7 +55,7 @@ class MatchRunner
                  " ("+@match_participants.count().to_s+"/"+@number_of_players.to_s+" in player_matches)"
             return
         end
-        match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,@match_participants)
+        match_wrapper = MatchWrapper.new(@referee,@number_of_players,@max_match_time,@match_participants,@num_rounds)
         puts "   Match runner running match #"+@match_id.to_s
         match_wrapper.run_match
         self.send_results_to_db(match_wrapper.results)
@@ -80,11 +81,11 @@ class MatchRunner
             results.each do |player_name, player_result|
                 #Print and save
 		if @match.manager_type.to_s == "Tournament"
-                	player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.contest.id} AND name = '#{player_name}'").first
+			player = Player.where(contest_id: @tournament.contest.id, name: player_name).first
                 else
-			player = Player.find_by_sql("SELECT * FROM Players WHERE contest_id = #{@tournament.id} AND name = '#{player_name}'").first
+			player = Player.where(contest_id: @tournament.id, name: player_name).first
 		end
-                player_match = PlayerMatch.find_by_sql("SELECT * FROM Player_Matches WHERE match_id = #{@match_id} AND player_id = #{player.id}").first
+		player_match = PlayerMatch.where(match_id: @match_id, player_id: player.id).first
                 player_match.result = player_result["result"]
                 player_match.score = player_result["score"]
                 player_match.save!        

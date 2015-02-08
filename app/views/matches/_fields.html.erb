@@ -1,5 +1,6 @@
 
 <div class="form-group">
+    <%= f.label :start %>
     <%= f.label :earliest_start, "Start" %>
     <% Time.use_zone("America/Indianapolis") do %>
         <%= f.datetime_select :earliest_start, { start_year: Time.now.year, use_short_month: true, minute_step: 5, order: [:month, :day, :year], with_css_classes: true, datetime_separator: " at " } %>
@@ -32,3 +33,8 @@
     <% end %>
 </div>
 
+<div class="form-gorup">
+    <p><strong>Number of Matches</strong></p>
+    <%= f.select :match_limit, 1..@contest.referee.match_limit.to_i, {},  class: 'form-control' %>
+    <br/>
+</div>

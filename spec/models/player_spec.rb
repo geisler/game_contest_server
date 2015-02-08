@@ -24,6 +24,13 @@ describe Player do
     it { should_not be_valid }
   end
 
+	#testing file format
+  describe "unix formatted file_location" do
+		before { player.file_location = ' ' }
+
+		it { should_not be_valid }    
+  end  
+
   describe "empty file_location" do
     before { player.file_location = '' }
 

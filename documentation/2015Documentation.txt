@@ -1,0 +1,19 @@
+This is a document of  notes about things that we need to note for the next group to work on the project.
+
+
+--NOTE #1-- regarding the search capability for player's matches.
+
+As of now, you can only search for one player at a time.
+If searching for numerous players is desired, this SQL is an example of how to do it.
+
+PlayerMatch.find_by_sql("SELECT pm1.* FROM players AS p1 INNER JOIN player_matches AS pm1 ON pm1.player_id = p1.id INNER JOIN matches ON matches.id = pm1.match_id INNER JOIN player_matches AS pm2 ON pm2.match_id = matches.id INNER JOIN players AS p2 ON pm2.player_id = p2.id INNER JOIN player_matches AS pm3 ON matches.id = pm3.match_id INNER JOIN players AS p3 ON p3.id = pm3.player_id WHERE p1.id = #{p.id} AND p2.name = 'Devin''s Player' AND p3.name = 'Alex'")
+
+
+--NOTE #2-- regarding editing a referee.
+
+As of now, when you edit a referee all fields are properly repopulated with existing data EXCEPT for match_limit. Instead, it is populated with 100 (the default value).
+
+
+--NOTE #3--
+
+
