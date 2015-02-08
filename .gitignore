@@ -11,6 +11,9 @@
 /code/players/development/*
 /code/players/test/*
 /code/players/production/*
+/code/environments/development/*
+/code/environments/test/*
+/code/environments/production/*
 
 # Ignore bundler config.
 /.bundle
