@@ -52,10 +52,8 @@ describe "MatchWrapper" do
   end
 
   it "bad game, results should be inconclusive - game exceeded allowed time" do
-#    @match_wrapper.should be_an_instance_of MatchWrapper
     expect(@match_wrapper).to be_an_instance_of MatchWrapper
     @match_wrapper.run_match
-#    @match_wrapper.results.should eql "INCONCLUSIVE: Game exceeded allowed time!"
     expect(@match_wrapper.results).to eql "INCONCLUSIVE: Game exceeded allowed time!"
   end
 end
